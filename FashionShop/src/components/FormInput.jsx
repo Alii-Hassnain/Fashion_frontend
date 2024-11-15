@@ -1,6 +1,6 @@
 import React from "react";
 
-const FormInput = ({ type, name, defaultvalue, placeholder,icon }) => {
+const FormInput = ({ type, name, defaultvalue, placeholder,icon,icon2 }) => {
   return (
     <label className="input input-bordered flex items-center gap-2">
       {icon}
@@ -11,6 +11,7 @@ const FormInput = ({ type, name, defaultvalue, placeholder,icon }) => {
         className="grow"
         placeholder={placeholder}
       />
+      {icon2}
     </label>
   );
 };
