@@ -1,0 +1,6 @@
+-- setup complete
+-- pages tested working
+-- next
+    -- creating layout page
+    -- then Register page
+    -- then login page
