@@ -1,6 +1,7 @@
 import React from 'react'
 import {HomeLayout,Register,Login,Error,Landing,Products,SingleProduct,Cart,About, Checkout} from "./pages"
 import {createBrowserRouter,RouterProvider} from "react-router-dom"
+import { loader as productsLoader } from './pages/Products'
 
 const router = createBrowserRouter([
   {
@@ -14,6 +15,7 @@ const router = createBrowserRouter([
       },
       {
         path:"products",
+        loader:productsLoader,
         element:<Products/>,
       },
       {

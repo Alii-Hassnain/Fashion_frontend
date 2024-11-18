@@ -4,7 +4,5 @@ import App from './App.jsx'
 import 'react-toastify/ReactToastify.css';
 
 createRoot(document.getElementById('root')).render(
-  
     <App />
-
 )

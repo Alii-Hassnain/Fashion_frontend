@@ -5,6 +5,7 @@ import { FaKey } from "react-icons/fa";
 import { FormInput } from "../components";
 import { IoEye } from "react-icons/io5";
 import { IoEyeOff } from "react-icons/io5";
+import {handleSuccess,handleError} from "../utils/tostify"
 
 const Login = () => {
   const [loginInfo, setLoginInfo] = useState({
@@ -25,6 +26,7 @@ const Login = () => {
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include",
         body: JSON.stringify({ email, password }),
       });
       const result = await response.json();
@@ -32,17 +34,25 @@ const Login = () => {
       const { success, error, message, data, token } = result;
       console.log("mesage from backend", message);
       console.log("token from backend", token);
-
       if (success) {
+        console.log("success status : ",success)
+        handleSuccess(message);
         localStorage.setItem("token", token);
         localStorage.setItem("user", JSON.stringify(data.username));
         // navigate("/products")
       }
+      else if (error ){
+        handleError(error)
+      }
+      else{
+        handleError(message)
+      }
+     // setLoginInfo({ email: "", password: "" });
     } catch (error) {
       console.log(error);
     }
   };
-  const handleOnChange = (e) => {
+  const hanldeOnChange = (e) => {
     const { name, value } = e.target;
     const newInfo = { ...loginInfo, [name]: value };
     setLoginInfo(newInfo);
@@ -50,7 +60,7 @@ const Login = () => {
   };
   return (
     <div className="flex flex-col justify-center items-center h-screen gap-3">
-      <form onSubmit={handleOnSubmit}>
+      <form  onSubmit={handleOnSubmit}>
         <div className="flex flex-col gap-2">
           <h1 className="font-bold text-center text-2xl mb-4">Login</h1>
 
@@ -59,6 +69,7 @@ const Login = () => {
             type="text"
             name="email"
             defaultvalue={loginInfo.email}
+            onChange={hanldeOnChange}
             placeholder="Email"
             icon={<SiGmail />}
           />
@@ -67,6 +78,7 @@ const Login = () => {
             type={isChecked ? "text" : "password"}
             name="password"
             defaultvalue={loginInfo.password}
+            onChange={hanldeOnChange}
             placeholder="Password"
             icon={<FaKey />}
             icon2={
@@ -86,8 +98,6 @@ const Login = () => {
               }}
             />}
           />
-          
-          
           <button className="my-2 btn btn-outline">Login</button>
           <div className="flex flex-col text-sm">
             <p className="my-2 text-sm text-primary link-hover cursor-pointer">
