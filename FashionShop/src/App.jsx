@@ -39,6 +39,25 @@ const router = createBrowserRouter([
     ]
   },
   {
+    path:"/admin",
+    element:<div>Admin</div>,
+    children:[
+      {
+        path:"products",
+        element:<div>Products</div>
+      },
+      {
+        path:"users",
+        element:<div>Users</div>
+      },
+      {
+        path:"admin",
+        element:<div>Admin</div>
+      }
+    ]
+    
+  },
+  {
     path:"/register",
     element:<Register/>,
     errorElement:<Error/>
