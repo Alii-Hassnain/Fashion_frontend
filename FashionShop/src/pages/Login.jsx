@@ -40,7 +40,7 @@ const Login = () => {
         handleSuccess(message);
         localStorage.setItem("token", token);
         localStorage.setItem("user", JSON.stringify(data.username));
-        // navigate("/products")
+         navigate("/products")
       }
       else if (error ){
         handleError(error)

@@ -1,21 +1,18 @@
 import React from 'react'
 import Landing from './Landing'
 import { Navbar,Header } from '../components'
-import { Outlet } from 'react-router-dom'
+import { Outlet,useLocation } from 'react-router-dom'
+import {Hero} from '../components'
 
 const HomeLayout = () => {
   return (
     <div>
       <Header/>
       <Navbar/>
-      <div className='align-elements'>
-        {/* here the landing will come automaticaly because of the outlet function */}
+      <div>
         <Outlet/> 
       </div>
     </div>
-
-
-    
   )
 }
 

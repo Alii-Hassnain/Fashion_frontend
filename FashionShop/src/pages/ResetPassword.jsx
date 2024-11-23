@@ -2,6 +2,7 @@ import { useState } from "react";
 import { FormInput } from "../components";
 import { Link ,useNavigate,useParams} from "react-router-dom";
 import { handleError, handleSuccess } from './../utils/tostify';
+// import { set } from "mongoose";
 const ResetPassword = () => {
 
 const [password ,setPassowrd]= useState("")
@@ -26,19 +27,22 @@ try {
         },
         body:JSON.stringify({password,token})
     })
-    const result= response.json();  
+    const result=await response.json();  
     console.log("result from backend",result)
     const {success,message,data}=result;
     if(success){
         console.log("message from backend : ",message);
         handleSuccess(message)
+        setPassowrd("")
+        setTimeout(() => {
+            navigate("/login")
+        },2000)
+
     }
     else{
         handleError(message)
     }
-    setTimeout(()=>{
-        navigate("/login")
-    },2000)
+   
 } catch (error) {
     console.log('error in reset password',error)
     handleError(error.message)
