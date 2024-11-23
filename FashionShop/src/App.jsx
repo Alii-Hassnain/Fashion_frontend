@@ -1,5 +1,7 @@
 import React from 'react'
 import {HomeLayout,Register,Login,Error,Landing,Products,SingleProduct,Cart,About, Checkout} from "./pages"
+import ForgotPassword from './pages/ForgotPassword'
+import ResetPassword from './pages/ResetPassword'
 import {createBrowserRouter,RouterProvider} from "react-router-dom"
 import { loader as productsLoader } from './pages/Products'
 
@@ -44,6 +46,17 @@ const router = createBrowserRouter([
   {
     path:"/login",
     element:<Login/>,
+    errorElement:<Error/>,
+
+  },
+  {
+    path:"/forgotPassword",
+    element:<ForgotPassword/>,
+    errorElement:<Error/>
+  },
+  {
+    path:"/reset-password/:token",
+    element:<ResetPassword/>,
     errorElement:<Error/>
   },
   

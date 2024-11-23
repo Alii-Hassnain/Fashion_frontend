@@ -6,6 +6,7 @@ import { FormInput } from "../components";
 import { IoEye } from "react-icons/io5";
 import { IoEyeOff } from "react-icons/io5";
 import {handleSuccess,handleError} from "../utils/tostify"
+import { Outlet } from "react-router-dom";
 
 const Login = () => {
   const [loginInfo, setLoginInfo] = useState({
@@ -44,6 +45,7 @@ const Login = () => {
       else if (error ){
         handleError(error)
       }
+      
       else{
         handleError(message)
       }
@@ -100,9 +102,11 @@ const Login = () => {
           />
           <button className="my-2 btn btn-outline">Login</button>
           <div className="flex flex-col text-sm">
-            <p className="my-2 text-sm text-primary link-hover cursor-pointer">
-              Forgot password
-            </p>
+              <Link to={"/forgotPassword"}> 
+                <p className="my-2 text-sm text-primary link-hover cursor-pointer">
+                  Forgot password
+                </p>
+              </Link>
             <div className="flex flex-row gap-2">
               <p>Does't have an account</p>
               <Link to={"/register"}>
@@ -114,6 +118,7 @@ const Login = () => {
           </div>
         </div>
       </form>
+      <Outlet/>
     </div>
   );
 };

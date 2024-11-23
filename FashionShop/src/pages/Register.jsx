@@ -9,6 +9,13 @@ import { FormInput } from "../components";
 import { IoEye } from "react-icons/io5";
 import { IoEyeOff } from "react-icons/io5";
 import { IoEyeOutline } from "react-icons/io5";
+import { Navbar,Header } from '../components'
+import { SubmitMe } from "../components"
+import { axiosFetchUsers } from "../utils/axiosFetch";
+
+
+
+
 const Register = () => {
   const [register, setRegister] = useState({
     username: "",
@@ -29,7 +36,7 @@ const Register = () => {
     e.preventDefault();
     const { username, password, email } = register;
     console.log(
-      "usernme : ",
+      "username : ",
       username,
       "password: ",
       password,
@@ -63,14 +70,18 @@ const Register = () => {
        console.error("error ", message);
      }
      setRegister({ username: "", password: "", email: "" });
-
-   } catch (error) {
-    handleError(error)
-    console.error('submition error: ', error)
+     
+    } catch (error) {
+      handleError(error)
+      console.error('submition error: ', error)
+      setRegister({ username: "", password: "", email: "" });
    }
   };
 
   return (
+    <div>
+      {Navbar}
+    
     <div className="flex justify-center items-center h-screen gap-3 ">
       <form onSubmit={handleOnSubmit}
       >
@@ -125,7 +136,8 @@ const Register = () => {
           
           {/* buttons */}
           <div className="flex flex-col w-full gap-2">
-            <button className="btn btn-outline w-full">Register</button>
+            <SubmitMe text="Register"/>
+            {/* <button className="btn btn-outline w-full">Register</button>  */}
             <Link to={"/login"}>
               <button type="submit" className="btn btn-neutral w-full">
                 Have Account
@@ -135,6 +147,7 @@ const Register = () => {
         </div>
       </form>
       <ToastContainer />
+    </div>
     </div>
   );
 };
