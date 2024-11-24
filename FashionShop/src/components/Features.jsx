@@ -9,10 +9,15 @@ const Features = () => {
                 const {id,title,desc,img} = features
                 return(
                     <div key={id} 
-                    className='bg-slate-600 p-4 justify-center hover:bg-gray-400 text-white w-full h-36 rounded-md flex flex-col cursor-pointer'>
+                    className='bg-slate-200 p-4 justify-center
+                     hover:bg-gray-400 text-black w-full h-36 rounded-md 
+                     flex flex-col cursor-pointer
+                     items-center
+                     '>
+                        <div className='h-10 w-10 mb-3'>
                         <img src={img} alt={img} />
+                        </div>
                         <h2>{title}</h2> 
-                        <p>{desc}</p>
                     </div>
                 )
             })
