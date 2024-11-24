@@ -6,14 +6,10 @@ const Header = () => {
 
   return (
     <header className='bg-neutral py-2 text-neutral-content'>
-      <div className='align-elements flex justify-center sm:justify-start'>
-        
-      </div>
       <div className='align-elements flex justify-center sm:justify-between'>
 
         {/* left */}
         <div className='flex gap-2'>
-          
             <div className="dropdown">
             <div tabIndex={0} role="button" className="mt-1">
               <div className='flex flex-row gap-1'>

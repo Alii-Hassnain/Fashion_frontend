@@ -5,6 +5,9 @@ import ResetPassword from './pages/ResetPassword'
 import {createBrowserRouter,RouterProvider} from "react-router-dom"
 import { loader as productsLoader } from './pages/Products'
 
+
+import {AdminLayout} from './pages/admin'
+
 const router = createBrowserRouter([
   {
     path:"/",
@@ -40,7 +43,7 @@ const router = createBrowserRouter([
   },
   {
     path:"/admin",
-    element:<div>Admin</div>,
+    element:<AdminLayout/>,
     children:[
       {
         path:"products",
