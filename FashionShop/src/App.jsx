@@ -6,7 +6,8 @@ import {createBrowserRouter,RouterProvider} from "react-router-dom"
 import { loader as productsLoader } from './pages/Products'
 
 
-import {AdminLayout} from './pages/admin'
+import {AdminLayout,ManageProducts} from './pages/admin'
+// import { loader as ManageProductsLoader } from './pages/admin/ManageProducts' 
 
 const router = createBrowserRouter([
   {
@@ -47,14 +48,15 @@ const router = createBrowserRouter([
     children:[
       {
         path:"products",
-        element:<div>Products</div>
+        loader:productsLoader,
+        element:<ManageProducts/>
       },
       {
         path:"users",
         element:<div>Users</div>
       },
       {
-        path:"admin",
+        path:"orders",
         element:<div>Admin</div>
       }
     ]

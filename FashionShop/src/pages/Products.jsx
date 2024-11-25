@@ -17,7 +17,7 @@ export const loader = async () => {
 };
 
 const Products = () => {
-  const { products } = useLoaderData();
+  // const { products } = useLoaderData();
 
   // just for the reference...........................................
   // const [products, setProducts] = useState([]);
