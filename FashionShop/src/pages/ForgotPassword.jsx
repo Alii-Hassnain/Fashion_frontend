@@ -45,7 +45,7 @@ const navigate = useNavigate();
             <FormInput 
             type="email"
             name="email"
-            defaultvalue={Email}
+            value={Email}
             onChange={handleOnChange}
             placeholder="Enter your email"
             />

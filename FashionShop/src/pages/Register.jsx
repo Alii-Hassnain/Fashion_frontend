@@ -63,11 +63,18 @@ const Register = () => {
       }, 1000);
      }else if (error) {
        handleError(message);
+      //  setRegister({ username: "", password: "", email: "" });
        console.error("error: ", error);
      } 
+     else if(success===false){
+       handleError(message);
+        setRegister({ username: "", password: "", email: "" });
+       console.error("error: ", message);
+     }
      else{
        handleError(message);
        console.error("error ", message);
+      // setRegister({ username: "", password: "", email: "" });
      }
      setRegister({ username: "", password: "", email: "" });
      

@@ -55,7 +55,7 @@ try {
             <FormInput 
             type="password"
             name="password"
-            defaultvalue={password}
+            value={password}
             onChange={handleOnChange}
             placeholder="Enter your password "
             />

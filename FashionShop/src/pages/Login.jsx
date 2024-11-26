@@ -70,7 +70,7 @@ const Login = () => {
           <FormInput
             type="text"
             name="email"
-            defaultvalue={loginInfo.email}
+            value={loginInfo.email}
             onChange={hanldeOnChange}
             placeholder="Email"
             icon={<SiGmail />}
@@ -79,7 +79,7 @@ const Login = () => {
           <FormInput
             type={isChecked ? "text" : "password"}
             name="password"
-            defaultvalue={loginInfo.password}
+            value={loginInfo.password}
             onChange={hanldeOnChange}
             placeholder="Password"
             icon={<FaKey />}
