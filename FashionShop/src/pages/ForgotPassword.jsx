@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { FormInput } from "../components";
+import { FormInput,Header,Navbar } from "../components";
 import { handleError, handleSuccess } from './../utils/tostify';
 import { useNavigate ,useParams} from 'react-router-dom';
 const   ForgotPassword=() => {
@@ -40,6 +40,9 @@ const navigate = useNavigate();
         console.log("email :",Email)
     }
     return ( 
+        <>
+          <Header />
+          <Navbar/>
         <div className='flex flex-col justify-center items-center h-screen gap-3'>
             <h1 className='font-bold text-center text-2xl mb-4'>Enter Your Registered Email</h1>
             <FormInput 
@@ -55,6 +58,8 @@ const navigate = useNavigate();
             </button>
             {/* </Link> */}
         </div>
+        </>
+
      );
 }
 export default ForgotPassword;

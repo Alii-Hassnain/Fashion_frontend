@@ -12,6 +12,7 @@ import { IoEyeOutline } from "react-icons/io5";
 import { Navbar,Header } from '../components'
 import { SubmitMe } from "../components"
 import { axiosFetchUsers } from "../utils/axiosFetch";
+import heroImage from "../assets/hero1.webp";
 
 
 
@@ -87,12 +88,21 @@ const Register = () => {
 
   return (
     <div>
-      {Navbar}
-    
+      <Header />
+      <Navbar/>
+   
     <div className="flex justify-center items-center h-screen gap-3 ">
+    {/* <div
+        className="flex justify-center items-center h-screen w-full gap-3 bg-cover bg-center bg-no-repeat"
+        style={{
+          backgroundImage: `url(${heroImage})`,
+        }}
+      > */}
       <form onSubmit={handleOnSubmit}
-      >
-        <div className="flex flex-col gap-2 ">
+
+>
+
+        <div className="flex flex-col gap-2  ">
           <h1 className="font-bold text-center text-2xl mb-4">Register</h1>
 
           {/* Username */}
@@ -155,6 +165,7 @@ const Register = () => {
       </form>
       <ToastContainer />
     </div>
+ 
     </div>
   );
 };

@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { FormInput } from "../components";
+import { FormInput,Header,Navbar } from "../components";
 import { Link ,useNavigate,useParams} from "react-router-dom";
 import { handleError, handleSuccess } from './../utils/tostify';
-// import { set } from "mongoose";
+
 const ResetPassword = () => {
 
 const [password ,setPassowrd]= useState("")
@@ -49,6 +49,10 @@ try {
 }
 }
     return (
+        <>
+        <Navbar />
+        <Header />
+        
         <div>ResetPassword
      <div className='flex flex-col justify-center items-center h-screen gap-3'>
             <h1 className='font-bold text-center text-2xl mb-4'>Enter Your reset password</h1>
@@ -66,6 +70,7 @@ try {
             {/* </Link> */}
         </div>           
         </div>
+        </>
     
     )
 }

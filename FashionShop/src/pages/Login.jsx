@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { SiGmail } from "react-icons/si";
 import { FaKey } from "react-icons/fa";
-import { FormInput } from "../components";
+import { FormInput, Header, Navbar } from "../components";
 import { IoEye } from "react-icons/io5";
 import { IoEyeOff } from "react-icons/io5";
 import {handleSuccess,handleError} from "../utils/tostify"
@@ -61,6 +61,10 @@ const Login = () => {
     console.log(loginInfo);
   };
   return (
+    <>
+      <Header />
+      <Navbar />
+
     <div className="flex flex-col justify-center items-center h-screen gap-3">
       <form  onSubmit={handleOnSubmit}>
         <div className="flex flex-col gap-2">
@@ -120,6 +124,8 @@ const Login = () => {
       </form>
       <Outlet/>
     </div>
+    </>
+
   );
 };
 
