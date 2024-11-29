@@ -38,7 +38,7 @@ export const Links = [
     
   ]
 
-export const SliderData = [
+export const HeroData = [
   {
     id:1,
     img:hero1,

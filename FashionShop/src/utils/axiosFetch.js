@@ -3,6 +3,7 @@ import axios from 'axios'
 
 const productionUrl = "http://localhost:8080/api"
 const userUrl = "http://localhost:8080/user"
+const AdminUrl = "http://localhost:8080/admin"
 
 export const axiosFetchProducts = axios.create({
     baseURL: productionUrl,
