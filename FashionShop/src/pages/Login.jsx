@@ -2,11 +2,12 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { SiGmail } from "react-icons/si";
 import { FaKey } from "react-icons/fa";
-import { FormInput } from "../components";
+import { FormInput, SubmitMe } from "../components";
 import { IoEye } from "react-icons/io5";
 import { IoEyeOff } from "react-icons/io5";
 import {handleSuccess,handleError} from "../utils/tostify"
 import { Outlet } from "react-router-dom";
+import background from "../assets/hero2.webp";
 
 const Login = () => {
   const [loginInfo, setLoginInfo] = useState({
@@ -61,10 +62,19 @@ const Login = () => {
     console.log(loginInfo);
   };
   return (
-    <div className="flex flex-col justify-center items-center h-screen gap-3">
+    <div className="relative h-screen">
+      <div
+         className="absolute top-0 left-0 w-full h-full z-0 bg-cover bg-center filter blur-[2px]"
+         style={{
+           backgroundImage: `url(${background})`,
+         }}
+      >
+      </div>
+    <div className="relative z-10 flex flex-col justify-center items-center h-screen gap-3">
+      <div className="relative border border-1 p-12 rounded-xl">
       <form  onSubmit={handleOnSubmit}>
         <div className="flex flex-col gap-2">
-          <h1 className="font-bold text-center text-2xl mb-4">Login</h1>
+          <h1 className="font-bold text-center text-2xl mb-4 text-white">Login</h1>
 
           {/* EmailForm  */}
           <FormInput
@@ -100,15 +110,16 @@ const Login = () => {
               }}
             />}
           />
-          <button className="my-2 btn btn-outline">Login</button>
+          {/* <button className="my-2 btn btn-outline text-white">Login</button> */}
+          <SubmitMe text={"Login"} />
           <div className="flex flex-col text-sm">
               <Link to={"/forgotPassword"}> 
                 <p className="my-2 text-sm text-primary link-hover cursor-pointer">
                   Forgot password
                 </p>
               </Link>
-            <div className="flex flex-row gap-2">
-              <p>Does't have an account</p>
+            <div className="flex flex-row gap-2 text-white">
+              <p className="text-white">Does't have an account</p>
               <Link to={"/register"}>
                 <p className="text-primary link-hover cursor-pointer">
                   Register
@@ -118,7 +129,9 @@ const Login = () => {
           </div>
         </div>
       </form>
+      </div>
       <Outlet/>
+    </div>
     </div>
   );
 };

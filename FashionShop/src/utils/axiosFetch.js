@@ -18,3 +18,10 @@ export const axiosFetchUsers = axios.create({
         "Content-type": "application/json",
     }
 })
+
+export const axiosAdminUrl = axios.create({
+    baseURL: AdminUrl,
+    headers: {
+        "Content-type": "application/json",
+    }
+})
