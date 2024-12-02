@@ -46,12 +46,12 @@ const Navbar = () => {
           <div className="indicator">
             <span className="indicator-item badge badge-base-200">9</span>
             <div className="grid place-items-center">
-            <NavLink to="cart">
+            <NavLink to="/cart">
               <BsCart3 className="text-2xl cursor-pointer" />
             </NavLink>
             </div>
           </div>
-
+          
         </div>
       </div>
     </nav>
