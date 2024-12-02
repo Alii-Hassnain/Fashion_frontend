@@ -38,7 +38,7 @@ export const Links = [
     
   ]
 
-export const SliderData = [
+export const HeroData = [
   {
     id:1,
     img:hero1,
@@ -52,18 +52,18 @@ export const SliderData = [
     desc:"just upload your image and try the dress"
 
   },
-  {
-    id:3,
-    img:hero2,
-    title:"Winter Collection",
-    desc:"Get 50% off on winter collection"
-  },
-  {
-    id:4,
-    img:hero1,
-    title:"Summer Collection",
-    desc:"Get 50% off on summer collection"
-  }
+  // {
+  //   id:3,
+  //   img:hero2,
+  //   title:"Winter Collection",
+  //   desc:"Get 50% off on winter collection"
+  // },
+  // {
+  //   id:4,
+  //   img:hero1,
+  //   title:"Summer Collection",
+  //   desc:"Get 50% off on summer collection"
+  // }
 
 ]
 

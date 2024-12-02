@@ -9,10 +9,9 @@ import { FormInput } from "../components";
 import { IoEye } from "react-icons/io5";
 import { IoEyeOff } from "react-icons/io5";
 import { IoEyeOutline } from "react-icons/io5";
-import { Navbar,Header } from '../components'
-import { SubmitMe } from "../components"
+import { Navbar, Header } from "../components";
+import { SubmitMe } from "../components";
 import { axiosFetchUsers } from "../utils/axiosFetch";
-import heroImage from "../assets/hero1.webp";
 
 
 
@@ -45,64 +44,52 @@ const Register = () => {
       email
     );
 
-   try { 
-     const response = await fetch("http://localhost:8080/user/register", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ username, password, email }),
-    });
-     const result = await response.json();
-    //  console.log("Data recieve from backend : ",result)
-     const { success, error,message,data } = result;
-     console.log("mesage from backend",message)
-     if (success) {
-       handleSuccess(message);
-      setTimeout(() => {
-        navigate("/login");
-      }, 1000);
-     }else if (error) {
-       handleError(message);
-      //  setRegister({ username: "", password: "", email: "" });
-       console.error("error: ", error);
-     } 
-     else if(success===false){
-       handleError(message);
+    try {
+      const response = await fetch("http://localhost:8080/user/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, password, email }),
+      });
+      const result = await response.json();
+      //  console.log("Data recieve from backend : ",result)
+      const { success, error, message, data } = result;
+      console.log("mesage from backend", message);
+      if (success) {
+        handleSuccess(message);
+        setTimeout(() => {
+          navigate("/login");
+        }, 1000);
+      } else if (error) {
+        handleError(message);
+        //  setRegister({ username: "", password: "", email: "" });
+        console.error("error: ", error);
+      } else if (success === false) {
+        handleError(message);
         setRegister({ username: "", password: "", email: "" });
-       console.error("error: ", message);
-     }
-     else{
-       handleError(message);
-       console.error("error ", message);
-      // setRegister({ username: "", password: "", email: "" });
-     }
-     setRegister({ username: "", password: "", email: "" });
-     
-    } catch (error) {
-      handleError(error)
-      console.error('submition error: ', error)
+        console.error("error: ", message);
+      } else {
+        handleError(message);
+        console.error("error ", message);
+        // setRegister({ username: "", password: "", email: "" });
+      }
       setRegister({ username: "", password: "", email: "" });
-   }
+    } catch (error) {
+      handleError(error);
+      console.error("submition error: ", error);
+      setRegister({ username: "", password: "", email: "" });
+    }
   };
 
   return (
     <div>
-      <Header />
-      <Navbar/>
-   
+      {Navbar}
+    
     <div className="flex justify-center items-center h-screen gap-3 ">
-    {/* <div
-        className="flex justify-center items-center h-screen w-full gap-3 bg-cover bg-center bg-no-repeat"
-        style={{
-          backgroundImage: `url(${heroImage})`,
-        }}
-      > */}
       <form onSubmit={handleOnSubmit}
-
->
-
-        <div className="flex flex-col gap-2  ">
+      >
+        <div className="flex flex-col gap-2 ">
           <h1 className="font-bold text-center text-2xl mb-4">Register</h1>
 
           {/* Username */}
@@ -165,7 +152,6 @@ const Register = () => {
       </form>
       <ToastContainer />
     </div>
- 
     </div>
   );
 };
