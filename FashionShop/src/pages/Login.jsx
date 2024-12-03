@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { SiGmail } from "react-icons/si";
 import { FaKey } from "react-icons/fa";
 import { FormInput, Header, Navbar } from "../components";
-import { FormInput, SubmitMe } from "../components";
+import {  SubmitMe } from "../components";
 import { IoEye } from "react-icons/io5";
 import { IoEyeOff } from "react-icons/io5";
 import {handleSuccess,handleError} from "../utils/tostify"
@@ -138,10 +138,9 @@ const Login = () => {
       </div>
       <Outlet/>
     </div>
-    </>
-
     </div>
-  );
-};
+    </div>
+    </>
+    )};
 
 export default Login;

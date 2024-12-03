@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
 import { handleError, handleSuccess } from "../utils/tostify";
 import { FaUser } from "react-icons/fa";
 import { SiGmail } from "react-icons/si";
@@ -59,7 +58,7 @@ const Register = () => {
       if (success) {
         handleSuccess(message);
         setTimeout(() => {
-          navigate("/login");
+          navigate("/verify-user");
         }, 1000);
       } else if (error) {
         handleError(message);
@@ -150,7 +149,6 @@ const Register = () => {
           </div>
         </div>
       </form>
-      <ToastContainer />
     </div>
     </div>
   );
