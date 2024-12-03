@@ -20,9 +20,11 @@ const Register = () => {
     username: "",
     password: "",
     email: "",
+    secret: "",
   });
   const [isChecked, setIsChecked] = useState(false);
   const [isHidden, setIsHidden] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   const navigate = useNavigate();
   const handleOnChange = (e) => {
@@ -33,14 +35,15 @@ const Register = () => {
   };
   const handleOnSubmit = async (e) => {
     e.preventDefault();
-    const { username, password, email } = register;
+    const { username, password, email , secret} = register;
     console.log(
       "username : ",
       username,
       "password: ",
       password,
       "email : ",
-      email
+      email,
+      "secret : " , secret
     );
 
     try {
@@ -49,7 +52,7 @@ const Register = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ username, password, email }),
+        body: JSON.stringify({ username, password, email ,secret}),
       });
       const result = await response.json();
       //  console.log("Data recieve from backend : ",result)
@@ -66,18 +69,18 @@ const Register = () => {
         console.error("error: ", error);
       } else if (success === false) {
         handleError(message);
-        setRegister({ username: "", password: "", email: "" });
+        setRegister({ username: "", password: "", email: "" , secret: ""});
         console.error("error: ", message);
       } else {
         handleError(message);
         console.error("error ", message);
         // setRegister({ username: "", password: "", email: "" });
       }
-      setRegister({ username: "", password: "", email: "" });
+      setRegister({ username: "", password: "", email: "" , secret: ""});
     } catch (error) {
       handleError(error);
       console.error("submition error: ", error);
-      setRegister({ username: "", password: "", email: "" });
+      setRegister({ username: "", password: "", email: "" , secret: ""});
     }
   };
   const handleGoogleLogin = async () => {
@@ -94,7 +97,11 @@ const Register = () => {
       >
         <div className="flex flex-col gap-2 ">
           <h1 className="font-bold text-center text-2xl mb-4">Register</h1>
+          <div className="flex justify-center items-center gap-2">
 
+          <button type="button" className={`bg-gray-500 text-white py-2 rounded mr-6 ${isAdmin && "bg-blue-500" }`} onClick={() => setIsAdmin(true)}>As Admin</button>
+<button type="button" className={`bg-gray-500 text-white py-2 rounded mr-6 ${!isAdmin && "bg-blue-500" }`} onClick={() => setIsAdmin(false)}>As User</button>
+          </div>
           {/* Username */}
           <FormInput
             name="username"
@@ -141,6 +148,32 @@ const Register = () => {
             />}
           />
           
+          {isAdmin && (
+              <FormInput
+                name="secret"
+                type={isChecked ? "text" : "password"}
+                value={register.secret}
+                onChange={handleOnChange}
+                placeholder="Admin Secret Key"
+                icon={<FaKey />}
+                icon2={
+                  isHidden ?
+                  <IoEyeOff
+                  className="cursor-pointer"
+                  onClick={() => {
+                    setIsChecked(!isChecked)
+                    setIsHidden(!isHidden)
+                  }}
+                  
+                />:<IoEye
+                  className="cursor-pointer"
+                  onClick={() => {
+                    setIsChecked(!isChecked)
+                    setIsHidden(!isHidden)
+                  }}
+                />}
+              />
+            )}
           {/* buttons */}
           <div className="flex flex-col w-full gap-2">
             <SubmitMe text="Register"/>
