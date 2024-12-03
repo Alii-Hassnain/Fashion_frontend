@@ -62,6 +62,10 @@ const Login = () => {
     setLoginInfo(newInfo);
     console.log(loginInfo);
   };
+  const handleGoogleLogin = async () => {
+    console.log("google login clicked");
+    window.open("http://localhost:8080/auth/google", "_self") ;
+  }
   return (
     <>
       <Header />
@@ -118,7 +122,10 @@ const Login = () => {
           />
           {/* <button className="my-2 btn btn-outline text-white">Login</button> */}
           <SubmitMe text={"Login"} />
+          <button type="button" className="my-2 btn btn-outline text-white" onClick={handleGoogleLogin}>Login with Google</button>
           <div className="flex flex-col text-sm">
+            
+
               <Link to={"/forgotPassword"}> 
                 <p className="my-2 text-sm text-primary link-hover cursor-pointer">
                   Forgot password

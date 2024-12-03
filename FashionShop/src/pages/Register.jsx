@@ -80,6 +80,10 @@ const Register = () => {
       setRegister({ username: "", password: "", email: "" });
     }
   };
+  const handleGoogleLogin = async () => {
+    console.log("google login clicked");
+    window.open("http://localhost:8080/auth/google", "_self") ;
+  }
 
   return (
     <div>
@@ -140,6 +144,7 @@ const Register = () => {
           {/* buttons */}
           <div className="flex flex-col w-full gap-2">
             <SubmitMe text="Register"/>
+            <button onClick={handleGoogleLogin} className="btn btn-outline w-full">Sign in with Google</button>
             {/* <button className="btn btn-outline w-full">Register</button>  */}
             <Link to={"/login"}>
               <button type="submit" className="btn btn-neutral w-full">
