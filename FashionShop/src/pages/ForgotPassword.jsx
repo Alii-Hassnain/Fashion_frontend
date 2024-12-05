@@ -36,10 +36,12 @@ const ForgotPassword = () => {
       handleError(error.message);
     }
   };
+
   const handleOnChange = (e) => {
     setEmail(e.target.value);
     console.log("email :", Email);
   };
+
   return (
     <div className="relative h-screen">
       <div
@@ -83,4 +85,5 @@ const ForgotPassword = () => {
     </div>
   );
 };
+
 export default ForgotPassword;
