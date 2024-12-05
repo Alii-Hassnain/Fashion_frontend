@@ -2,13 +2,13 @@ import React from "react";
 
 const FormInput = ({ type, name, value, placeholder,icon,icon2,onChange }) => {
   return (
-    <label className="input input-bordered flex items-center gap-2 w-full">
+    <label className="input flex items-center gap-2 w-full">
       {icon}
       <input
+        className="grow w-full"
         type={type}
         name={name}
         value={value}
-        className="grow"
         placeholder={placeholder}
         onChange={onChange}
       />
