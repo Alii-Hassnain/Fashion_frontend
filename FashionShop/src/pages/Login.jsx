@@ -35,15 +35,27 @@ const Login = () => {
       const result = await response.json();
       console.log("Data recieve from backend : ", result);
       const { success, error, message, data, token } = result;
-      console.log("mesage from backend", message);
-      console.log("token from backend", token);
+      // console.log("mesage from backend", message);
+      console.log("data from backend : ",data );
+      // console.log("token from backend", token);
       if (success) {
+        if(data.role==="admin"){ 
+          handleSuccess("Admin login successful");
+          setTimeout(() => {    
+        navigate("/admin")
+          },2000)
+        }
+        else{
         console.log("success status : ",success)
         handleSuccess(message);
         localStorage.setItem("token", token);
         localStorage.setItem("user", JSON.stringify(data.username));
-         navigate("/")
-      }
+        setTimeout(() => {
+          navigate("/")
+        },2000)
+        
+        }
+        }
       else if (error ){
         handleError(error)
         
