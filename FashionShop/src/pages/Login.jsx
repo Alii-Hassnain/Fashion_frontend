@@ -42,10 +42,11 @@ const Login = () => {
         handleSuccess(message);
         localStorage.setItem("token", token);
         localStorage.setItem("user", JSON.stringify(data.username));
-         navigate("/products")
+         navigate("/")
       }
       else if (error ){
         handleError(error)
+        
       }
       
       else{
@@ -126,7 +127,7 @@ const Login = () => {
           <div className="flex flex-col text-sm">
             
 
-              <Link to={"/forgotPassword"}> 
+              <Link to="/forgotPassword" > 
                 <p className="my-2 text-sm text-primary link-hover cursor-pointer">
                   Forgot password
                 </p>
