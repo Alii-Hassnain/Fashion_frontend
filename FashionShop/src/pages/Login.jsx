@@ -43,11 +43,14 @@ const Login = () => {
         handleSuccess(message);
         localStorage.setItem("token", token);
         localStorage.setItem("user", JSON.stringify(data.username));
-        navigate("/products");
-      } else if (error) {
-        handleError(error);
-      } else {
-        handleError(message);
+         navigate("/")
+      }
+      else if (error ){
+        handleError(error)
+      }
+      
+      else{
+        handleError(message)
       }
       // setLoginInfo({ email: "", password: "" });
     } catch (error) {
@@ -87,72 +90,65 @@ const Login = () => {
                 Login
               </h1>
 
-              {/* EmailForm  */}
-              <FormInput
-                type="text"
-                name="email"
-                value={loginInfo.email}
-                onChange={hanldeOnChange}
-                placeholder="Email"
-                icon={<SiGmail />}
-              />
-              {/* PasswordForm */}
-              <FormInput
-                type={isChecked ? "text" : "password"}
-                name="password"
-                value={loginInfo.password}
-                onChange={hanldeOnChange}
-                placeholder="Password"
-                icon={<FaKey />}
-                icon2={
-                  isHidden ? (
-                    <IoEyeOff
-                      className="cursor-pointer"
-                      onClick={() => {
-                        setIsChecked(!isChecked);
-                        setIsHidden(!isHidden);
-                      }}
-                    />
-                  ) : (
-                    <IoEye
-                      className="cursor-pointer"
-                      onClick={() => {
-                        setIsChecked(!isChecked);
-                        setIsHidden(!isHidden);
-                      }}
-                    />
-                  )
-                }
-              />
-              {/* <button className="my-2 btn btn-outline text-white">Login</button> */}
-              <SubmitMe text={"Login"} />
-              <button
-                type="button"
-                className="my-2 btn btn-outline text-white"
-                onClick={handleGoogleLogin}
-              >
-                Login with Google
-              </button>
-              <div className="flex flex-col text-sm">
-                <Link to={"/forgotPassword"}>
-                  <p className="my-2 text-sm text-primary link-hover cursor-pointer">
-                    Forgot password
-                  </p>
-                </Link>
-                <div className="flex flex-row gap-2 text-white">
-                  <p className="text-white">Does't have an account</p>
-                  <Link to={"/register"}>
-                    <p className="text-primary link-hover cursor-pointer">
-                      Register
-                    </p>
-                  </Link>
-                </div>
-              </div>
+          {/* EmailForm  */}
+          <FormInput
+            type="text"
+            name="email"
+            value={loginInfo.email}
+            onChange={hanldeOnChange}
+            placeholder="Email"
+            icon={<SiGmail />}
+          />
+          {/* PasswordForm */}
+          <FormInput
+            type={isChecked ? "text" : "password"}
+            name="password"
+            value={loginInfo.password}
+            onChange={hanldeOnChange}
+            placeholder="Password"
+            icon={<FaKey />}
+            icon2={
+              isHidden ?
+              <IoEyeOff
+              className="cursor-pointer"
+              onClick={() => {
+                setIsChecked(!isChecked)
+                setIsHidden(!isHidden)
+              }}
+              
+            />:<IoEye
+              className="cursor-pointer"
+              onClick={() => {
+                setIsChecked(!isChecked)
+                setIsHidden(!isHidden)
+              }}
+            />}
+          />
+          {/* <button className="my-2 btn btn-outline text-white">Login</button> */}
+          <SubmitMe text={"Login"} />
+          <button type="button" className="my-2 btn btn-outline text-white" onClick={handleGoogleLogin}>Login with Google</button>
+          <div className="flex flex-col text-sm">
+            
+
+              <Link to="/forgotPassword"> 
+                <p className="my-2 text-sm text-primary link-hover cursor-pointer">
+                  Forgot password
+                </p>
+              </Link>
+            <div className="flex flex-row gap-2 text-white">
+              <p className="text-white">Does't have an account</p>
+              <Link to={"/register"}>
+                <p className="text-primary link-hover cursor-pointer">
+                  Register
+                </p>
+              </Link>
             </div>
-          </form>
+          </div>
         </div>
-        <Outlet />
+      </form>
       </div>
+      <Outlet/>
+    </div>
     </div>
   );
 };

@@ -12,6 +12,7 @@ import { Navbar, Header } from "../components";
 import { SubmitMe } from "../components";
 import { axiosFetchUsers } from "../utils/axiosFetch";
 import { RxCross2 } from "react-icons/rx";
+import { RiAdminFill } from "react-icons/ri";
 import background from "../assets/hero1.webp";
 
 const Register = () => {
@@ -97,6 +98,17 @@ const Register = () => {
         }}
       ></div>
       <div className="relative flex justify-center z-10 items-center h-screen gap-3 ">
+
+        {/* Register as admin */}
+        <div className="absolute top-5 left-5 text-white text-md ">
+          <div 
+          className="flex flex-row items-center cursor-pointer border-x-2 px-1 link-hover gap-2"
+          onClick={() => setIsAdmin(!isAdmin)}
+          >
+          <RiAdminFill/>
+          <h1>Register As Admin</h1>
+          </div>
+        </div>
         
         {/* Register container */}
         <div className="relative shadow-md shadow-neutral-100 p-12 rounded-xl backdrop-blur-sm">
