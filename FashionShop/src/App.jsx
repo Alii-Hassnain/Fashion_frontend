@@ -12,7 +12,6 @@ import { AdminAddProducts } from './components/Admin'
 
 // import { loader as ManageProductsLoader } from './pages/admin/ManageProducts' 
 
-
 const router = createBrowserRouter([
   {
     path:"/",
@@ -114,7 +113,6 @@ const App = () => {
   <>
   <RouterProvider router={router}/>
   <ToastContainer />
-
   </>
   )
 }

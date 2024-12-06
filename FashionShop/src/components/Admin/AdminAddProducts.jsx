@@ -1,40 +1,5 @@
 import React, { useState } from "react";
-import { axiosAdminUrl } from "../../utils/axiosFetch";
-
-const createProduct = async (formData,setSuccess,setError) => {
-    try {
-      const res = await axiosAdminUrl.post("/create-product", formData);
-      console.log(res.data);
-      setSuccess("Product added successfully");
-      return res.data;
-    } catch (error) {
-        console.error("Error adding product:", error);
-        setError("Error adding product");
-    }
-};
-// const createProduct = async (formData, setSuccess, setError) => {
-//     try {
-//         const response = await fetch("http://localhost:8080/admin/create-product", {
-//             method: "POST",
-//             headers: {
-//                 "Content-Type": "application/json",
-//             },
-//             body: formData,
-//         });
-
-//         if (!response.ok) {
-//             throw new Error("Network response was not ok");
-//         }
-
-//         const data = await response.json();
-//         console.log(data);
-//         setSuccess("Product added successfully");
-//         return data;
-//     } catch (error) {
-//         console.error("Error adding product:", error);
-//         setError("Error adding product");
-//     }
-// };
+import { createProduct } from "../Admin/ManageProductsHooks";
 
 
 const AdminAddProducts = () => {
@@ -53,10 +18,6 @@ const AdminAddProducts = () => {
       setError("Please fill in all fields correctly");
       return;
     }
-    // console.log(e.target.files[0]);
-    console.log(e.target.elements);
-    
-    
     const formData = new FormData();
     formData.append("title", productTitle);
     formData.append("price", productPrice);
@@ -64,7 +25,6 @@ const AdminAddProducts = () => {
     formData.append("stock", productStock);
     formData.append("description", productDescription);
     formData.append("rating", productRating);
-
     console.log("productImage", productImage);
     
     
@@ -73,13 +33,14 @@ const AdminAddProducts = () => {
     // Add product logic here
     console.log("Product added:", formData);
     createProduct(formData,setSuccess,setError);
+
     // Reset form fields
-    // setProductImage(null);
-    // setProductPrice(0);
-    // setProductTitle("");
-    // setProductDescription("");
-    // setProductStock(0);
-    // setProductRating(0);
+    setProductImage(null);
+    setProductPrice(0);
+    setProductTitle("");
+    setProductDescription("");
+    setProductStock(0);
+    setProductRating(0);
   };
 
   return (
@@ -123,7 +84,7 @@ const AdminAddProducts = () => {
           <input
             type="file"
             name="product_image"
-            onChange={(event) => console.log(event.target.files[0])}
+            onChange={(event) => setProductImage(event.target.files[0])}
             placeholder="Product Image"
           />
         </div>
