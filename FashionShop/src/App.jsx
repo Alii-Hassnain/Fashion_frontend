@@ -6,7 +6,9 @@ import VerifyUser from './pages/VerifyUser'
 import {createBrowserRouter,RouterProvider} from "react-router-dom"
 import { loader as productsLoader } from './pages/Products'
 import {AdminLayout,ManageProducts} from './pages/admin'
+import { loader as adminProductsLoader } from './pages/admin/ManageProducts'
 import { ToastContainer } from "react-toastify";
+import { AdminAddProducts } from './components/Admin'
 
 // import { loader as ManageProductsLoader } from './pages/admin/ManageProducts' 
 
@@ -49,9 +51,15 @@ const router = createBrowserRouter([
     element:<AdminLayout/>,
     children:[
       {
+        index:true,
         path:"products",
-        loader:productsLoader,
+        loader:adminProductsLoader,
         element:<ManageProducts/>
+      },
+      {
+        path:"addproduct",
+        element:<AdminAddProducts/>
+      
       },
       {
         path:"users",

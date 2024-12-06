@@ -1,16 +1,13 @@
 import React from 'react'
-import { useLoaderData } from 'react-router-dom'
+import { useLoaderData } from 'react-router-dom';
 
-
-
-const ProductsGridView = () => {
-  
-    const { products } = useLoaderData()
+const AdminProductsGridView = () => {
+  const { manageProducts } = useLoaderData();
   return (
     <div>
-        {products.length ? (
+        {manageProducts.length ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 ">
-          {products.map((product) => {
+          {manageProducts.map((product) => {
             const { _id, product_image,price,title,description} = product;
             console.log(product_image);
             
@@ -40,4 +37,4 @@ const ProductsGridView = () => {
   )
 }
 
-export default ProductsGridView
+export default AdminProductsGridView
