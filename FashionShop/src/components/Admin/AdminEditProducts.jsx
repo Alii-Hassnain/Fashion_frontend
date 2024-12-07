@@ -1,82 +1,84 @@
-import React, { useState } from "react";
-import { createProduct } from "./Services/ProductServices";
-import { deleteProduct } from "./Services/ProductServices";
-import { updateProduct } from "./Services/ProductServices";
+import React from "react";
+import AdminAddProducts from "./AdminAddProducts";
+import EditDrawer from "./EditDrawer";
 import { MyContext } from "./MyContext";
-import { useContext } from "react";
-const AdminAddProducts = () => {
-    const [error, setError] = useState(null);
-    const [success, setSuccess] = useState(null);
-    const [product, setProduct] = useState({
-        title: "",
-        price: "",
-        product_image: "",
-        stock: "",
-        description: "",
-        rating: "",
-    });
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setProduct((product) => {
-            return {
-                ...product,
-                [name]: value,
-            };
-        });
-    };
-    const handleFile = (e) => {
-        const file = e.target.files[0];
-        setProduct((product) => {
-            return {
-                ...product,
-                product_image: file,
-            };
-        });
-    };
+import { useContext, useState } from "react";
+import { useEffect } from "react";
+import { updateProduct } from "./Services/ProductServices";
+import { useLoaderData } from "react-router-dom";
 
-  const handleSubmit = (e) => {
+const AdminEditProducts = () => {
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
+  const { editProduct, setEditProduct } = useContext(MyContext);
+  const { manageProduct, setManageProducts } = useContext(MyContext);
+  
+  const [product, setProduct] = useState({
+    id: editProduct._id || "",
+    title: editProduct.title || "",
+    price: editProduct.price || "",
+    stock: editProduct.stock || "",
+    rating: editProduct.rating || "",
+    description: editProduct.description || "",
+  });
+  useEffect(() => {
+    setProduct({
+      id: editProduct._id || "",
+      title: editProduct.title || "",
+      price: editProduct.price || "",
+      stock: editProduct.stock || "",
+      rating: editProduct.rating || "",
+      description: editProduct.description || "",
+    });
+  }, [editProduct]);
+
+  console.log("product updated", product);
+  console.log("editProduct", editProduct);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setProduct((product) => {
+      return {
+        ...product,
+        [name]: value,
+      };
+    });
+  };
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (
-    !product.product_image ||
-    !product.price ||
-    !product.title ||
-    !product.description ||
-    product.stock < 0 ||
-    product.rating < 0
+      !product.price ||
+      !product.title ||
+      !product.description ||
+      product.stock < 0 ||
+      product.rating < 0
     ) {
       setError("Please fill in all fields correctly");
       return;
     }
+
     const formData = new FormData();
     formData.append("title", product.title);
     formData.append("price", product.price);
-    formData.append("product_image", product.product_image);
     formData.append("stock", product.stock);
-    formData.append("description", product.description);
     formData.append("rating", product.rating);
-    
-    console.log(formData);
-    console.log("Product added:", formData);
-    createProduct(formData, setSuccess, setError);
-    
-    setProduct({
-        product_image: "",
-        price: "",
-        title: "",
-        description: "",
-        stock: "",
-        rating: "",
-    });
-    setError(null);
-    setSuccess(null);
-  };
+    formData.append("description", product.description);
+    console.log("productImage", product.product_image);
+    updateProduct(product.id, formData, setSuccess, setError);
 
+    await setManageProducts((prevProducts) =>
+      prevProducts.map((prod) =>
+        prod._id === product.id ? { ...prod, ...product } : prod
+      )
+    );
+  };
   return (
     <div className="p-4">
-      <h2 className="text-2xl font-bold mb-4">Add Product</h2>
+      <h2 className="text-2xl font-bold mb-4">Edit Product</h2>
       {error && <p className="text-red-500 mb-4">{error}</p>}
       {success && <p className="text-green-500 mb-4">{success}</p>}
-      <form onSubmit={handleSubmit}>
+      <form key={editProduct._id} onSubmit={handleSubmit}>
         <div className="form-control">
           <label className="label">
             <span className="label-text">Product Title</span>
@@ -104,7 +106,7 @@ const AdminAddProducts = () => {
             className="input input-bordered"
           />
         </div>
-        <div className="form-control">
+        {/* <div className="form-control">
           <label className="label">
             <span className="label-text">Product Image</span>
           </label>
@@ -114,7 +116,7 @@ const AdminAddProducts = () => {
             onChange={handleFile}
             placeholder="Product Image"
           />
-        </div>
+        </div> */}
         <div className="form-control">
           <label className="label">
             <span className="label-text">Product Stock</span>
@@ -160,7 +162,7 @@ const AdminAddProducts = () => {
 
         <div className="form-control mt-6">
           <button className="btn btn-primary" type="submit ">
-            Add Product
+            Update Product
           </button>
         </div>
       </form>
@@ -168,4 +170,4 @@ const AdminAddProducts = () => {
   );
 };
 
-export default AdminAddProducts;
+export default AdminEditProducts;

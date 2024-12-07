@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { CommonHeading } from '../../components'
 import { useLoaderData } from 'react-router-dom';
 import { axiosFetchProducts } from '../../utils/axiosFetch';
@@ -22,7 +22,7 @@ export const loader = async () => {
 
 
 const ManageProducts = () => {
-  // const { products } = useLoaderData();
+  
   return (
     <div className='align-elements'>
       <CommonHeading title='Manage Products' />

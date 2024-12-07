@@ -9,6 +9,7 @@ import {AdminLayout,ManageProducts} from './pages/admin'
 import { loader as adminProductsLoader } from './pages/admin/ManageProducts'
 import { ToastContainer } from "react-toastify";
 import { AdminAddProducts } from './components/Admin'
+import { MyProvider } from './components/Admin/MyContext'
 
 // import { loader as ManageProductsLoader } from './pages/admin/ManageProducts' 
 
@@ -111,8 +112,10 @@ const router = createBrowserRouter([
 const App = () => {
   return (
   <>
-  <RouterProvider router={router}/>
-  <ToastContainer />
+    <MyProvider>
+      <RouterProvider router={router}/>
+      <ToastContainer />
+    </MyProvider>
   </>
   )
 }
