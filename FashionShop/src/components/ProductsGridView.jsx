@@ -17,18 +17,19 @@ const ProductsGridView = () => {
             return (
               <div
                 key={_id}
-                className="bg-white shadow-md rounded-md p-4"
+                className="bg-white shadow-md rounded-md p-4 cursor-pointer"
               >
                 <img
                   src={product_image}
                   alt={title}
-                  className="w-full h-56 object-cover"
+                  className="w-full h-56 object-contain"
                 />
                 <h2 className="text-lg font-semibold text-gray-800 mt-2">
                   {title}
                 </h2>
                 {/* <p className="text-gray-600 mt-2">{description}</p> */}
-                <p className="text-gray-800 mt-2">${price}</p>
+                <p className="text-gray-800 mt-2">Pkr {price}</p>
+                <button className='btn btn-ghost w-full mt-4'>Add to cart</button>
               </div>
             )
           })}
