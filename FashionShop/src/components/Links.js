@@ -71,7 +71,7 @@ export const FeaturesData = [
   {
     id:0,
     img:tryVirtually,
-    title:"Try Virtually",
+    title:"Try Room",
     desc:"Try the dress virtually "
   },
   {
@@ -86,12 +86,6 @@ export const FeaturesData = [
     title:"Free Shipping",
     desc:"Get free shipping on all orders over 5000 Rs"
   },
-  // {
-  //   id:3,
-  //   img:securePayment,
-  //   title:"Secure Payment",
-  //   desc:"Secure payment method available"
-  // },
   {
     id:4,
     img:easyReturn,

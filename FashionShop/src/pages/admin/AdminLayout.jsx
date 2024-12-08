@@ -8,7 +8,7 @@ const AdminLayout = () => {
       <AdminHeader />
       <AdminNavbar />
       <AdminSidebar />
-      <main>
+      <main className='ml-64'>
         <Outlet /> 
       </main>
       <footer>Admin Footer</footer>
