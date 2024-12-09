@@ -12,6 +12,12 @@ const ResetPassword = () => {
   console.log("token from frontend before reset password: ", token);
   const navigate = useNavigate();
 
+
+  const validateInputs = () => {
+    if (!password) return "Password is required";
+    if (password.length < 4) return "Password must be at least 4 characters long";
+    return null;
+  };
   const handleOnChange = (e) => {
     setPassowrd(e.target.value);
     console.log("password :", password);
@@ -20,6 +26,11 @@ const ResetPassword = () => {
   const handleSubmit = async () => {
     console.log("password from frontend", password);
     console.log("token from frontend : ", token);
+    const error = validateInputs();
+    if (error) {
+      handleError(error);
+      return;
+    }
     try {
       const response = await fetch(
         `http://localhost:8080/user/reset-password`,
@@ -75,7 +86,7 @@ const ResetPassword = () => {
                 name="password"
                 value={password}
                 onChange={handleOnChange}
-                placeholder="Enter your password "
+                placeholder="Enter your password (Min : 4 )"
               />
               {/* <Link to="/newPassword"> */}
               <button
