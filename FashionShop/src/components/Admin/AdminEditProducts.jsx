@@ -46,33 +46,51 @@ const AdminEditProducts = () => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (
-      !product.price ||
-      !product.title ||
-      !product.description ||
-      product.stock < 0 ||
-      product.rating < 0
-    ) {
-      setError("Please fill in all fields correctly");
-      return;
+    const productData = {
+      title: product.title,
+      price: product.price,
+      stock: product.stock,
+      rating: product.rating,
+      description: product.description,
+    };
+  
+    const response = await updateProduct(product.id, productData, setSuccess, setError);
+    if (response && response.success) {
+      setManageProducts((prevProducts) =>
+        prevProducts.map((prod) => (prod._id === product.id ? { ...prod, ...productData } : prod))
+      );
     }
-
-    const formData = new FormData();
-    formData.append("title", product.title);
-    formData.append("price", product.price);
-    formData.append("stock", product.stock);
-    formData.append("rating", product.rating);
-    formData.append("description", product.description);
-    console.log("productImage", product.product_image);
-    updateProduct(product.id, formData, setSuccess, setError);
-
-    await setManageProducts((prevProducts) =>
-      prevProducts.map((prod) =>
-        prod._id === product.id ? { ...prod, ...product } : prod
-      )
-    );
   };
+  
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+
+  //   if (
+  //     !product.price ||
+  //     !product.title ||
+  //     !product.description ||
+  //     product.stock < 0 ||
+  //     product.rating < 0
+  //   ) {
+  //     setError("Please fill in all fields correctly");
+  //     return;
+  //   }
+
+  //   const formData = new FormData();
+  //   formData.append("title", product.title);
+  //   formData.append("price", product.price);
+  //   formData.append("stock", product.stock);
+  //   formData.append("rating", product.rating);
+  //   formData.append("description", product.description);
+  //   console.log("productImage", product.product_image);
+  //   updateProduct(product.id, formData, setSuccess, setError);
+
+  //   await setManageProducts((prevProducts) =>
+  //     prevProducts.map((prod) =>
+  //       prod._id === product.id ? { ...prod, ...product } : prod
+  //     )
+  //   );
+  // };
   return (
     <div className="p-4">
       <h2 className="text-2xl font-bold mb-4">Edit Product</h2>

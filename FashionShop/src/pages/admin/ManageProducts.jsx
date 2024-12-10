@@ -11,12 +11,29 @@ import { Link } from 'react-router-dom';
 
 export const loader = async () => {
   try {
-    const res = await axiosAdminUrl.get("/get-products");
-    console.log(res.data);
-    const manageProducts = res.data.data;
-    return { manageProducts };
+    const response=await fetch("http://localhost:8080/admin/get-products",{
+      method:"GET",
+      credentials:"include",
+    
+    }
+  )
+  const result=await response.json();
+  const {success,message,data}=result;
+  console.log("result from backend : ",result);
+  if(!success){
+    handleError(message);
+    navigate("/login");
+  }
+    return { manageProducts : data };
+    // const res = await axiosAdminUrl.get("/get-products");
+    // console.log(res.data);
+    // const manageProducts = res.data.data;
+    // return { manageProducts };
   } catch (error) {
+
     console.error("Error fetching products:", error);
+    return { manageProducts : [] };
+
   }
 };
 

@@ -40,15 +40,20 @@ const Login = () => {
       console.log("token from backend", token);
       if (success) {
         console.log("success status : ", success);
-        handleSuccess(message);
+        // handleSuccess(message);
         localStorage.setItem("token", token);
         localStorage.setItem("user", JSON.stringify(data.username));
-         navigate("/")
+        if (data.role === "admin") {
+          navigate("/admin");
+          handleSuccess("Admin Login Successfull");
+        } else {
+          handleSuccess("User Login Successfull");
+          navigate("/");
+        }
       }
-      else if (error ){
+      else if (error){
         handleError(error)
       }
-      
       else{
         handleError(message)
       }
