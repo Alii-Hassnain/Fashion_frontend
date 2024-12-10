@@ -1,11 +1,14 @@
-import { useState } from 'react';
+import { useState } from "react";
 import { FormInput } from "../components";
-import { handleError, handleSuccess } from './../utils/tostify';
-import { useNavigate ,useParams} from 'react-router-dom';
-const   ForgotPassword=() => {
-  console.log("this is frogot password commponent ")
-const [Email , setEmail]= useState("")
-const navigate = useNavigate();
+import { handleError, handleSuccess } from "./../utils/tostify";
+import { useNavigate, useParams } from "react-router-dom";
+import background from "../assets/hero1.webp";
+import { Link } from "react-router-dom";
+import { RxCross2 } from "react-icons/rx";
+const ForgotPassword = () => {
+  console.log("this is frogot password commponent ");
+  const [Email, setEmail] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -30,7 +33,7 @@ const navigate = useNavigate();
       }
       setTimeout(() => {
         // navigate("/reset-password/:token");
-      navigate("/login");
+        navigate("/login");
       }, 2000);
 
     } catch (error) {
@@ -38,32 +41,29 @@ const navigate = useNavigate();
       handleError(error.message);
     }
   };
-
   const handleOnChange = (e) => {
     setEmail(e.target.value);
     console.log("email :", Email);
   };
-
   return (
     <div className="relative h-screen">
       <div
-        className="absolute top-0 left-0 w-full h-full z-0 bg-cover bg-center filter blur-[2px]"
+        className="absolute top-0 left-0 w-full h-full z-0 bg-cover bg-center"
         style={{
           backgroundImage: `url(${background})`,
         }}
       ></div>
-
-      <div className="relative z-10 flex flex-col justify-center items-center h-screen">
-        <div className="relative border border-1 p-12 rounded-xl">
-          <form onSubmit={handleOnChange}>
-            <div className="flex flex-col gap-2">
-
-            <h1 className="text-white font-bold text-center text-2xl mb-4">
-              Forgot Password ?
+      <div className="relative flex justify-center z-10 items-center h-screen gap-3 ">
+        <div className="relative shadow-md shadow-neutral-100 p-12 rounded-xl backdrop-blur-sm">
+          <div className="absolute top-5 right-5 text-2xl text-white hover:bg-red-600 cursor-pointer">
+            <Link to={"/login"}>
+              <RxCross2 />
+            </Link>
+          </div>
+          <div className="flex flex-col justify-center items-center gap-3">
+            <h1 className="font-bold text-center text-white text-2xl mb-4">
+              Enter your Registered Email
             </h1>
-            <p className="text-start text-white">
-              Enter your email to reset your password
-            </p>
             <FormInput
               type="email"
               name="email"
@@ -78,10 +78,8 @@ const navigate = useNavigate();
             >
               Submit
             </button>
-            </div>
-          </form>
-
-          {/* </Link> */}
+            {/* </Link> */}
+          </div>
         </div>
       </div>
     </div>

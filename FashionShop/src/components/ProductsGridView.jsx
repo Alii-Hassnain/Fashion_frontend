@@ -9,7 +9,7 @@ const ProductsGridView = () => {
   return (
     <div>
         {products.length ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 ">
           {products.map((product) => {
             const { _id, product_image,price,title,description} = product;
             console.log(product_image);
