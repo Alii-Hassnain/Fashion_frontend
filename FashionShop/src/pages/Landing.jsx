@@ -1,30 +1,29 @@
 import React from "react";
-import { Hero } from "../components";
+import { CommonHeading, Hero, ProductsContainer } from "../components";
 import { Features } from "../components";
-import {Footer} from "../components";
+import { Footer } from "../components";
 
 const Landing = () => {
   return (
     <div>
       <Hero />
-      <Features />
-      <div className="flex w-full align-elements mt-10 cursor-pointer">
-        <div className="card bg-base-300 grid h-20 flex-grow place-items-center">
-          NewArrival
+      <div className="align-elements">
+        <Features />
+        <div className="flex flex-row justify-center items-center gap-3 mt-10 text-gray-700">
+          <p className="cursor-pointer link-hover">New Products</p>
+          <p>||</p>
+          <p className="cursor-pointer link-hover">Best Sellers</p>
+          <p>||</p>
+          <p className="cursor-pointer link-hover">Featured Products</p>
+          <p>||</p>
+          <p className="cursor-pointer link-hover">Big Discount</p>
         </div>
-        <div className="divider divider-horizontal"></div>
-        <div className="card bg-base-300 grid h-20 flex-grow place-items-center">
-          Featured
-        </div>
-        <div className="divider divider-horizontal"></div>
-        <div className="card bg-base-300 grid flex-grow place-items-center">
-          Big Discount
-        </div>
+        <CommonHeading title="New Products" />
+        <ProductsContainer />
       </div>
 
       <div className="mt-40">
-
-      <Footer />
+        <Footer />
       </div>
     </div>
   );

@@ -8,10 +8,12 @@ import hero1 from "../assets/hero1.webp";
 
 export const loader = async () => {
   try {
-    // const res = await axiosFetchProducts.get("/products");
-    const res = await axiosAdminUrl.get("/get-products");
+    const res = await axiosFetchProducts.get("/products");
+    // const res = await axiosAdminUrl.get("/get-products");
     console.log(res.data);
-    const products = res.data.data;
+    // const products = res.data.data;
+    const products = res.data.products;
+    console.log(products);
     return { products };
   } catch (error) {
     console.error("Error fetching products:", error);
