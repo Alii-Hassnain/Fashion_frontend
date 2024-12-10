@@ -1,11 +1,33 @@
-import React from "react";
+import React,{ useState, useEffect } from "react";
 import { Link , useNavigate } from "react-router-dom";
 import { FaChevronDown } from "react-icons/fa";
 import { handleSuccess,handleError } from "../utils/tostify";
 
 const Header = () => {
-
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
+  const checkAuthCookie = async () => {
+    try {
+      const response = await fetch("http://localhost:8080/user/verify-session", {
+        method: "GET",
+        credentials: "include", // Send cookies with the request
+      });
+  
+      const result = await response.json();
+      console.log(result.success)
+      return result.success; // Return true if the user is logged in
+    } catch (error) {
+      console.error("Error checking session:", error);
+      return false;
+    }
+  };
+  useEffect(() => {
+    const checkLoginState = async () => {
+      const isLoggedIn = await checkAuthCookie();
+      setIsLoggedIn(isLoggedIn);
+    };
+    checkLoginState();
+  }, []);
 
   const handleLogout = async () => {
     try {
@@ -22,6 +44,7 @@ const Header = () => {
       if (success) {
         handleSuccess(message);
         console.log("Logout result: ", message);
+        setIsLoggedIn(false); 
         localStorage.removeItem("token"); // Clear local storage (if needed)
         localStorage.removeItem("user");
 
@@ -71,13 +94,19 @@ const Header = () => {
 
         {/* right */}
         <div className="flex gap-5">
-          <Link to={"/login"}>
+          {/* <Link to={"/login"}>
             <p className="link-hover text-sm">Log in</p>
-          </Link>
+          </Link> */}
           <Link to={"/register"}>
             <p className="link-hover text-sm">Register</p>
           </Link>
+          { isLoggedIn ? (
           <button className="link-hover text-sm hover:text-red-400" onClick={handleLogout} >logout</button>
+          ):(
+            <Link to={"/login"}>
+            <p className="link-hover text-sm">Log in</p>
+            </Link>
+          )}
         </div>
       </div>
     </header>

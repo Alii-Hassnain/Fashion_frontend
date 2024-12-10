@@ -27,6 +27,14 @@ const Register = () => {
   const [isAdmin, setIsAdmin] = useState(false);
 
   const navigate = useNavigate();
+  const validateInputs = () => {
+    if (!register.email) return "Email is required";
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(register.email)) return "Invalid email format";
+    if (!register.password) return "Password is required";
+    if (register.password.length < 4) return "Password must be at least 4 characters long";
+    return null;
+  };
   const handleOnChange = (e) => {
     const { name, value } = e.target;
     const newInfo = { ...register, [name]: value };
@@ -35,6 +43,11 @@ const Register = () => {
   };
   const handleOnSubmit = async (e) => {
     e.preventDefault();
+    const error = validateInputs();
+    if (error) {
+      handleError(error);
+      return;
+    }
     const { username, password, email, secret } = register;
     console.log(
       "username : ",
@@ -106,7 +119,11 @@ const Register = () => {
           onClick={() => setIsAdmin(!isAdmin)}
           >
           <RiAdminFill/>
-          <h1>Register As Admin</h1>
+          {!isAdmin ? (
+            <h1>Register As Admin</h1>
+          ) : (
+            <h1>Register As User</h1>
+          )}
           </div>
         </div>
         
@@ -170,7 +187,7 @@ const Register = () => {
                 type={isChecked ? "text" : "password"}
                 value={register.password}
                 onChange={handleOnChange}
-                placeholder="Password"
+                placeholder="Password (Min : 4)"
                 icon={<FaKey />}
                 icon2={
                   isHidden ? (
