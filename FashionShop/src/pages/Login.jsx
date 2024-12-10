@@ -16,12 +16,30 @@ const Login = () => {
     email: "",
     password: "",
   });
+  
   const [isChecked, setIsChecked] = useState(false);
   const [isHidden, setIsHidden] = useState(true);
 
   const navigate = useNavigate();
+
+  const validateInputs = () => {
+    if (!loginInfo.email) return "Email is required";
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(loginInfo.email)) return "Invalid email format";
+    if (!loginInfo.password) return "Password is required";
+    if (loginInfo.password.length < 4) return "Password must be at least 4 characters long";
+    return null;
+  };
+
   const handleOnSubmit = async (e) => {
     e.preventDefault();
+    const error = validateInputs();
+    if (error) {
+      handleError(error);
+      return;
+    }
+
+
     const { email, password } = loginInfo;
     console.log("email:", email, "password : ", password);
     try {
@@ -120,7 +138,7 @@ const Login = () => {
             name="password"
             value={loginInfo.password}
             onChange={hanldeOnChange}
-            placeholder="Password"
+            placeholder="Password (Min : 4)"
             icon={<FaKey />}
             icon2={
               isHidden ?
