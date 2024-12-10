@@ -33,7 +33,6 @@ const ForgotPassword = () => {
       }
       setTimeout(() => {
         // // navigate("/reset-password/:token");
-        navigate("/login");
       navigate("/login");
       }, 2000);
 
