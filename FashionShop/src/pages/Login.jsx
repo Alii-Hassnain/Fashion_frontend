@@ -71,7 +71,7 @@ const Login = () => {
          localStorage.setItem("token", token);
         localStorage.setItem("user", JSON.stringify(data.username));
          navigate("/")
-      }
+      }}
       else if(success===false ) {
         handleSuccess(message)
       }
