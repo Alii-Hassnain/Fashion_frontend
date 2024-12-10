@@ -32,9 +32,11 @@ const ForgotPassword = () => {
         handleError(result.message);
       }
       setTimeout(() => {
-        // navigate("/reset-password/:token");
+        // // navigate("/reset-password/:token");
         navigate("/login");
+      navigate("/login");
       }, 2000);
+
     } catch (error) {
       console.log("error on frontend in forgot password", error);
       handleError(error.message);
