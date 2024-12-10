@@ -1,11 +1,11 @@
-import { useState } from "react";
+import { useState } from 'react';
 import { FormInput } from "../components";
-import { handleError, handleSuccess } from "./../utils/tostify";
-import { useNavigate, useParams } from "react-router-dom";
-import background from "../assets/hero1.webp";
-const ForgotPassword = () => {
-  const [Email, setEmail] = useState("");
-  const navigate = useNavigate();
+import { handleError, handleSuccess } from './../utils/tostify';
+import { useNavigate ,useParams} from 'react-router-dom';
+const   ForgotPassword=() => {
+  console.log("this is frogot password commponent ")
+const [Email , setEmail]= useState("")
+const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -29,8 +29,10 @@ const ForgotPassword = () => {
         handleError(result.message);
       }
       setTimeout(() => {
-        navigate("/reset-password/:token");
+        // navigate("/reset-password/:token");
+      navigate("/login");
       }, 2000);
+
     } catch (error) {
       console.log("error on frontend in forgot password", error);
       handleError(error.message);

@@ -2,12 +2,14 @@ import React from 'react'
 import {HomeLayout,Register,Login,Error,Landing,Products,SingleProduct,Cart,About, Checkout} from "./pages"
 import ForgotPassword from './pages/ForgotPassword'
 import ResetPassword from './pages/ResetPassword'
+import VerifyUser from './pages/VerifyUser'
 import {createBrowserRouter,RouterProvider} from "react-router-dom"
 import { loader as productsLoader } from './pages/Products'
-
-
 import {AdminLayout,ManageProducts} from './pages/admin'
+import { ToastContainer } from "react-toastify";
+
 // import { loader as ManageProductsLoader } from './pages/admin/ManageProducts' 
+
 
 const router = createBrowserRouter([
   {
@@ -83,6 +85,11 @@ const router = createBrowserRouter([
     element:<ResetPassword/>,
     errorElement:<Error/>
   },
+  {
+    path:"/verify-user",
+    element:<VerifyUser/>,
+    errorElement:<Error/>
+  },
   
 ],
 {
@@ -95,7 +102,13 @@ const router = createBrowserRouter([
 
 
 const App = () => {
-  return <RouterProvider router={router}/>
+  return (
+  <>
+  <RouterProvider router={router}/>
+  <ToastContainer />
+
+  </>
+  )
 }
 
 export default App
