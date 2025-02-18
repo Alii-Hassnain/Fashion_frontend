@@ -49,7 +49,7 @@ const AdminProductsGridView = () => {
                   {title}
                 </h2>
                 {/* <p className="text-gray-600 mt-2">{description}</p> */}
-                <p className="text-gray-800 mt-2">${price}</p>
+                <p className="text-gray-800 mt-2">PKR {price}</p>
                 <div className="flex flex-col cursor-pointer gap-2 mt-3">
                   <div
                     className="text-slate-400 link-hover"

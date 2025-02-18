@@ -5,13 +5,14 @@ import NavLinks from "./NavLinks";
 import { NavLink } from "react-router-dom";
 import { BsCart3, BsMoonFill, BsSunFill } from "react-icons/bs";
 import { FaBarsStaggered } from "react-icons/fa6";
-
+import { useSelector } from "react-redux";
 const Navbar = () => {
+  const cartNumber = useSelector((state) => state.cart.totalQuantity);
+
   return (
     <nav className="bg-base-200">
       <div className="navbar align-elements">
         {/* take all the content at the start of the navbar */}
-
         <div className="navbar-start">
           <NavLink to="/" className="flex lg:flex text-3xl items-center">
             <h1 className="font-bold text-xl">
@@ -44,7 +45,7 @@ const Navbar = () => {
         {/* navbar end */}
         <div className="lg:navbar-end">
           <div className="indicator">
-            <span className="indicator-item badge badge-base-200">9</span>
+            <span className="indicator-item badge badge-base-200">{cartNumber}</span>
             <div className="grid place-items-center">
             <NavLink to="cart">
               <BsCart3 className="text-2xl cursor-pointer" />

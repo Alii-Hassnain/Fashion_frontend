@@ -11,6 +11,12 @@ export const axiosFetchProducts = axios.create({
         "Content-type": "application/json"
     }
 })
+export const axiosCart = axios.create({
+    baseURL: productionUrl,
+    headers: {
+        "Content-type": "application/json"
+    }
+})
 
 export const axiosFetchUsers = axios.create({
     baseURL: userUrl,

@@ -6,11 +6,7 @@ import ProductsTestView from './ProductsTestView'
 const ProductsContainer = () => { 
   return (
     <div>
-        {/* user have two options where he likes to view grid or list */}
         <ProductsGridView />
-        {/* <ProductsTestView /> */}
-        
-        {/* <ProductsListView /> */}
     </div>
   )
 }

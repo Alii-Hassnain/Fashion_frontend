@@ -133,8 +133,6 @@ const Login = () => {
           <SubmitMe text={"Login"} />
           <button type="button" className="my-2 btn btn-outline text-white" onClick={handleGoogleLogin}>Login with Google</button>
           <div className="flex flex-col text-sm">
-            
-
               <Link to="/forgotPassword"> 
                 <p className="my-2 text-sm text-primary link-hover cursor-pointer">
                   Forgot password

@@ -5,6 +5,7 @@ import ResetPassword from './pages/ResetPassword'
 import VerifyUser from './pages/VerifyUser'
 import {createBrowserRouter,RouterProvider} from "react-router-dom"
 import { loader as productsLoader } from './pages/Products'
+import { loader as singleProductLoader } from './pages/SingleProduct'
 import {AdminLayout,ManageProducts} from './pages/admin'
 import { loader as adminProductsLoader } from './pages/admin/ManageProducts'
 import { ToastContainer } from "react-toastify";
@@ -32,7 +33,8 @@ const router = createBrowserRouter([
         element:<Products/>,
       },
       {
-        path:"singleproduct",
+        path:"singleproduct/:id",
+        loader:singleProductLoader,
         element:<SingleProduct/>
       },
       {
