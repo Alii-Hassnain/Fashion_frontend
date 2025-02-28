@@ -10,6 +10,9 @@ import { handleSuccess, handleError } from "../utils/tostify";
 import { Outlet } from "react-router-dom";
 import { RxCross2 } from "react-icons/rx";
 import background from "../assets/hero2.webp";
+import { useDispatch } from "react-redux";
+import { loginSuccess, logout } from "../features/userSlice";
+import { fetchCart } from "../features/cartSlice";
 
 const Login = () => {
   const [loginInfo, setLoginInfo] = useState({
@@ -18,6 +21,8 @@ const Login = () => {
   });
   const [isChecked, setIsChecked] = useState(false);
   const [isHidden, setIsHidden] = useState(true);
+
+  const dispatch = useDispatch();
 
   const navigate = useNavigate();
   const handleOnSubmit = async (e) => {
@@ -36,9 +41,13 @@ const Login = () => {
       const result = await response.json();
       console.log("Data recieve from backend : ", result);
       const { success, error, message, data, token } = result;
+      
       console.log("mesage from backend", message);
       console.log("token from backend", token);
       if (success) {
+        dispatch(loginSuccess(data));
+        dispatch(fetchCart(data._id));
+        
         console.log("success status : ", success);
         // handleSuccess(message);
         localStorage.setItem("token", token);
@@ -50,12 +59,10 @@ const Login = () => {
           handleSuccess("User Login Successfull");
           navigate("/");
         }
-      }
-      else if (error){
-        handleError(error)
-      }
-      else{
-        handleError(message)
+      } else if (error) {
+        handleError(error);
+      } else {
+        handleError(message);
       }
       // setLoginInfo({ email: "", password: "" });
     } catch (error) {
@@ -81,12 +88,11 @@ const Login = () => {
         }}
       ></div>
       <div className="relative z-10 flex flex-col justify-center items-center h-screen gap-3 ">
-
         {/* login container */}
         <div className="relative shadow-neutral-100 shadow-md p-12 rounded-xl backdrop-blur-sm">
-        <div className="absolute top-5 right-5 text-2xl text-white hover:bg-red-600 cursor-pointer">
+          <div className="absolute top-5 right-5 text-2xl text-white hover:bg-red-600 cursor-pointer">
             <Link to={"/"}>
-            <RxCross2/>
+              <RxCross2 />
             </Link>
           </div>
           <form onSubmit={handleOnSubmit}>
@@ -95,63 +101,72 @@ const Login = () => {
                 Login
               </h1>
 
-          {/* EmailForm  */}
-          <FormInput
-            type="text"
-            name="email"
-            value={loginInfo.email}
-            onChange={hanldeOnChange}
-            placeholder="Email"
-            icon={<SiGmail />}
-          />
-          {/* PasswordForm */}
-          <FormInput
-            type={isChecked ? "text" : "password"}
-            name="password"
-            value={loginInfo.password}
-            onChange={hanldeOnChange}
-            placeholder="Password"
-            icon={<FaKey />}
-            icon2={
-              isHidden ?
-              <IoEyeOff
-              className="cursor-pointer"
-              onClick={() => {
-                setIsChecked(!isChecked)
-                setIsHidden(!isHidden)
-              }}
-              
-            />:<IoEye
-              className="cursor-pointer"
-              onClick={() => {
-                setIsChecked(!isChecked)
-                setIsHidden(!isHidden)
-              }}
-            />}
-          />
-          {/* <button className="my-2 btn btn-outline text-white">Login</button> */}
-          <SubmitMe text={"Login"} />
-          <button type="button" className="my-2 btn btn-outline text-white" onClick={handleGoogleLogin}>Login with Google</button>
-          <div className="flex flex-col text-sm">
-              <Link to="/forgotPassword"> 
-                <p className="my-2 text-sm text-primary link-hover cursor-pointer">
-                  Forgot password
-                </p>
-              </Link>
-            <div className="flex flex-row gap-2 text-white">
-              <p className="text-white">Does't have an account</p>
-              <Link to={"/register"}>
-                <p className="text-primary link-hover cursor-pointer">
-                  Register
-                </p>
-              </Link>
+              {/* EmailForm  */}
+              <FormInput
+                type="text"
+                name="email"
+                value={loginInfo.email}
+                onChange={hanldeOnChange}
+                placeholder="Email"
+                icon={<SiGmail />}
+              />
+              {/* PasswordForm */}
+              <FormInput
+                type={isChecked ? "text" : "password"}
+                name="password"
+                value={loginInfo.password}
+                onChange={hanldeOnChange}
+                placeholder="Password"
+                icon={<FaKey />}
+                icon2={
+                  isHidden ? (
+                    <IoEyeOff
+                      className="cursor-pointer"
+                      onClick={() => {
+                        setIsChecked(!isChecked);
+                        setIsHidden(!isHidden);
+                      }}
+                    />
+                  ) : (
+                    <IoEye
+                      className="cursor-pointer"
+                      onClick={() => {
+                        setIsChecked(!isChecked);
+                        setIsHidden(!isHidden);
+                      }}
+                    />
+                  )
+                }
+              />
+              {/* <button className="my-2 btn btn-outline text-white">Login</button> */}
+              <SubmitMe text={"Login"} />
+              <button
+                type="button"
+                className="my-2 btn btn-outline text-white"
+                onClick={handleGoogleLogin}
+              >
+                Login with Google
+              </button>
+              <div className="flex flex-col text-sm">
+                <Link to="/forgotPassword">
+                  <p className="my-2 text-sm text-primary link-hover cursor-pointer">
+                    Forgot password
+                  </p>
+                </Link>
+                <div className="flex flex-row gap-2 text-white">
+                  <p className="text-white">Does't have an account</p>
+                  <Link to={"/register"}>
+                    <p className="text-primary link-hover cursor-pointer">
+                      Register
+                    </p>
+                  </Link>
+                </div>
+              </div>
             </div>
-          </div>
+          </form>
         </div>
-      </form>
+        <Outlet />
       </div>
-      <Outlet/>
-    </div>
     </div>
   );
 };

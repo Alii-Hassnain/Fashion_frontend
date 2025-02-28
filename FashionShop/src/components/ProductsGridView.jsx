@@ -1,14 +1,35 @@
-import React from "react";
+import React, { useState } from "react";
 import { useLoaderData } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { addToCart, addToCartAsync } from "../features/cartSlice";
-import {handleSuccess} from "../utils/tostify"
+import {handleError, handleSuccess} from "../utils/tostify"
+import { useSelector } from "react-redux";
+import { useEffect } from "react";
 
 const ProductsGridView = () => {
+  const [userId,setUserId] = useState("");
+  
   const { products } = useLoaderData();
   const dispatch = useDispatch();
-  const userId = "67a44f834ed50d8f0ad68ae9";
+  const userData = useSelector((state)=>state.user.userData);
+  console.log("this is userData"  ,  userData); 
+  
+  useEffect(() => {
+    if (userData?._id) {
+      setUserId(userData._id);
+    }
+  }, [userData]); 
+
+  const checkUser = ()=>{
+    if (!userId) {
+      handleError("please Login first");
+    }
+    
+  }
+  
+  
+  // const userId = "67a44f834ed50d8f0ad68ae9";
   return (
     <div>
       {products?.length > 0 ? (
@@ -37,8 +58,10 @@ const ProductsGridView = () => {
                 <button
                   className="btn btn-secondary w-full mt-4"
                   onClick={() => {
+                    checkUser();
                     dispatch(addToCartAsync({userId,productId:_id}))
                   }}
+                  
                   
                 >
                   Add to cart

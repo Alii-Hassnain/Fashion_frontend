@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { addToCartAsync } from "../features/cartSlice";
+import { addToCartAsync, decreaseQuantityAsync } from "../features/cartSlice";
 import { removeFromCartAsync } from "../features/cartSlice";
 import {
   addToCart,
@@ -15,17 +15,26 @@ import { fetchCart } from "../features/cartSlice";
 const Cart = () => {
   const dispatch = useDispatch();
   // const [Shipping, setShipping] = useState(300);
-  const { cartItems, totalQuantity, totalPrice , shipping } = useSelector(
+  const { cartItems, totalPrice, subtotal , shipping , status } = useSelector(
     (state) => state.cart
   );
   console.log("Cart side = ",cartItems);
-  
-
-  const userId = "67a44f834ed50d8f0ad68ae9";
-
+  const userData = useSelector((state)=>state.user.userData);
+  const userId = userData?._id
+  // useEffect(() => {
+  //   if (userData?._id) {
+  //     setUserId(userData._id);
+  //   }
+  // }, [userData]);
+  // const userId = "67a44f834ed50d8f0ad68ae9";
   useEffect(() => {
-    dispatch(fetchCart(userId)); 
-  }, [dispatch]);
+    if(userId && status === "idle"){
+      dispatch(fetchCart(userId)); 
+    }
+  }, [dispatch,userId,status]);
+  
+  console.log("here is the cartSide ID",userId);
+  
 
   return (
     <div className="align-elements">
@@ -38,8 +47,7 @@ const Cart = () => {
         <div className="flex flex-row justify-between gap-10 ">
           <div className="space-y-6 w-full">
             {cartItems.map((item) => {
-              console.log("cart side data = ",item);
-              
+              // console.log("cart side data = ",item);
               const { _id, title, price, product_image} = item.productId;
               const { quantity } = item;
               return (
@@ -59,20 +67,20 @@ const Cart = () => {
                   </div>
                   <div className="flex items-center gap-5">
                     <button
-                      onClick={() => dispatch(decreaseQuantity(item))}
+                      onClick={() => dispatch(decreaseQuantityAsync({userId,productId:_id}))}
                       className="btn btn-sm btn-outline"
                     >
                       -
                     </button>
                     <span>{quantity}</span>
                     <button
-                      onClick={() => dispatch(addToCartAsync(userId,_id))}
+                      onClick={() => dispatch(addToCartAsync({userId,productId:_id}))}
                       className="btn btn-sm btn-outline"
                     >
                       +
                     </button>
                     <button
-                      onClick={() => dispatch(removeFromCartAsync(item))}
+                      onClick={() => dispatch(removeFromCartAsync({userId,productId:_id}))}
                       className="btn btn-sm btn-error"
                     >
                       Remove
@@ -85,11 +93,11 @@ const Cart = () => {
           <div className="flex flex-col gap-5 ">
             <div className="flex flex-col h-fit p-10 w-80 gap-4 border rounded-lg bg-slate-200 mt-4 border-l">
               <h3 className="text-sm">
-                Subtotal : PKR {totalPrice.toFixed(2)}
+                Subtotal : PKR {subtotal.toFixed(2)}
               </h3>
               <h3 className="text-sm">Shipping : PKR {shipping.toFixed(2)}</h3>
               <h3 className="text-md ">
-                Subtotal : PKR {(totalPrice + shipping).toFixed(2)}
+                Total : PKR {totalPrice.toFixed(2)}
               </h3>
             </div>
             <Link to = "/checkout">
