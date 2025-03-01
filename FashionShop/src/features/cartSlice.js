@@ -16,7 +16,6 @@ const initialState = {
 };
 
 const API_URL = "http://localhost:8080/api/cart"
-
 export const fetchCart = createAsyncThunk(
   "cart/fetchCart",
   async (userId, { rejectWithValue }) => {
@@ -28,7 +27,6 @@ export const fetchCart = createAsyncThunk(
     }
   }
 );
-
 export const addToCartAsync = createAsyncThunk(
   "cart/addToCartAsync",
   async ({userId,productId}, { rejectWithValue }) => {
@@ -37,10 +35,15 @@ export const addToCartAsync = createAsyncThunk(
         userId:userId,
         productId:productId
       })   
+
+      console.log(response.data);
+      
       return response.data;
 
     } catch (error) {
-      handleError("Failed to add product")
+      console.log(error.response.data.message);
+      
+      handleError(error.response.data.message)
       return rejectWithValue(error.response.data);
     }
   }
@@ -62,7 +65,6 @@ export const removeFromCartAsync = createAsyncThunk(
     }
   }
 );
-
 export const decreaseQuantityAsync = createAsyncThunk(
   "cart/decreaseQuantityAsync",
   async ({ userId, productId }, { rejectWithValue }) => {
@@ -84,7 +86,6 @@ export const clearCartAsync = createAsyncThunk(
     try {
       const response = await axios.delete(`http://localhost:8080/api/cart/${userId}`);
       console.log(response);
-      
       dispatch(clearCart()); // Clear Redux state after successful API call
       return { message: "Cart cleared successfully" };
     } catch (error) {
@@ -92,9 +93,6 @@ export const clearCartAsync = createAsyncThunk(
     }
   }
 );
-
-
-
 const cartSlice = createSlice({
   name: "cart",
   initialState,

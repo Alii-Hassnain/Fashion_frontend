@@ -56,19 +56,18 @@ const OrderTable = () => {
             console.log(order);
             const {cartItems,paymentInfo,shippingAddress} = order
             console.log(order.status.toString());
-            
             return (
               <TableRow key={order._id}>
                 <TableCell className="font-medium">{order._id}</TableCell>
                 <TableCell>{shippingAddress.fullName}</TableCell>
                 <TableCell>
-                  <ul className="list-disc list-inside">
+                  <ul className="list-inside">
                     {cartItems.map((item, index) => {
-                        console.log("inside the cartItems",cartItems);
-                        
+                        console.log("inside the cartItems",item);
+                        const {productId} = item; 
                         return (
                       <li key={index}>
-                        {item.name}{" "}
+                        {productId.title}{" "}
                         <span className="text-gray-500">
                           (x{item.quantity})
                         </span>

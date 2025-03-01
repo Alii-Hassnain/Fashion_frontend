@@ -20,6 +20,11 @@ const PaymentForm = ({customerInfo}) => {
   const { cartItems, subtotal, shipping, totalPrice , totalQuantity } = useSelector((state) => state.cart);
   const dispatch = useDispatch();
 
+  const validatePhoneNumber = (number) => {
+    const phoneRegex = /^\+92\s\d{4}\s\d{7}$/;
+    return phoneRegex.test(number);
+  };
+
   const placeOrder = async (orderData) => {
     try {
       const response = await axios.post('http://localhost:8080/api/order', orderData);
@@ -40,15 +45,20 @@ const PaymentForm = ({customerInfo}) => {
       setError('Payment system not ready');
       return;
     }
-    setLoading(true);
-    setError('');
-
+    
     if(!customerInfo.fullName || !customerInfo.mobileNumber || !customerInfo.address ){
       console.log("all fields are required");
       handleError("all fields are required")
       return;
-      
     }
+    if (!validatePhoneNumber(customerInfo.mobileNumber)) {
+      handleError("Invalid phone number format. Use: +92 XXXX XXXXXXX");
+      return;
+    }
+
+
+    setLoading(true);
+    setError('');
     try {
       const { error, paymentIntent } = await stripe.confirmPayment({
         elements,
