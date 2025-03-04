@@ -5,11 +5,15 @@ import ResetPassword from './pages/ResetPassword'
 import VerifyUser from './pages/VerifyUser'
 import {createBrowserRouter,RouterProvider} from "react-router-dom"
 import { loader as productsLoader } from './pages/Products'
+import { loader as singleProductLoader } from './pages/SingleProduct'
 import {AdminLayout,ManageProducts} from './pages/admin'
 import { loader as adminProductsLoader } from './pages/admin/ManageProducts'
 import { ToastContainer } from "react-toastify";
 import { AdminAddProducts } from './components/Admin'
 import { MyProvider } from './components/Admin/MyContext'
+import { SuccessPayment } from './pages/SuccessPayment'
+import { CancelPayment } from './pages/CancelPayment'
+
 
 // import { loader as ManageProductsLoader } from './pages/admin/ManageProducts'
 
@@ -32,7 +36,8 @@ const router = createBrowserRouter([
         element:<Products/>,
       },
       {
-        path:"singleproduct",
+        path:"singleproduct/:id",
+        loader:singleProductLoader,
         element:<SingleProduct/>
       },
       {
@@ -42,6 +47,14 @@ const router = createBrowserRouter([
       {
         path:"checkout",
         element:<Checkout/>
+      },
+      {
+        path:"success_payment",
+        element: <SuccessPayment/>
+      },
+      {
+        path:"cancel_payment",
+        element: <CancelPayment/>
       },
       {
         path:"cart",

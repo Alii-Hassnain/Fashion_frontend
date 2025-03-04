@@ -3,6 +3,7 @@ import { useLoaderData } from 'react-router-dom'
 
 const ProductsTestView = () => {
     const { products } = useLoaderData()
+    console.log("products :",products)  
   return (
     <div>
         {products.length ? (

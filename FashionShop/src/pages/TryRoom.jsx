@@ -1,24 +1,35 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
+import { FaTrash } from "react-icons/fa";
 import modle from "../assets/modle.jpg";
 import shirt from "../assets/shirt.jpg";
 import { handleError } from "../utils/tostify";
 
-
 const convertToBase64 = async (imagePath) => {
-  const response = await fetch(imagePath); // Fetch the image
-  const blob = await response.blob(); // Convert response to Blob
+  const response = await fetch(imagePath);
+  const blob = await response.blob();
   const reader = new FileReader();
 
   return new Promise((resolve) => {
-    reader.readAsDataURL(blob); // Read the Blob as data URL
-    reader.onloadend = () => resolve(reader.result); // Resolve with base64 string
+    reader.readAsDataURL(blob);
+    reader.onloadend = () => resolve(reader.result);
   });
 };
+
 const TryRoom = () => {
   const [responseData, setResponseData] = useState("");
   const [statusData, setStatusData] = useState("");
   const [imageSrc, setImageSrc] = useState("");
   const [selectImageScr, setSelectImageScr] = useState(shirt);
+  const [startProcess, setStartProcess] = useState(false);
+  const [isCameraOpen, setIsCameraOpen] = useState(false);
+  const [showFileInput, setShowFileInput] = useState(true);
+
+  const videoRef = useRef(null);
+  const canvasRef = useRef(null);
+  const streamRef = useRef(null);
+  const fileInputRef = useRef(null);
+
+  // API Call
   const runApiCall = async () => {
     const shirtImage = await convertToBase64(shirt);
     const modelImage = await convertToBase64(imageSrc);
@@ -26,25 +37,20 @@ const TryRoom = () => {
       const response = await fetch("/api/v1/run", {
         method: "POST",
         body: JSON.stringify({
-          model_image: modelImage, // Ensure `modle` and `shirt` variables are defined
+          model_image: modelImage,
           garment_image: shirtImage,
           category: "tops",
         }),
         headers: {
           Authorization: `Bearer fa-BPoPLSO5yR1U-5lbMlU7Amr8H4GxGemDkGfv7`,
-          // Authorization: 'Bearer fa-uULDdUGV6WQB-dFVTvFLhaLQOO0fZVMFHiZki',
           "Content-Type": "application/json",
         },
       });
 
       const data = await response.json();
-      setResponseData(data); // Store the response from the first API call
+      setResponseData(data);
 
-      // Assuming the status ID comes from the first API call response
       if (data && data.id) {
-        console.log(data.id);
-
-        // Start polling the status API
         pollStatus(data.id);
       }
     } catch (error) {
@@ -54,6 +60,7 @@ const TryRoom = () => {
     }
   };
 
+  // Poll Status API
   const pollStatus = (statusId) => {
     const intervalId = setInterval(async () => {
       try {
@@ -65,144 +72,211 @@ const TryRoom = () => {
         });
 
         const statusData = await response.json();
-        setStatusData(statusData); // Store the response from the second API call
+        setStatusData(statusData);
 
         const { status } = statusData;
-
-        // Log status updates for all possible status values
-        console.log("Status Data:", statusData);
-
         console.log(`Status: ${status}`);
 
-        if (status === "starting") {
-          console.log("Process is starting...");
-        } else if (status === "in_queue") {
-          console.log("Process is in queue...");
-        } else if (status === "processing") {
-          console.log("Process is ongoing...");
-        } else if (status === "completed") {
+        if (["completed", "failed", "canceled"].includes(status)) {
+          clearInterval(intervalId);
           setStartProcess(false);
-          console.log("Process completed!");
-          clearInterval(intervalId);
-        } else if (status === "failed") {
-          console.log("Process failed.");
-          clearInterval(intervalId);
-        } else if (status === "canceled") {
-          console.log("Process was canceled.");
-          clearInterval(intervalId);
         }
       } catch (error) {
         console.error("Error:", error);
         handleError("An error occurred. Please try again.");
         setStartProcess(false);
-        clearInterval(intervalId); // Clear interval on error to avoid infinite loop
+        clearInterval(intervalId);
       }
     }, 5000);
   };
 
+  // Handle Image Upload from Gallery
   const handleFile = async (e) => {
     const file = e.target.files[0];
+    if (!file) return;
+
     const reader = new FileReader();
     reader.onloadend = () => {
-      console.log("this is the result", reader.result);
       setImageSrc(reader.result);
+      closeCamera();
     };
-    reader.readAsDataURL(file);
-    console.log(reader);
-  };
-  const [startProcess, setStartProcess] = useState(false);
 
+    reader.readAsDataURL(file);
+  };
+
+  const toggleCamera = async () => {
+    if (isCameraOpen) {
+      closeCamera();
+      return;
+    }
+
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: "user" },
+      });
+      streamRef.current = stream;
+      setIsCameraOpen(true);
+      setTimeout(() => {
+        if (videoRef.current) {
+          videoRef.current.srcObject = stream;
+          videoRef.current.play();
+        }
+      }, 500);
+    } catch (error) {
+      console.error("Error accessing camera:", error);
+      handleError("Camera access denied or not available.");
+      alert("Camera access denied or not available.");
+    }
+  };
+
+  // Close Camera
+  const closeCamera = () => {
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach((track) => track.stop());
+    }
+    setIsCameraOpen(false);
+  };
+
+// image capture from camera 
+  const captureImage = () => {
+    if (!videoRef.current) return;
+
+    const canvas = canvasRef.current;
+    const context = canvas.getContext("2d");
+
+    canvas.width = videoRef.current.videoWidth;
+    canvas.height = videoRef.current.videoHeight;
+
+    context.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
+    const capturedImage = canvas.toDataURL("image/png");
+
+    setImageSrc(capturedImage);
+    closeCamera(); // Close camera after capture
+  };
+
+ 
+ // delete image  
+  const deleteImage = () => {
+    setImageSrc(""); 
+    setShowFileInput(false); 
+
+    setTimeout(() => {
+      setShowFileInput(true); 
+    }, 0);
+  };
+
+  // Start Process
   const handleClick = async () => {
     if (!imageSrc) {
-      handleError("Please select an image first");
+      handleError("Please select or capture an image first");
       return;
     }
     runApiCall();
     setStartProcess(true);
-    await runApiCall();
-    
   };
-  
+
+  useEffect(() => {
+    return () => closeCamera();
+  }, []);
 
   return (
     <div className="flex flex-col justify-center items-center">
       <h1 className="text-center text-xl my-10 font-bold">
-        {" "}
         Welcome To Try Room Demo
       </h1>
+
       <div className="flex flex-row gap-10 justify-center">
+        {/* Upload from Gallery */}
         <div className="flex flex-col gap-2">
-          <div className="form-control ">
+          <div className="form-control">
             <label className="label">
-              <span className="label-text">Product Image</span>
+              <span className="label-text">Upload Image</span>
             </label>
-            <input
-              type="file"
-              accept="image/*"
-              name="product_image"
-              onChange={handleFile}
-              placeholder="Product Image"
-            />
+
+                     {showFileInput && (
+            <input type="file" accept="image/*" onChange={handleFile}  />
+          )}
           </div>
+
           {imageSrc && (
-            <div className="mt-4">
-              <img
+               <div className="mt-4 flex flex-col items-center relative"> 
+                  <button
+              onClick={deleteImage}
+              className=" flex items-center gap-2 bg-red-500 text-white rounded-full px-4 py-2 hover:bg-red-700 transition"
+              
+            >
+              DeleteImage
+              {/* <FaTrash size={20} /> */}
+            </button>
+
+            <img
                 src={imageSrc}
-                alt={imageSrc}
+                alt="Uploaded"
                 className="object-contain w-64 h-64"
               />
+            
             </div>
           )}
         </div>
+
+        {/* Camera Capture */}
+        <div className="flex flex-col gap-2">
+          <button
+            onClick={toggleCamera}
+            className={`btn ${isCameraOpen ? "btn-error" : "btn-secondary"}`}
+          >
+            {isCameraOpen ? "Close Camera" : "Open Camera"}
+          </button>
+
+          {isCameraOpen && (
+            <>
+              <video ref={videoRef} autoPlay className="w-64 h-48 border" />
+              <button onClick={captureImage} className="btn btn-primary mt-2">
+                Capture Photo
+              </button>
+            </>
+          )}
+          <canvas ref={canvasRef} className="hidden"></canvas>
+        </div>
+
+        {/* Selected Outfit */}
         {selectImageScr && (
           <div className="mt-4">
-            <h1 className="my-4 text-xl font-bold">User's Selected Image</h1>
+            <h1 className="my-4 text-xl font-bold">Selected Shirt</h1>
             <img
               src={selectImageScr}
-              alt={selectImageScr}
+              alt="Shirt"
               className="object-contain w-64 h-64"
             />
           </div>
         )}
-        <div>
 
-      <button onClick={handleClick} className="btn btn-primary ">
-        {startProcess ? (
-          <>
-            <span className="loading loading-spinner"></span>
-            Processing...
-          </>
-        ) : (
-          "Change Outfit"
-        )}
-      </button>
-      {statusData && (
+        {/* Process Button */}
         <div>
-          <p>Status: {statusData.status}</p>
-          {/* <pre>{JSON.stringify(statusData, null, 2)}</pre> */}
-        </div>
-      )}
-      {statusData.output && (
-        <div className="mt-4">
-          <img
-            src={statusData.output}
-            alt="image"
-            className="object-contain w-64 h-64 my-5"
-          />
-        </div>
-      )}
+          <button onClick={handleClick} className="btn btn-primary">
+            {startProcess ? (
+              <>
+                <span className="loading loading-spinner"></span>
+                Processing...
+              </>
+            ) : (
+              "Change Outfit"
+            )}
+          </button>
+
+          {/* Status Updates */}
+          {statusData && <p>Status: {statusData.status}</p>}
+          {statusData.output && (
+            <div className="mt-4">
+              <img
+                src={statusData.output}
+                alt="Result"
+                className="object-contain w-64 h-64 my-5"
+              />
+            </div>
+          )}
         </div>
       </div>
-
-
-
-
-      {/* {responseData && (
-        <div>
-          <h3>First API Response:</h3>
-          <pre>{JSON.stringify(responseData, null, 2)}</pre>
-        </div>
-      )} */}
     </div>
   );
 };

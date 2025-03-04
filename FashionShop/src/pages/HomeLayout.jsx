@@ -13,8 +13,6 @@ const HomeLayout = () => {
       <div>
         <Outlet />
       </div>
-
-      
     </div>
   );
 };

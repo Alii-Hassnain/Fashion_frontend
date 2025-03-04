@@ -8,7 +8,14 @@ const AdminUrl = "http://localhost:8080/admin"
 export const axiosFetchProducts = axios.create({
     baseURL: productionUrl,
     headers: {
-        "Content-type": "application/json"
+        "Content-type": "application/json",
+
+    }
+})
+export const axiosCart = axios.create({
+    baseURL: productionUrl,
+    headers: {
+        "Content-type": "application/json",
     }
 })
 
