@@ -33,8 +33,7 @@ const ProductsGridView = () => {
   return (
     <div>
       {products?.length > 0 ? (
-      {products?.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 ">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 ">
           {products.map((product) => {
             const { _id, product_image, price, title, description } = product;
             
@@ -66,7 +65,6 @@ const ProductsGridView = () => {
                   Add to cart
                 </button>
               </div>
-            );
             );
           })}
         </div>

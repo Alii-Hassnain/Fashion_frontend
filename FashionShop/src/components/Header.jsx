@@ -4,8 +4,7 @@ import { FaChevronDown } from "react-icons/fa";
 import { handleSuccess,handleError } from "../utils/tostify";
 import axios from "axios";
 import { useDispatch } from "react-redux";
-import { logout } from "../features/userSlice";
-import { clearCart } from "../features/cartSlice";
+
 
 const deleteCookie = (name) => {
   document.cookie = `${name}=; Max-Age=0; path=/;`; // 
@@ -56,8 +55,7 @@ const Header = () => {
         localStorage.removeItem("user");
 
 
-        dispatch(logout());
-        dispatch(clearCart());
+       
         
         setTimeout(() => {
           navigate("/login"); // Redirect to login page

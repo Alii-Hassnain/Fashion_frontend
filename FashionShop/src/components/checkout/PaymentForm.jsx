@@ -5,7 +5,6 @@ import { useSelector } from 'react-redux';
 import axios from 'axios';
 import { handleError, handleSuccess } from '../../utils/tostify';
 import { useDispatch } from 'react-redux';
-import { clearCartAsync } from '../../features/cartSlice';
 
 
 
@@ -29,10 +28,7 @@ const PaymentForm = ({customerInfo}) => {
     try {
       const response = await axios.post('http://localhost:8080/api/order', orderData);
       handleSuccess("Order Placed Successfuly")
-      if(response){
-        dispatch(clearCartAsync(userId))
-        return true
-      }
+     
     } catch (error) {
       handleError(error.response.data.message);
       return { success: false, message: error.response?.data?.message || 'Order failed' };

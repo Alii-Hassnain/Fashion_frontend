@@ -34,7 +34,7 @@ export const loader = async () => {
 
 const Products = () => {
   return (
-    <div>
+    <>
       <div className="w-full h-full bg-blue-50">
         <img
           className="object-cover object-right-bottom w-full h-60"
@@ -55,6 +55,7 @@ const Products = () => {
         <ProductsContainer />
       </div>
     </div>
+    </>
   );
 };
 
