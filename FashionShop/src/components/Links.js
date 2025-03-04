@@ -50,7 +50,6 @@ export const HeroData = [
     img:hero2,
     title:"Try Room",
     desc:"just upload your image and try the dress"
-
   },
   // {
   //   id:3,

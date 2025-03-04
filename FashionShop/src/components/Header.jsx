@@ -2,6 +2,10 @@ import React,{ useState, useEffect } from "react";
 import { Link , useNavigate } from "react-router-dom";
 import { FaChevronDown } from "react-icons/fa";
 import { handleSuccess,handleError } from "../utils/tostify";
+import axios from "axios";
+import { useDispatch } from "react-redux";
+import { logout } from "../features/userSlice";
+import { clearCart } from "../features/cartSlice";
 
 const deleteCookie = (name) => {
   document.cookie = `${name}=; Max-Age=0; path=/;`; // 
@@ -9,16 +13,16 @@ const deleteCookie = (name) => {
 const Header = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
+
+  const dispatch = useDispatch();
+
   const checkAuthCookie = async () => {
     try {
-      const response = await fetch("http://localhost:8080/user/verify-session", {
-        method: "GET",
-        credentials: "include", // Send cookies with the request
+      const response = await axios.get("http://localhost:8080/user/verify-session", {
+        withCredentials: true, // Ensures cookies are sent with the request
       });
-  
-      const result = await response.json();
-      console.log(result.success)
-      return result.success; // Return true if the user is logged in
+      return response.data.success;
+
     } catch (error) {
       console.error("Error checking session:", error);
       return false;
@@ -51,24 +55,25 @@ const Header = () => {
         localStorage.removeItem("token"); // Clear local storage (if needed)
         localStorage.removeItem("user");
 
+
+        dispatch(logout());
+        dispatch(clearCart());
+        
         setTimeout(() => {
           navigate("/login"); // Redirect to login page
           
         },2000)        
-      }else if (!success) {
-        console.error("Logout error: ", message);
-        handleError(message);
-      } 
-      else {
-        console.error("Logout error: ", message);
-        handleError(message);
       }
     } catch (error) {
       // Network or other unexpected errors
       console.error("Error during logout: ", error);
       handleError(error);
     }
+
+
   };
+  console.log(isLoggedIn);
+  
   return (
     <header className="bg-neutral py-2 text-neutral-content">
       <div className="align-elements flex justify-center sm:justify-between">
@@ -103,7 +108,7 @@ const Header = () => {
             <p className="link-hover text-sm">Register</p>
           </Link>
           { isLoggedIn ? (
-          <button className="link-hover text-sm hover:text-red-400" onClick={handleLogout} >logout</button>
+          <p className="link-hover text-sm hover:text-red-400 cursor-pointer" onClick={handleLogout} >Logout</p>
           ):(
             <Link to={"/login"}>
             <p className="link-hover text-sm">Log in</p>

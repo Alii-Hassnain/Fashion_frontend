@@ -38,7 +38,7 @@ const AdminSidebar = () => {
       </nav>
       {/* Footer */}
       <footer className="p-4 text-center text-sm bg-gray-900">
-        <p>&copy; 2024 Admin Panel</p>
+        <p>&copy; 2025 Admin Panel</p>
       </footer>
     </div>
   )

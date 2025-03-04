@@ -33,6 +33,12 @@ const SingleProduct = () => {
   console.log("this is the single product here", singleProduct);
   const { title, description, price, product_image } = singleProduct;
   console.log(title);
+  const { singleProduct } = useLoaderData();
+  const dispatch = useDispatch();
+
+  console.log("this is the single product here", singleProduct);
+  const { title, description, price, product_image } = singleProduct;
+  console.log(title);
   return (
     <div className="align-elements grid grid-cols-1 md:grid-cols-2 h-screen items-center px-6 md:px-16 ">
       {/* Product Image */}
@@ -68,5 +74,7 @@ const SingleProduct = () => {
     </div>
   );
 };
+
+export default SingleProduct;
 
 export default SingleProduct;

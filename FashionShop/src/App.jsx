@@ -38,6 +38,8 @@ const router = createBrowserRouter([
       {
         path:"singleproduct/:id",
         loader:singleProductLoader,
+        path:"singleproduct/:id",
+        loader:singleProductLoader,
         element:<SingleProduct/>
       },
       {
@@ -73,6 +75,10 @@ const router = createBrowserRouter([
     children:[
       {
         index:true,
+        element:<AdminDashboard/>
+      },
+      {
+        index:true,
         path:"products",
         loader:adminProductsLoader,
         element:<ManageProducts/>
@@ -80,7 +86,6 @@ const router = createBrowserRouter([
       {
         path:"addproduct",
         element:<AdminAddProducts/>
-      
       },
       {
         path:"users",
@@ -88,7 +93,7 @@ const router = createBrowserRouter([
       },
       {
         path:"orders",
-        element:<div>Admin</div>
+        element:<ManageOrders/>
       }
     ]
     
@@ -129,14 +134,21 @@ const router = createBrowserRouter([
 
 )
 
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from '@stripe/stripe-js'
+
+
+const stripePromise = loadStripe("pk_test_51Qt5f1IAryIsUHT2nPjN4107b3zi0mUPd9b2LyVN6zj1QaTARwUxzxn3ng06heGxkRd0mYb6iZIS2So7YZyypXoG00ijl0rH8e")
 
 const App = () => {
   return (
   <>
+  <Elements stripe={stripePromise}>
     <MyProvider>
       <RouterProvider router={router}/>
       <ToastContainer />
     </MyProvider>
+  </Elements>
   </>
   )
 }

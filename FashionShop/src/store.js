@@ -1,6 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit'
 import cartReducer from "./features/cartSlice"
 
+
 //  const loggerMiddleware = (store) => (next) => (action) => {
 //   console.log("Dispatching action:", action);
 //   let result = next(action);

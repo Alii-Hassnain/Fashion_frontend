@@ -1,22 +1,38 @@
-import React from "react";
+import React, { useState } from "react";
 import { useLoaderData } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
-// import { addToCart, addToCartAsync } from "../features/cartSlice";
-import {handleSuccess} from "../utils/tostify"
-import { addToCartAsync } from "../features/cartSlice";
-import Cookies from "js-cookie";
+import { addToCart, addToCartAsync } from "../features/cartSlice";
+import {handleError, handleSuccess} from "../utils/tostify"
+import { useSelector } from "react-redux";
+import { useEffect } from "react";
+
 const ProductsGridView = () => {
+  const [userId,setUserId] = useState("");
+  
   const { products } = useLoaderData();
   const dispatch = useDispatch();
- 
+  const userData = useSelector((state)=>state.user.userData);
+  console.log("this is userData"  ,  userData); 
   
+  useEffect(() => {
+    if (userData?._id) {
+      setUserId(userData._id);
+    }
+  }, [userData]); 
 
-  //const userId = Cookies.get("id");
-   //console.log("userId :",userId)
+  const checkUser = ()=>{
+    if (!userId) {
+      handleError("please Login first");
+    }
+    
+  }
+  
+  
   // const userId = "67a44f834ed50d8f0ad68ae9";
   return (
     <div>
+      {products?.length > 0 ? (
       {products?.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 ">
           {products.map((product) => {
@@ -50,6 +66,7 @@ const ProductsGridView = () => {
                   Add to cart
                 </button>
               </div>
+            );
             );
           })}
         </div>
