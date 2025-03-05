@@ -75,7 +75,7 @@ const SimpleSlider = () => {
               />
               <div className="grid grid-cols-2 bg-blue-50">
                 <motion.div
-                  class="absolute top-1/3 left-2/4 p-4 rounded shadow text-white"
+                  className="absolute top-1/3 left-2/4 p-4 rounded shadow text-white"
                   initial="hidden" // Start off-screen to the right
                   animate={currentSlide === index ? "visible" : "hidden"}
                   variants={containerVariants}
