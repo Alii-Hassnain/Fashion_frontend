@@ -8,9 +8,7 @@ const SearchProducts = () => {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("");
   const [minPrice, setMinPrice] = useState("");
-  const [maxPrice, setMaxPrice] = useState("");
-  console.log(search);
-  
+  const [maxPrice, setMaxPrice] = useState("");  
 const applyFilter = ()=>{
     const params = new URLSearchParams();
     if (search.trim()) params.append("search", search);
@@ -20,7 +18,6 @@ const applyFilter = ()=>{
     navigate(`/products?${params.toString()}`);
     
 };
-
   return (
     <div className="flex justify-center items-center gap-2">
       <div className="relative w-full max-w-md ">

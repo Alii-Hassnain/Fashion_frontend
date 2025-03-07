@@ -6,6 +6,16 @@ import { NavLink } from "react-router-dom";
 import { BsCart3, BsMoonFill, BsSunFill } from "react-icons/bs";
 import { FaBarsStaggered } from "react-icons/fa6";
 import { useSelector } from "react-redux";
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+
 const Navbar = () => {
   const cartNumber = useSelector((state) => state.cart.totalQuantity);
 
@@ -44,15 +54,41 @@ const Navbar = () => {
 
         {/* navbar end */}
         <div className="lg:navbar-end">
-          <div className="indicator">
-            <span className="indicator-item badge badge-base-200">{cartNumber}</span>
-            <div className="grid place-items-center">
-            <NavLink to="cart">
-              <BsCart3 className="text-2xl cursor-pointer" />
-            </NavLink>
+          <div className="flex flex-row gap-4 items-center">
+            <div className="indicator">
+              <span className="indicator-item badge badge-base-200">
+                {cartNumber}
+              </span>
+              <div className="grid place-items-center">
+                <NavLink to="cart">
+                  <BsCart3 className="text-2xl cursor-pointer" />
+                </NavLink>
+              </div>
             </div>
-          </div>
 
+            <div className="text-sm font-light">Ali Hassnain</div>
+
+              <DropdownMenu>
+                <DropdownMenuTrigger>
+                  
+                  
+            <div className="avatar w-10">
+              <div className="w-24 rounded-full">
+                <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+              </div>
+            </div>
+                  
+                  
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <DropdownMenuLabel>Ali Hassnain</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem>Profile</DropdownMenuItem>
+                  
+                  
+                </DropdownMenuContent>
+              </DropdownMenu>
+          </div>
         </div>
       </div>
     </nav>

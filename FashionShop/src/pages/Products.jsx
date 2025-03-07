@@ -4,9 +4,12 @@ import { axiosFetchProducts } from "../utils/axiosFetch";
 import { axiosAdminUrl } from "../utils/axiosFetch";
 import { useLoaderData } from "react-router-dom";
 import { ProductsContainer } from "../components";
-
+import { FilterContainer, PriceRangeFilter } from "../components/filters"
 import { SearchProducts } from "../components";
+
+
 import hero1 from "../assets/hero1.webp";
+import { GenderFilter } from "../components/filters";
 
 export const loader = async ({ request }) => {
   const url = new URL(request.url);
@@ -35,18 +38,20 @@ const Products = () => {
         />
       </div>
       <div className="align-elements mt-3">
+        {/* <div className="flex flex-row">
+        <PriceRangeFilter/>
+
+        </div> */}
         <SearchProducts />
         <CommonHeading title="Products" />
 
-        <div>
-          <div className="w-64 p-4 bg-base-100 shadow-lg rounded-xl">
+        <div className="flex flex-row">
+          {/* <div className="w-64 p-4 bg-base-100 shadow-lg rounded-xl">
             <h2 className="text-xl font-bold mb-4">Filters</h2>
-            {/* Gender Filter */}
-            {/* <GenderFilter onFilterChange={onGenderChange} /> */}
+            <GenderFilter/>
+          </div> */}
 
-            {/* More filters will be added here (Color, Price, Category) */}
-            
-          </div>
+          <FilterContainer />
           <ProductsContainer />
         </div>
       </div>

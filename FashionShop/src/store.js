@@ -16,7 +16,7 @@ const rootReducer = combineReducers({
 
 const persistConfig = {
   key: "root", 
-  storage, // ✅ Saves Redux state in localStorage
+  storage, 
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
