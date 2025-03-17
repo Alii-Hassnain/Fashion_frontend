@@ -60,6 +60,30 @@ const TryRoom = () => {
     }
   };
 
+const checkUser=async()=>{
+  try {
+    const response=await fetch("http://localhost:8080/user/verify-session",{
+      method:"GET",
+      credentials:"include"
+    })
+    const result=await response.json();
+    console.log(result);
+    if(!result.success){
+      console.log(result.message)
+      handleError(result.message);
+      navigate("/login");
+    }
+
+    console.log(result.success)
+    console.log(result)
+  } catch (error) {
+    console.log(error);
+    handleError("An error occurred. Please try again.",error.message);
+  }
+}
+
+
+
   // Poll Status API
   const pollStatus = (statusId) => {
     const intervalId = setInterval(async () => {
@@ -171,6 +195,7 @@ const TryRoom = () => {
       handleError("Please select or capture an image first");
       return;
     }
+    checkUser()
     runApiCall();
     setStartProcess(true);
   };
