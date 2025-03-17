@@ -41,13 +41,13 @@ const Login = () => {
       const result = await response.json();
       console.log("Data recieve from backend : ", result);
       const { success, error, message, data, token } = result;
-      
+
       console.log("mesage from backend", message);
       console.log("token from backend", token);
       if (success) {
         dispatch(loginSuccess(data));
         dispatch(fetchCart(data._id));
-        
+
         console.log("success status : ", success);
         // handleSuccess(message);
         localStorage.setItem("token", token);

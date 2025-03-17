@@ -81,10 +81,10 @@ const Header = () => {
         <div className="flex gap-2">
           <div className="dropdown">
             <div tabIndex={0} role="button" className="mt-1">
-              <div className="flex flex-row gap-1">
+              {/* <div className="flex flex-row gap-1">
                 <p className="link-hover text-sm">Currency</p>
                 <FaChevronDown className="mt-1" />
-              </div>
+              </div> */}
             </div>
             <ul
               tabIndex={0}
