@@ -3,10 +3,10 @@ import ProductsGridView from './ProductsGridView'
 import ProductsListView from './ProductsListView'
 import ProductsTestView from './ProductsTestView'
 
-const ProductsContainer = () => { 
+const ProductsContainer = ({product,loading}) => { 
   return (
     <div>
-        <ProductsGridView />
+        <ProductsGridView product={product}loading={loading}/>
     </div>
   )
 }

@@ -7,20 +7,32 @@ import { handleError, handleSuccess } from "../utils/tostify";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
 
-const ProductsGridView = () => {
+const ProductsGridView = ({product,loading}) => {
   const [userId, setUserId] = useState("");
 
   const { products } = useLoaderData();
+  
+  // const allProducts = useLoaderData(); // Fetch all products via loader
+  const [displayProducts, setDisplayProducts] = useState(products);
+
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.user.userData);
-  console.log("this is userData", userData);
+//  console.log("this is userData", userData);
 
+  // useEffect(() => {
+  //   if (userData?._id) {
+  //     setUserId(userData._id);
+  //   }
+  // }, [userData]);
+console.log("filter products : ",product)
+console.log("all products : ",products)
   useEffect(() => {
-    if (userData?._id) {
-      setUserId(userData._id);
+    if (product.length > 0) {
+      setDisplayProducts(product);
+    } else {
+      setDisplayProducts(products);
     }
-  }, [userData]);
-
+  }, [products, product]);
   const checkUser = () => {
     if (!userId) {
       handleError("please Login first");
@@ -29,12 +41,15 @@ const ProductsGridView = () => {
   // const userId = "67a44f834ed50d8f0ad68ae9";
   return (
     <div>
-      {products?.length > 0 ? (
+ {loading ? (
+        <p>Loading products...</p>
+      ) : displayProducts?.length > 0 ? (
+      // {products?.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 ">
-          {products.map((product) => {
+          {displayProducts.map((product) => {
             const { _id, product_image, price, title, description } = product;
 
-            console.log(product_image);
+           // console.log(product_image);
             return (
               <div
                 key={_id}

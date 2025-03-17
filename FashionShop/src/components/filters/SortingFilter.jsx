@@ -6,7 +6,11 @@ const SortingFilter = ({ onSortChange }) => {
   const handleSortChange = (event) => {
     const selectedSort = event.target.value;
     setSortOption(selectedSort);
-    onSortChange(selectedSort); // Pass selected sort option to parent
+    onSortChange(selectedSort);
+    console.log('sort option is :',sortOption)
+    console.log("selected sort is :", selectedSort);
+
+    // Pass selected sort option to parent
   };
 
   return (
