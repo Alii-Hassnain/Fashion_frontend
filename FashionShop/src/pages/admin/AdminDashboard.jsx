@@ -10,9 +10,11 @@ const AdminDashboard = () => {
     <div className='align-elements'>
       <h1>This is Admin Dashboard</h1>
       <div className='flex flex-row gap-5'>
-        <OverView/>
-        <OverView/>
-        <OverView/>
+        <OverView title={"Total Users"} number={"6"}/>
+        <OverView title={"Total Orders Completed"} number={"15"}/>
+        <OverView title={"Active Orders"} number={"6"}/>
+        <OverView title={"Cancelled Order"} number={"2"}/>
+        
       </div>
       <div className='flex flex-row gap-5 mt-5'>
 

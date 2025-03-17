@@ -15,11 +15,11 @@ const OverView = ({title,number}) => {
     <div className="w-60">
       <Card>
         <CardHeader>
-          <CardTitle>Total Users</CardTitle>
+          <CardTitle>{title}</CardTitle>
           <CardDescription>users report</CardDescription>
         </CardHeader>
         <CardContent className = "text-center">
-          <p>4</p>
+          <p>{number}</p>
         </CardContent>
         
       </Card>
