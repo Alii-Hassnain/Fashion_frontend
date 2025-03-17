@@ -1,5 +1,5 @@
 import React from 'react'
-import {HomeLayout,Register,Login,Error,Landing,Products,SingleProduct,Cart,About, Checkout} from "./pages"
+import {HomeLayout,Register,Login,Error,Landing,Products,SingleProduct,Cart,About, Checkout,Profile} from "./pages"
 import ForgotPassword from './pages/ForgotPassword'
 import ResetPassword from './pages/ResetPassword'
 import VerifyUser from './pages/VerifyUser'
@@ -56,7 +56,12 @@ const router = createBrowserRouter([
       {
         path:"tryroom",
         element: <TryRoom/>
-      }
+      },
+      {
+        path:"/profile",
+        element:<Profile/>,
+        errorElement:<Error/>
+      },
 
     ]
   },
@@ -85,7 +90,8 @@ const router = createBrowserRouter([
       {
         path:"orders",
         element:<ManageOrders/>
-      }
+      },
+      
     ]
     
   },
@@ -115,6 +121,7 @@ const router = createBrowserRouter([
     element:<VerifyUser/>,
     errorElement:<Error/>
   },
+  
   
 ],
 {

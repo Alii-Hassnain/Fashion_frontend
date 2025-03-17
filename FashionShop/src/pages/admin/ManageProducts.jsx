@@ -47,6 +47,8 @@ const ManageProducts = () => {
       <Link to="/admin/addproduct">
         <button className='btn btn-primary mb-3'>Add Product</button>
       </Link>
+
+      <button className='btn ml-3 btn-primary mb-3'>Add Category</button>
       {/* <ProductsContainer /> */}
       <AdminProductsContainer />
     </div>
