@@ -7,49 +7,61 @@ import { handleError, handleSuccess } from "../utils/tostify";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
 
-const ProductsGridView = ({product,loading}) => {
-  const [userId, setUserId] = useState("");
-
+const ProductsGridView = ({
+  product,
+  loading,
+  resetFilters,
+  success,
+  count,
+}) => {
   const { products } = useLoaderData();
-  
-  // const allProducts = useLoaderData(); // Fetch all products via loader
+  const [userId, setUserId] = useState("");
   const [displayProducts, setDisplayProducts] = useState(products);
-
+  const [filterApplied, setFilterApplied] = useState(false);
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.user.userData);
-//  console.log("this is userData", userData);
 
-  // useEffect(() => {
-  //   if (userData?._id) {
-  //     setUserId(userData._id);
-  //   }
-  // }, [userData]);
-console.log("filter products : ",product)
-console.log("all products : ",products)
   useEffect(() => {
-    if (product.length > 0) {
-      setDisplayProducts(product);
-    } else {
-      setDisplayProducts(products);
+    if (userData?._id) {
+      setUserId(userData._id);
     }
-  }, [products, product]);
+  }, [userData]);
+
+  useEffect(() => {
+    if (success && count > 0) {
+      setDisplayProducts(product);
+      setFilterApplied(true);
+    } else if (success && count === 0) {
+      setDisplayProducts([]);
+      setFilterApplied(true);
+    } else {
+      // resetFilters();
+      setDisplayProducts(products);
+      setFilterApplied(false);
+    }
+  }, [product, success, count, products]);
+
   const checkUser = () => {
     if (!userId) {
       handleError("please Login first");
     }
   };
+
+  const handleRemoveFilter = () => {
+    resetFilters();
+    setDisplayProducts(products);
+    setFilterApplied(false);
+  };
   // const userId = "67a44f834ed50d8f0ad68ae9";
   return (
     <div>
- {loading ? (
+      {loading ? (
         <p>Loading products...</p>
       ) : displayProducts?.length > 0 ? (
-      // {products?.length > 0 ? (
+        // {products?.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 ">
           {displayProducts.map((product) => {
             const { _id, product_image, price, title, description } = product;
-
-           // console.log(product_image);
             return (
               <div
                 key={_id}

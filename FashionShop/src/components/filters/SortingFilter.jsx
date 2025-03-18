@@ -7,10 +7,8 @@ const SortingFilter = ({ onSortChange }) => {
     const selectedSort = event.target.value;
     setSortOption(selectedSort);
     onSortChange(selectedSort);
-    console.log('sort option is :',sortOption)
-    console.log("selected sort is :", selectedSort);
-
-    // Pass selected sort option to parent
+    // console.log('sort option is :',sortOption)
+    // console.log("selected sort is :", selectedSort);
   };
 
   return (
@@ -21,10 +19,13 @@ const SortingFilter = ({ onSortChange }) => {
         value={sortOption}
         onChange={handleSortChange}
         className="select select-bordered w-full"
+        name="sort"
+        id="sort"
+        defaultValue=""
       >
         <option value="">Select</option>
-        <option value="price_low_high">Price: Low to High</option>
-        <option value="price_high_low">Price: High to Low</option>
+        <option value="price-asc">Price: Low to High</option>
+        <option value="price-desc">Price: High to Low</option>
         <option value="newest">Newest</option>
         <option value="popularity">Most Popular</option>
       </select>

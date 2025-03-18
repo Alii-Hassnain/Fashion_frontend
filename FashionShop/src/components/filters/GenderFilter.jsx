@@ -1,4 +1,4 @@
-import { useState ,useEffect} from "react";
+import { useState, useEffect } from "react";
 
 const GenderFilter = ({ onFilterChange }) => {
   const [selectedGender, setSelectedGender] = useState("");
@@ -6,20 +6,21 @@ const GenderFilter = ({ onFilterChange }) => {
   const handleGenderChange = (gender) => {
     setSelectedGender(gender);
     onFilterChange(gender);
-    console.log("gender:", gender); 
+    console.log("gender:", gender);
     // console.log("selected gender:", selectedGender);
-    // Pass selected value to parent component
   };
-  useEffect(() => {
-    console.log("Updated selectedGender:", selectedGender);
-  }, [selectedGender]);
+  // useEffect(() => {
+  //   console.log("Updated selectedGender:", selectedGender);
+  // }, [selectedGender]);
   return (
-    
     <fieldset className="fieldset p-4 bg-base-100 border border-base-300 rounded-box ">
       <legend className="fieldset-legend text-lg font-semibold">Gender</legend>
 
-      {["All","Men", "Women", "Kids"].map((gender) => (
-        <label key={gender} className="fieldset-label flex items-center space-x-2 cursor-pointer mt-2">
+      {["All", "Men", "Women", "Kids"].map((gender) => (
+        <label
+          key={gender}
+          className="fieldset-label flex items-center space-x-2 cursor-pointer mt-2"
+        >
           <input
             type="radio"
             name="gender"
