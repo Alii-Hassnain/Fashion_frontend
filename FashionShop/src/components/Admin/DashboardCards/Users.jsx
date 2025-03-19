@@ -1,4 +1,14 @@
-import { Table, TableCaption, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
+import {
+  Table,
+  TableCaption,
+  TableHeader,
+  TableRow,
+  TableHead,
+  TableBody,
+  TableCell,
+} from "@/components/ui/table";
+import { useEffect , useState} from "react";
+import { axiosAdminUrl } from "../../../utils/axiosFetch";
 
 const invoices = [
   {
@@ -51,8 +61,36 @@ const invoices = [
   },
 ];
 
-
 export default function TableDemo() {
+  const [users, setUsers] = useState([]);
+  const [userCount , setUserCount] = useState(0);
+
+  //  const fetchUsers = async () => {
+  //   try {
+  //     const response = await axiosAdminUrl.get("/get-users", {
+  //       withCredentials: true,
+  //     });
+  //     // const data = response.data.data;
+  //     // const count=response.data.count;
+  //     setUserCount(response.data.count);
+  //     setUsers(response.data.data);
+  //     console.log("response is : ",response.data.data)
+  //     console.log("response is : ",response.data.count)
+
+
+  //     setUsers(response.data.data);
+  //   } catch (error) {
+  //     console.error("Error fetching users:", error);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   fetchUsers();
+  // }, [userCount,users]);
+
+  
+  
+
   return (
     <Table>
       <TableCaption>A list of our Top Users</TableCaption>

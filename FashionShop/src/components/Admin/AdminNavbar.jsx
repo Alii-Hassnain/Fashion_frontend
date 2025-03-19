@@ -22,7 +22,7 @@ const AdminNavbar = () => {
       }
        } 
       catch(error){
-        
+        console.log("errror in getting admin details",error);
       }
     }
 
