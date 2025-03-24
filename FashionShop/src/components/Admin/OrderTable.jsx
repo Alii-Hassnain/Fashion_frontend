@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Table,
   TableBody,
@@ -8,19 +8,14 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { getAllOrders, updateOrder } from "./Services/OrderServices";
 
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { useEffect } from "react";
-import { getAllOrders } from "./Services/OrderServices";
-
-const OrderTable = () => {
-  const [orders, setOrders] = useState();
+const OrderTable = ({ filter = "all" }) => {
+  const [orders, setOrders] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedOrder, setSelectedOrder] = useState(null);
+  const [updatedStatus, setUpdatedStatus] = useState("");
+  const [updatedCart, setUpdatedCart] = useState([]);
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -34,7 +29,91 @@ const OrderTable = () => {
     fetchOrders();
   }, []);
 
-  console.log("this is the order Side  = ", orders);
+  // console.log("Original Orders:", orders);
+  // console.log("Current Filter:", filter);
+
+  const filteredOrders = filter
+    ? orders.filter((order) => {
+        if (filter === "all") return true;
+        if (filter === "active") return order.status === "Processing";
+        if (filter === "completed") return order.status === "Completed";
+        if (filter === "cancelled") return order.status === "Cancelled";
+        return true;
+      })
+    : orders; 
+
+  //console.log("Filtered Orders:", filteredOrders);
+
+  const openModal = (order) => {
+    setSelectedOrder(order);
+    setUpdatedStatus(order.status);
+    setUpdatedCart(order.cartItems.map((item) => ({ ...item })));
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedOrder(null);
+  };
+
+  const handleStatusChange = (event) => {
+    setUpdatedStatus(event.target.value);
+  };
+  const handleQuantityChange = (index, quantity) => {
+    setUpdatedCart((prevCart) =>
+      prevCart.map((item, i) =>
+        i === index ? { ...item, quantity: Number(quantity) } : item
+      )
+    );
+  };
+
+  // const saveChanges = () => {
+  //   const updatedOrders = orders.map((order) =>
+  //     order._id === selectedOrder._id ? { ...order, status: updatedStatus } : order
+  //   );
+  //   setOrders(updatedOrders);
+  //   closeModal();
+  // };
+  const saveChanges = async () => {
+    if (!selectedOrder) return;
+
+    try {
+      const updatedOrder = await updateOrder(selectedOrder._id, {
+        status: updatedStatus,
+        cartItems: updatedCart,
+      });
+      setOrders((prevOrders) =>
+        prevOrders.map((order) =>
+          order._id === selectedOrder._id
+            ? { ...order, status: updatedOrder.status, cartItems: updatedOrder.cartItems }
+            : order
+        )
+      );
+      closeModal();
+    } catch (error) {
+      console.error("Error updating order:", error);
+    }
+  };
+
+  // const handleDeleteOrder = (orderId) => {
+  //   const updatedOrders = orders.map((order) =>
+  //     order._id === orderId ? { ...order, status: "Cancelled" } : order
+  //   );
+  //   setOrders(updatedOrders);
+  // };
+  //  console.log("selected order is :",selectedOrder)
+  const handleDeleteOrder = async (orderId) => {
+    try {
+      await updateOrder(orderId, { status: "Cancelled" });
+      setOrders((prevOrders) =>
+        prevOrders.map((order) =>
+          order._id === orderId ? { ...order, status: "Cancelled" } : order
+        )
+      );
+    } catch (error) {
+      console.error("Error deleting order:", error);
+    }
+  };
 
   return (
     <div>
@@ -42,7 +121,7 @@ const OrderTable = () => {
         <TableCaption>A list of recent orders.</TableCaption>
         <TableHeader>
           <TableRow>
-            <TableHead className="w-[120px]">Order ID</TableHead>
+            <TableHead className="w-[120px] ">Order ID</TableHead>
             <TableHead>Customer</TableHead>
             <TableHead>Items</TableHead>
             <TableHead>Status</TableHead>
@@ -52,71 +131,142 @@ const OrderTable = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {orders?.map((order) => {
-            console.log(order);
-            const {cartItems,paymentInfo,shippingAddress} = order
-            console.log(order.status.toString());
-            return (
+          {filteredOrders.length > 0 ? (
+            filteredOrders.map((order) => (
               <TableRow key={order._id}>
-                <TableCell className="font-medium">{order._id}</TableCell>
-                <TableCell>{shippingAddress.fullName}</TableCell>
+                <TableCell className="font-medium">
+                  {order._id
+                    ? `${order._id.slice(5, 8)}...${order._id.slice(-3)}`
+                    : "N/A"}
+                </TableCell>
+                <TableCell>
+                  {order.shippingAddress?.fullName || "N/A"}
+                </TableCell>
                 <TableCell>
                   <ul className="list-inside">
-                    {cartItems.map((item, index) => {
-                        console.log("inside the cartItems",item);
-                        const {productId} = item; 
-                        return (
+                    {order.cartItems.map((item, index) => (
                       <li key={index}>
-                        {productId.title}{" "}
+                        {item.productId.title}{" "}
                         <span className="text-gray-500">
                           (x{item.quantity})
                         </span>
                       </li>
-                    )
-                    })}
+                    ))}
                   </ul>
                 </TableCell>
-                <TableCell>
-                  <Select>
-                    <SelectTrigger className="w-[150px]">
-                      <SelectValue placeholder={order.status.toString()} />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="Pending">Pending</SelectItem>
-                      <SelectItem value="Processing">Processing</SelectItem>
-                      <SelectItem value="Shipped">Shipped</SelectItem>
-                      <SelectItem value="Delivered">Delivered</SelectItem>
-                      <SelectItem value="Canceled">Canceled</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </TableCell>
+                <TableCell>{order.status}</TableCell>
                 <TableCell>
                   <span
                     className={`px-2 py-1 rounded text-white ${
-                      paymentInfo.status === "Paid"
+                      order.paymentInfo.status === "Paid"
                         ? "bg-green-500"
                         : "bg-red-500"
                     }`}
                   >
-                    {paymentInfo.status}
+                    {order.paymentInfo.status}
                   </span>
                 </TableCell>
-                <TableCell className="text-right">PKR {order.totalPrice}</TableCell>
+                <TableCell className="text-right">
+                  PKR {order.totalPrice}
+                </TableCell>
                 <TableCell className="text-right space-x-2">
-                  <button className="bg-blue-500 text-white px-3 py-1 rounded">
+                  <button
+                    className="bg-blue-500 text-white px-3 py-1 rounded"
+                    onClick={() => openModal(order)}
+                  >
                     Update
                   </button>
-                  <button className="bg-red-500 text-white px-3 py-1 rounded">
+                  {order.status !== "Cancelled" && (
+                  <button
+                    className="bg-red-500 text-white px-3 py-1 rounded"
+                    disabled={order.status === "Cancelled"}
+                    onClick={() => handleDeleteOrder(order._id)}
+                  >
                     Delete
                   </button>
+                )}
                 </TableCell>
               </TableRow>
-            );
-          })}
+            ))
+          ) : (
+            <TableRow>
+              <TableCell colSpan="7" className="text-center">
+                No orders found.
+              </TableCell>
+            </TableRow>
+          )}
         </TableBody>
       </Table>
+      {isModalOpen && selectedOrder && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white p-6 rounded-lg w-96 shadow-lg">
+            <h2 className="text-xl font-semibold mb-4">Update Order</h2>
+            <p>
+              <strong>Order ID:</strong> {selectedOrder._id}
+            </p>
+            <p>
+              <strong>Customer:</strong>{" "}
+              {selectedOrder.shippingAddress?.fullName || "N/A"}
+            </p>
+            <p>
+              <strong>Items:</strong>
+            </p>
+            <ul className="list-disc ml-5">
+              {selectedOrder.cartItems.map((item, index) => (
+                <li key={index}>
+                  {item.productId.title} (x
+                  {item.quantity}
+                  {/* <input
+                    type="number"
+                    value={item.quantity}
+                    onChange={(e) => handleQuantityChange(index, e.target.value)}
+                    className="w-12 text-center border rounded ml-1"
+                  /> */}
+                  )
+
+                </li>
+              ))}
+            </ul>
+            <p>
+              <strong>Payment:</strong> {selectedOrder.paymentInfo.status}
+            </p>
+            <p>
+              <strong>Total Price:</strong> PKR {selectedOrder.totalPrice}
+            </p>
+
+            <label className="block mt-4">
+              <strong>Order Status:</strong>
+              <select
+                value={updatedStatus}
+                onChange={handleStatusChange}
+                className="block w-full mt-1 p-2 border rounded"
+              >
+                <option value="Processing">Processing</option>
+                <option value="Completed">Completed</option>
+                <option value="Cancelled">Cancelled</option>
+              </select>
+            </label>
+
+            <div className="mt-4 flex justify-end space-x-2">
+              <button
+                onClick={closeModal}
+                className="bg-gray-500 text-white px-3 py-1 rounded"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={saveChanges}
+                className="bg-blue-500 text-white px-3 py-1 rounded"
+              >
+                Save Changes
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
 
 export default OrderTable;
+

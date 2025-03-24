@@ -6,7 +6,10 @@ import { NavLink } from "react-router-dom";
 import { BsCart3, BsMoonFill, BsSunFill } from "react-icons/bs";
 import { FaBarsStaggered } from "react-icons/fa6";
 import { useSelector } from "react-redux";
+import Cookies from "js-cookie";
 
+// const username = Cookies.get("username");
+// console.log("Username from cookie:", username);
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,6 +21,10 @@ import {
 
 const Navbar = () => {
   const cartNumber = useSelector((state) => state.cart.totalQuantity);
+  const userName = useSelector((state) => state.user.userName);
+
+  console.log("User Data:", userName); 
+// console.log("Username:", userData?.username);
 
   return (
     <nav className="bg-base-200">
@@ -65,9 +72,9 @@ const Navbar = () => {
                 </NavLink>
               </div>
             </div>
-
-            <div className="text-sm font-light">Ali Hassnain</div>
-
+{userName ? <div className="text-sm font-light">{userName}</div> : " "
+            // <div className="text-sm font-light">Ali Hassnain</div>
+}
             <DropdownMenu>
               <DropdownMenuTrigger>
                 <div className="avatar w-10">
@@ -77,7 +84,7 @@ const Navbar = () => {
                 </div>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
-                <DropdownMenuLabel>Ali Hassnain</DropdownMenuLabel>
+                <DropdownMenuLabel>{userName}</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <Link to="/profile">
                   <DropdownMenuItem className="cursor-pointer">Profile</DropdownMenuItem>

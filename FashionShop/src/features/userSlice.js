@@ -20,7 +20,10 @@ const userSlice = createSlice({
     loginSuccess: (state, action) => {
       console.log("inside the userSlice" , action.payload)
       state.userData = action.payload;
+      state.userID = action.payload._id; 
+      state.userName = action.payload.username;
       state.loading = false;
+      state.error = null;
     },
     loginFailure: (state, action) => {
       state.error = action.payload;
@@ -30,6 +33,10 @@ const userSlice = createSlice({
       console.log("this is running userData is null");
       
       state.userData = null;
+      state.userID = null;
+      state.userName = null;
+      state.error = null;
+      state.loading = false;
     },
   },
 });

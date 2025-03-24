@@ -5,16 +5,18 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 
 const ManageOrders = () => {
   const [filter, setFilter] = useState("all");
+  console.log("filter is : ",filter)
 
   return (
     <div className="align-elements">
       <CommonHeading title={"Manage Orders"} />
-      <Tabs value={filter} onValueChange={setFilter}>
+      <Tabs value={filter} onValueChange={setFilter} >
         <TabsList>
           <TabsTrigger value="all">All Orders</TabsTrigger>
           <TabsTrigger value="active">Active Orders</TabsTrigger>
           <TabsTrigger value="completed">Completed Orders</TabsTrigger>
           <TabsTrigger value="cancelled">Cancelled Orders</TabsTrigger>
+        
         </TabsList>
         <TabsContent value={filter}>
           <OrderTable filter={filter} />

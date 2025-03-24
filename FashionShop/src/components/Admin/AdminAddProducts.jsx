@@ -5,44 +5,48 @@ import { updateProduct } from "./Services/ProductServices";
 import { MyContext } from "./MyContext";
 import { useContext } from "react";
 const AdminAddProducts = () => {
-    const [error, setError] = useState(null);
-    const [success, setSuccess] = useState(null);
-    const [product, setProduct] = useState({
-        title: "",
-        price: "",
-        product_image: "",
-        stock: "",
-        description: "",
-        rating: "",
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
+  const [product, setProduct] = useState({
+    title: "",
+    price: "",
+    product_image: "",
+    stock: "",
+    description: "",
+    rating: "",
+    category: "",
+    gender: "",
+  });
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setProduct((product) => {
+      return {
+        ...product,
+        [name]: value,
+      };
     });
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setProduct((product) => {
-            return {
-                ...product,
-                [name]: value,
-            };
-        });
-    };
-    const handleFile = (e) => {
-        const file = e.target.files[0];
-        setProduct((product) => {
-            return {
-                ...product,
-                product_image: file,
-            };
-        });
-    };
+  };
+  const handleFile = (e) => {
+    const file = e.target.files[0];
+    setProduct((product) => {
+      return {
+        ...product,
+        product_image: file,
+      };
+    });
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (
-    !product.product_image ||
-    !product.price ||
-    !product.title ||
-    !product.description ||
-    product.stock < 0 ||
-    product.rating < 0
+      !product.product_image ||
+      !product.price ||
+      !product.title ||
+      !product.description ||
+      product.stock < 0 ||
+      product.rating < 0 ||
+      !product.category ||
+      !product.gender
     ) {
       setError("Please fill in all fields correctly");
       return;
@@ -54,18 +58,22 @@ const AdminAddProducts = () => {
     formData.append("stock", product.stock);
     formData.append("description", product.description);
     formData.append("rating", product.rating);
-    
+    formData.append("category", product.category);
+    formData.append("gender", product.gender);
+
     console.log(formData);
     console.log("Product added:", formData);
     createProduct(formData, setSuccess, setError);
-    
+
     setProduct({
-        product_image: "",
-        price: "",
-        title: "",
-        description: "",
-        stock: "",
-        rating: "",
+      product_image: "",
+      price: "",
+      title: "",
+      description: "",
+      stock: "",
+      rating: "",
+      category: "",
+      gender: "",
     });
     setError(null);
     setSuccess(null);
@@ -158,8 +166,44 @@ const AdminAddProducts = () => {
           />
         </div>
 
+        <div className="form-control">
+          <label className="label">
+            <span className="label-text">Product Category</span>
+          </label>
+          <select
+            value={product.category}
+            onChange={handleChange}
+            name="category"
+            className="select select-bordered"
+          >
+            <option value="">Select a category</option>
+            <option value="shirt">Shirt</option>
+            <option value="paints">Paint</option>
+            <option value="jacket">Jacket</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+
+        <div className="form-control">
+          <label className="label">
+            <span className="label-text">Product Gender</span>
+          </label>
+          <select
+            value={product.gender}
+            onChange={handleChange}
+            name="gender"
+            className="select select-bordered"
+          >
+            <option value="">Select a gender</option>
+            <option value="men">Men</option>
+            <option value="women">Women</option>
+            <option value="kids">Kids</option>
+          </select>
+        </div>
+
+
         <div className="form-control mt-6">
-          <button className="btn btn-primary" type="submit ">
+          <button className="btn btn-primary" type="submit">
             Add Product
           </button>
         </div>
