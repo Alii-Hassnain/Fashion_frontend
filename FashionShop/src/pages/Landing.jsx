@@ -1,5 +1,5 @@
 import React from "react";
-import { CommonHeading, Hero, ProductsContainer } from "../components";
+import { CommonHeading, EidSale, Hero, ProductsContainer } from "../components";
 import { Features } from "../components";
 import { Footer } from "../components";
 import { useState } from "react";
@@ -17,8 +17,17 @@ const Landing = () => {
   return (
     <div>
       <Hero />
+     
       <div className="align-elements">
         <Features />
+        
+        <div className="mt-5"> 
+        <EidSale/>
+
+        </div>
+
+        
+
         <div className="flex flex-row justify-center items-center gap-3 mt-10 text-gray-700">
         {tabs.map((tab) => (
           <p
