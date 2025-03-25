@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState ,useEffect} from "react";
 import { Links } from "./Links";
 import { Link } from "react-router-dom";
 import NavLinks from "./NavLinks";
@@ -7,6 +7,7 @@ import { BsCart3, BsMoonFill, BsSunFill } from "react-icons/bs";
 import { FaBarsStaggered } from "react-icons/fa6";
 import { useSelector } from "react-redux";
 import Cookies from "js-cookie";
+import axios from "axios";
 
 // const username = Cookies.get("username");
 // console.log("Username from cookie:", username);
@@ -21,10 +22,29 @@ import {
 
 const Navbar = () => {
   const cartNumber = useSelector((state) => state.cart.totalQuantity);
-  const userName = useSelector((state) => state.user.userName);
+  const [userName, setUserName] = useState(null);
+  const checkAuthCookie = async () => {
+    try {
+   const response =await fetch("http://localhost:8080/user/verify-session", {
+        method: "GET",
+        credentials: "include", 
+      });
+      const result = await response.json();
+      console.log("reseult from verify session is : ",result)
+      setUserName(result.user.username);
+      console.log(result.success)
+      return result.success; 
 
-  console.log("User Data:", userName); 
-// console.log("Username:", userData?.username);
+    } catch (error) {
+      console.error("Error checking session:", error);
+      return false;
+    }
+  };
+    useEffect(() => {
+      checkAuthCookie();
+    }, []);
+
+
 
   return (
     <nav className="bg-base-200">

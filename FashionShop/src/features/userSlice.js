@@ -30,7 +30,7 @@ const userSlice = createSlice({
       state.loading = false;
     },
     logout: (state) => {
-      console.log("this is running userData is null");
+      console.log("Logging out: Clearing user state");
       
       state.userData = null;
       state.userID = null;

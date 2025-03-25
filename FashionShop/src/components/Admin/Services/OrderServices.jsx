@@ -23,3 +23,13 @@ export const getAllOrders = async () => {
       return null;
     }
   };
+  export const getOrdersByUserId = async (userId) => {
+    try {
+      const response = await axios.get(`${BASE_URL}/get-Order/${userId}`);
+       console.log("order by id response from backend in order servces : ",response);
+      return response.data.orders; // Return the orders list
+    } catch (error) {
+      console.error("Error fetching orders:", error);
+      return [];
+    }
+  };

@@ -20,6 +20,7 @@ const ManageOrders = () => {
         </TabsList>
         <TabsContent value={filter}>
           <OrderTable filter={filter} />
+          {/* <OrderTable filter={filter === "active" ? ["Pending", "Processing"] : filter} /> */}
         </TabsContent>
       </Tabs>
     </div>

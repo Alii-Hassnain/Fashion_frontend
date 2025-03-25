@@ -18,8 +18,6 @@ const AdminDashboard = () => {
       const response = await axiosAdminUrl.get("/get-users", {
         withCredentials: true,
       });
-      // const data = response.data.data;
-      // const count=response.data.count;
       setUserCount(response.data.count);
       setUsers(response.data.data);
       console.log("response is : ", response.data.data);
@@ -39,25 +37,12 @@ const AdminDashboard = () => {
       console.error("Error fetching orders:", error);
     }
   };
-  // const filterOrder = () => {
-  //   if (orders) {
-  //     for (let i = 0; i < orders.length; i++) {
-  //       if (orders[i].status === "Completed") {
-  //         setcompletedOrders(completedOrders + 1);
-  //       } else if (orders[i].status === "Processing") {
-  //         setActiveOrders(activeOrders + 1);
-  //       } else if (orders[i].status === "Cancelled") {
-  //         setCancelledOrders(cancelledOrders + 1);
-  //       }
-  //     }
-  //   }
-  // };
   const filterOrders = (ordersData) => {
     let completed = 0, active = 0, cancelled = 0;
     ordersData.forEach(order => {
       if (order.status === "Completed") {
         completed++;
-      } else if (order.status === "Processing") {
+      } else if (order.status === "Processing"||order.status === "Shipped"||order.status === "Delivered") {
         active++;
       } else if (order.status === "Cancelled") {
         cancelled++;
@@ -72,10 +57,7 @@ const AdminDashboard = () => {
     fetchUsers();
     fetchOrders();
   }, []);
-  console.log("orders in admin dashboard : ", orders);
-  console.log("active order : ", activeOrders);
-  console.log("completed order : ", completedOrders);
-  console.log("cancelled order : ", cancelledOrders);
+
   return (
     <div className="align-elements">
       <h1>This is Admin Dashboard</h1>

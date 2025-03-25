@@ -3,25 +3,30 @@ import { Link , useNavigate } from "react-router-dom";
 import { FaChevronDown } from "react-icons/fa";
 import { handleSuccess,handleError } from "../utils/tostify";
 import axios from "axios";
-import { useDispatch } from "react-redux";
+import { useDispatch , useSelector} from "react-redux";
 import { logout } from "../features/userSlice";
 import { clearCart } from "../features/cartSlice";
+import { checkAuth , logoutUser} from "../components/Admin/Services/UserServices";
 
-const deleteCookie = (name) => {
-  document.cookie = `${name}=; Max-Age=0; path=/;`; // 
-};
+// const deleteCookie = (name) => {
+//   document.cookie = `${name}=; Max-Age=0; path=/;`; // 
+// };
 const Header = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
+  const userID = useSelector((state) => state.user.userID);
 
   const checkAuthCookie = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/user/verify-session", {
-        withCredentials: true, // Ensures cookies are sent with the request
+   const response =await fetch("http://localhost:8080/user/verify-session", {
+        method: "GET",
+        credentials: "include", 
       });
-      return response.data.success;
+      const result = await response.json();
+      console.log(result.success)
+      return result.success; 
 
     } catch (error) {
       console.error("Error checking session:", error);
@@ -38,42 +43,31 @@ const Header = () => {
 
   const handleLogout = async () => {
     try {
-      // Call the logout API
-      const response = await fetch("http://localhost:8080/user/logout", {
-        method: "POST",
-        credentials: "include", // Ensures cookies are sent with the request
-      });
 
-      // Handle the API response
+      const response =await fetch("http://localhost:8080/user/logout", {
+        method: "POST",
+        credentials: "include", 
+      });
       const result = await response.json();
       const { success, message } = result;
-
       if (success) {
         handleSuccess(message);
         console.log("Logout result: ", message);
         setIsLoggedIn(false); 
-        localStorage.removeItem("token"); // Clear local storage (if needed)
+        localStorage.removeItem("token"); 
         localStorage.removeItem("user");
-
-
         dispatch(logout());
         dispatch(clearCart());
         
         setTimeout(() => {
-          navigate("/login"); // Redirect to login page
-          
+          navigate("/login"); 
         },2000)        
       }
     } catch (error) {
-      // Network or other unexpected errors
       console.error("Error during logout: ", error);
       handleError(error);
     }
-
-
-  };
-  console.log(isLoggedIn);
-  
+  };  
   return (
     <header className="bg-neutral py-2 text-neutral-content">
       <div className="align-elements flex justify-center sm:justify-between">

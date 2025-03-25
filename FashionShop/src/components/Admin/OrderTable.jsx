@@ -16,16 +16,16 @@ const OrderTable = ({ filter = "all" }) => {
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [updatedStatus, setUpdatedStatus] = useState("");
   const [updatedCart, setUpdatedCart] = useState([]);
+  const fetchOrders = async () => {
+    try {
+      const data = await getAllOrders();
+      setOrders(data);
+    } catch (error) {
+      console.error("Error fetching orders:", error);
+    }
+  };
 
   useEffect(() => {
-    const fetchOrders = async () => {
-      try {
-        const data = await getAllOrders();
-        setOrders(data);
-      } catch (error) {
-        console.error("Error fetching orders:", error);
-      }
-    };
     fetchOrders();
   }, []);
 
@@ -35,12 +35,14 @@ const OrderTable = ({ filter = "all" }) => {
   const filteredOrders = filter
     ? orders.filter((order) => {
         if (filter === "all") return true;
-        if (filter === "active") return order.status === "Processing";
+        // if (filter === "active") return order.status === "Processing";
         if (filter === "completed") return order.status === "Completed";
+        if (filter === "active")
+          return ["Pending", "Processing", "Shipped", "Delivered"].includes(order.status);
         if (filter === "cancelled") return order.status === "Cancelled";
         return true;
       })
-    : orders; 
+    : orders;
 
   //console.log("Filtered Orders:", filteredOrders);
 
@@ -54,6 +56,7 @@ const OrderTable = ({ filter = "all" }) => {
   const closeModal = () => {
     setIsModalOpen(false);
     setSelectedOrder(null);
+    // fetchOrders()
   };
 
   const handleStatusChange = (event) => {
@@ -67,25 +70,22 @@ const OrderTable = ({ filter = "all" }) => {
     );
   };
 
-  // const saveChanges = () => {
-  //   const updatedOrders = orders.map((order) =>
-  //     order._id === selectedOrder._id ? { ...order, status: updatedStatus } : order
-  //   );
-  //   setOrders(updatedOrders);
-  //   closeModal();
-  // };
   const saveChanges = async () => {
     if (!selectedOrder) return;
 
     try {
       const updatedOrder = await updateOrder(selectedOrder._id, {
         status: updatedStatus,
-        cartItems: updatedCart,
+        // cartItems: updatedCart,
       });
       setOrders((prevOrders) =>
         prevOrders.map((order) =>
           order._id === selectedOrder._id
-            ? { ...order, status: updatedOrder.status, cartItems: updatedOrder.cartItems }
+            ? {
+                ...order,
+                status: updatedOrder.status,
+                // cartItems: updatedOrder.cartItems,
+              }
             : order
         )
       );
@@ -94,14 +94,6 @@ const OrderTable = ({ filter = "all" }) => {
       console.error("Error updating order:", error);
     }
   };
-
-  // const handleDeleteOrder = (orderId) => {
-  //   const updatedOrders = orders.map((order) =>
-  //     order._id === orderId ? { ...order, status: "Cancelled" } : order
-  //   );
-  //   setOrders(updatedOrders);
-  // };
-  //  console.log("selected order is :",selectedOrder)
   const handleDeleteOrder = async (orderId) => {
     try {
       await updateOrder(orderId, { status: "Cancelled" });
@@ -114,7 +106,20 @@ const OrderTable = ({ filter = "all" }) => {
       console.error("Error deleting order:", error);
     }
   };
-
+  // const saveChanges = () => {
+  //   const updatedOrders = orders.map((order) =>
+  //     order._id === selectedOrder._id ? { ...order, status: updatedStatus } : order
+  //   );
+  //   setOrders(updatedOrders);
+  //   closeModal();
+  // };
+  // const handleDeleteOrder = (orderId) => {
+  //   const updatedOrders = orders.map((order) =>
+  //     order._id === orderId ? { ...order, status: "Cancelled" } : order
+  //   );
+  //   setOrders(updatedOrders);
+  // };
+  //  console.log("selected order is :",selectedOrder)
   return (
     <div>
       <Table>
@@ -146,7 +151,7 @@ const OrderTable = ({ filter = "all" }) => {
                   <ul className="list-inside">
                     {order.cartItems.map((item, index) => (
                       <li key={index}>
-                        {item.productId.title}{" "}
+                        {item.productId.title}{"  "}
                         <span className="text-gray-500">
                           (x{item.quantity})
                         </span>
@@ -177,14 +182,14 @@ const OrderTable = ({ filter = "all" }) => {
                     Update
                   </button>
                   {order.status !== "Cancelled" && (
-                  <button
-                    className="bg-red-500 text-white px-3 py-1 rounded"
-                    disabled={order.status === "Cancelled"}
-                    onClick={() => handleDeleteOrder(order._id)}
-                  >
-                    Delete
-                  </button>
-                )}
+                    <button
+                      className="bg-red-500 text-white px-3 py-1 rounded"
+                      disabled={order.status === "Cancelled"}
+                      onClick={() => handleDeleteOrder(order._id)}
+                    >
+                      Delete
+                    </button>
+                  )}
                 </TableCell>
               </TableRow>
             ))
@@ -223,7 +228,6 @@ const OrderTable = ({ filter = "all" }) => {
                     className="w-12 text-center border rounded ml-1"
                   /> */}
                   )
-
                 </li>
               ))}
             </ul>
@@ -241,7 +245,9 @@ const OrderTable = ({ filter = "all" }) => {
                 onChange={handleStatusChange}
                 className="block w-full mt-1 p-2 border rounded"
               >
+                <option value="Pending">Pending</option>
                 <option value="Processing">Processing</option>
+                <option value="Shipped">Shipped</option>
                 <option value="Completed">Completed</option>
                 <option value="Cancelled">Cancelled</option>
               </select>
@@ -269,4 +275,3 @@ const OrderTable = ({ filter = "all" }) => {
 };
 
 export default OrderTable;
-
