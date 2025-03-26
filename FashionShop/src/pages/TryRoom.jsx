@@ -3,6 +3,11 @@ import { FaTrash } from "react-icons/fa";
 import modle from "../assets/modle.jpg";
 import shirt from "../assets/shirt.jpg";
 import { handleError } from "../utils/tostify";
+import { useLocation } from "react-router-dom";
+
+import { PiCameraDuotone } from "react-icons/pi";
+import { PiCameraSlashDuotone } from "react-icons/pi";
+import { TbCapture } from "react-icons/tb";
 
 const convertToBase64 = async (imagePath) => {
   const response = await fetch(imagePath);
@@ -16,10 +21,12 @@ const convertToBase64 = async (imagePath) => {
 };
 
 const TryRoom = () => {
+  const location = useLocation();
+  const image = location.state?.image
   const [responseData, setResponseData] = useState("");
   const [statusData, setStatusData] = useState("");
   const [imageSrc, setImageSrc] = useState("");
-  const [selectImageScr, setSelectImageScr] = useState(shirt);
+  const [selectImageScr, setSelectImageScr] = useState(image||shirt);
   const [startProcess, setStartProcess] = useState(false);
   const [isCameraOpen, setIsCameraOpen] = useState(false);
   const [showFileInput, setShowFileInput] = useState(true);
@@ -31,7 +38,7 @@ const TryRoom = () => {
 
   // API Call
   const runApiCall = async () => {
-    const shirtImage = await convertToBase64(shirt);
+    const shirtImage = await convertToBase64(selectImageScr);
     const modelImage = await convertToBase64(imageSrc);
     try {
       const response = await fetch("/api/v1/run", {
@@ -181,8 +188,8 @@ const TryRoom = () => {
 
   return (
     <div className="flex flex-col justify-center items-center">
-      <h1 className="text-center text-xl my-10 font-bold">
-        Welcome To Try Room Demo
+      <h1 className="text-center text-3xl my-10 font-bold">
+        Welcome To Try Room 
       </h1>
 
       <div className="flex flex-row gap-10 justify-center">
@@ -223,16 +230,16 @@ const TryRoom = () => {
         <div className="flex flex-col gap-2">
           <button
             onClick={toggleCamera}
-            className={`btn ${isCameraOpen ? "btn-error" : "btn-secondary"}`}
+            className={`btn ${isCameraOpen ? "btn-error" : "btn-active"}`}
           >
-            {isCameraOpen ? "Close Camera" : "Open Camera"}
+            {isCameraOpen ? <PiCameraSlashDuotone/> : <PiCameraDuotone/>}
           </button>
 
           {isCameraOpen && (
             <>
               <video ref={videoRef} autoPlay className="w-64 h-48 border" />
               <button onClick={captureImage} className="btn btn-primary mt-2">
-                Capture Photo
+                <TbCapture/>
               </button>
             </>
           )}

@@ -73,11 +73,11 @@ const ProductsGridView = ({
                     alt={title}
                     className="w-full h-56 object-contain"
                   />
-                  <h2 className="text-lg font-semibold text-gray-800 mt-2">
+                  <h2 className="text-sm font-semibold text-gray-800 mt-2">
                     {title}
                   </h2>
                   {/* <p className="text-gray-600 mt-2">{description}</p> */}
-                  <p className="text-gray-800 mt-2">PKR {price}</p>
+                  <p className="text-gray-800 mt-2 text-sm">PKR {price}</p>
                 </Link>
                 <div className="rating rating-md">
                   <input
