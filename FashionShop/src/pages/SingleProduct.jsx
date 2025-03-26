@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState , useEffect} from "react";
 import { axiosFetchProducts } from "../utils/axiosFetch";
-import { useLoaderData } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { addToCart } from "../features/cartSlice";
+import { useNavigate, useLoaderData } from "react-router-dom";
+import { useDispatch , useSelector } from "react-redux";
+import {  addToCartAsync } from "../features/cartSlice";
 import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
 import { Link } from "react-router-dom";
@@ -15,6 +15,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { TryRoom } from "../pages";
+import { handleError } from "../utils/tostify";
 
 export const loader = async ({ params }) => {
   const id = params.id;
@@ -31,16 +32,34 @@ export const loader = async ({ params }) => {
 
 
 const SingleProduct = () => {
+    const [userId, setUserId] = useState("");
   const { singleProduct } = useLoaderData();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const userData = useSelector((state) => state.user.userData);
 
-  const { title, description, price, product_image } = singleProduct;
+  useEffect(() => {
+    if (userData?._id) {
+      setUserId(userData._id);
+    }
+  }, [userData]);
+    const checkUser = () => {
+      if (!userId) {
+        handleError("please Login first");
+        return false
+      }
+      return true
+    };
 
-  const sizes = ["S", "M", "L", "XL", "2XL"];
+  const { title, description, price, product_image,variants } = singleProduct;
+console.log("singleProduct",singleProduct)
+
+  // const sizes = ["S", "M", "L", "XL", "2XL"];
   const colors = ["#000000", "#FF5733", "#1E90FF", "#32CD32", "#800080"];
 
   const [selectedSize, setSelectedSize] = useState("");
   const [selectedColor, setSelectedColor] = useState("");
+  const [selectedQuantity, setSelectedQuantity] = useState(1);
   const [showReviews, setShowReviews] = useState(false);
 
   const [reviews, setReviews] = useState([
@@ -121,17 +140,45 @@ const SingleProduct = () => {
         <div>
           <label className="font-medium">Select Size:</label>
           <div className="flex gap-2 mt-1">
-            {sizes.map((size) => (
-              <button
-                key={size}
+            {/* {sizes.map((size) => ( */}
+            {/* {variants.map((variant) => (
+             
+             <button
+                key={variant._id}
+                
                 className={`btn btn-outline ${
-                  selectedSize === size ? "btn-primary" : ""
+                  selectedSize === variant.size ? "btn-primary" : ""
                 }`}
-                onClick={() => setSelectedSize(size)}
+                onClick={() => setSelectedSize(variant.size)
+                
+                }
               >
-                {size}
+                {variant.size}
+                {variant.size === selectedSize && <span>✔️</span>}
+                {variant.quantity > 0 && <span> ({variant.quantity} in stock)</span>}
               </button>
-            ))}
+            ))} */}
+            {variants.map((variant) => (
+      <div key={variant._id} className="relative">
+        <button
+          className={`btn btn-outline ${
+            selectedSize === variant.size ? "btn-primary" : ""
+          }`}
+          onClick={() => setSelectedSize(variant.size)}
+        >
+          {variant.size} {/* Display Size */}
+          {selectedSize === variant.size && <span> ✔️</span>}
+        </button>
+        {/* Quantity behind the button in small font */}
+        <span
+          className={`absolute -bottom-4 left-1/2 transform -translate-x-1/2 text-xs ${
+            variant.quantity < 10 ? "text-red-500" : "text-gray-500"
+          }`}
+        >
+          x{variant.quantity}
+        </span>
+      </div>
+    ))}
           </div>
         </div>
 
@@ -150,26 +197,51 @@ const SingleProduct = () => {
             ))}
           </div>
         </div>
+        <div>
+          <label className="font-medium">Select Quantity:</label>
+          <input type="number" value={selectedQuantity} onChange={(e) => setSelectedQuantity(parseInt(e.target.value) )} className="border p-2 w-20 mt-2" />
+        </div>
 
         <div className="flex flex-col md:flex-row gap-3 w-full md:w-auto">
           <button
             className="btn btn-primary w-full md:w-auto"
-            onClick={() =>
+            onClick={() =>{
+              if(checkUser()){
               dispatch(
-                addToCart({ ...singleProduct, selectedSize, selectedColor })
-              )
+                addToCartAsync({
+                  userId,
+                  productId: singleProduct._id,
+                  size:selectedSize,
+                  quantity:selectedQuantity,
+                  
+                })
+
+              )}
             }
+            }
+            // onClick={ dispatch(addToCart(singleProduct._id))}
             disabled={!selectedSize || !selectedColor}
           >
             Add to Cart
           </button>
-          <Link to="/tryroom"state={{ image: product_image }}>
+          
+          {/* <Link to="/tryroom"state={{ image: product_image }}>
             <button className="btn btn-secondary w-full md:w-auto"
             >
               Try Virtually
-              {/* <TryRoom selectedImage={product_image}/> */}
             </button>
-          </Link>
+          </Link> */}
+          <button
+              className="btn btn-secondary w-full md:w-auto"
+              onClick={() => {
+                if (checkUser()) {
+                  navigate("/tryroom", { state: { image: product_image } });
+                }
+              }}
+            >
+              Try Virtually
+            </button>
+          
         </div>
       </div>
 

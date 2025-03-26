@@ -84,7 +84,7 @@ const Navbar = () => {
           <div className="flex flex-row gap-4 items-center">
             <div className="indicator">
               <span className="indicator-item badge badge-base-200">
-                {cartNumber}
+                {cartNumber ? userName ? cartNumber : 0 : 0}
               </span>
               <div className="grid place-items-center">
                 <NavLink to="cart">
