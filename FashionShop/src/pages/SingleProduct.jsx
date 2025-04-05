@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/carousel";
 import { TryRoom } from "../pages";
 import { handleError } from "../utils/tostify";
+import { checkAuth } from "../components/Admin/Services/UserServices";
 
 export const loader = async ({ params }) => {
   const id = params.id;
@@ -31,6 +32,7 @@ export const loader = async ({ params }) => {
 
 
 
+
 const SingleProduct = () => {
     const [userId, setUserId] = useState("");
   const { singleProduct } = useLoaderData();
@@ -38,18 +40,67 @@ const SingleProduct = () => {
   const navigate = useNavigate();
   const userData = useSelector((state) => state.user.userData);
 
-  useEffect(() => {
-    if (userData?._id) {
-      setUserId(userData._id);
-    }
-  }, [userData]);
-    const checkUser = () => {
-      if (!userId) {
-        handleError("please Login first");
-        return false
+  const isAuth = async () => {
+    try {
+      const response = await checkAuth();
+      console.log("user services response in single product component is : ", response);
+      if (response.success) {
+        setUserId(response.user._id);
+
+      } else {
+        setUserId(null);
       }
-      return true
-    };
+      return response.success;
+    } catch (error) {
+      console.error("Error checking session:", error);
+      return false;
+    }
+  };
+  useEffect(() => {
+    isAuth();
+  }, []);
+  const handleAddToCart = () => {
+    if (userId) {
+      dispatch(
+        addToCartAsync({
+          userId,
+          productId: singleProduct._id,
+          size:selectedSize,
+          quantity:selectedQuantity,
+        })
+      );
+    }
+    else {
+      handleError("Please Login first to add items to cart");
+      setTimeout(() => {
+        navigate("/login");
+      }, 3000);
+    }
+  }
+
+  const handleTryRoom = () => {
+    if (userId) {
+      navigate("/tryroom", { state: { image: singleProduct.product_image } });
+    } else {
+      handleError("Please Login First to use try room.");
+      setTimeout(() => {
+        navigate("/login");
+      }, 3000);
+    }
+  };
+
+  // useEffect(() => {
+  //   if (userData?._id) {
+  //     setUserId(userData._id);
+  //   }
+  // }, [userData]);
+  //   const checkUser = () => {
+  //     if (!userId) {
+  //       handleError("please Login first");
+  //       return false
+  //     }
+  //     return true
+  //   };
 
   const { title, description, price, product_image,variants } = singleProduct;
 console.log("singleProduct",singleProduct)
@@ -99,6 +150,7 @@ console.log("singleProduct",singleProduct)
       setNewReview({ user: "", rating: 5, comment: "" });
     }
   };
+
 
  
 
@@ -205,20 +257,21 @@ console.log("singleProduct",singleProduct)
         <div className="flex flex-col md:flex-row gap-3 w-full md:w-auto">
           <button
             className="btn btn-primary w-full md:w-auto"
-            onClick={() =>{
-              if(checkUser()){
-              dispatch(
-                addToCartAsync({
-                  userId,
-                  productId: singleProduct._id,
-                  size:selectedSize,
-                  quantity:selectedQuantity,
+            onClick={handleAddToCart}
+            // onClick={() =>{
+            //   if(checkUser()){
+            //   dispatch(
+            //     addToCartAsync({
+            //       userId,
+            //       productId: singleProduct._id,
+            //       size:selectedSize,
+            //       quantity:selectedQuantity,
                   
-                })
+            //     })
 
-              )}
-            }
-            }
+            //   )}
+            // }
+            // }
             // onClick={ dispatch(addToCart(singleProduct._id))}
             disabled={!selectedSize || !selectedColor}
           >
@@ -233,11 +286,12 @@ console.log("singleProduct",singleProduct)
           </Link> */}
           <button
               className="btn btn-secondary w-full md:w-auto"
-              onClick={() => {
-                if (checkUser()) {
-                  navigate("/tryroom", { state: { image: product_image } });
-                }
-              }}
+              // onClick={() => {
+              //   if (checkUser()) {
+              //     navigate("/tryroom", { state: { image: product_image } });
+              //   }
+              // }}
+              onClick={handleTryRoom}
             >
               Try Virtually
             </button>

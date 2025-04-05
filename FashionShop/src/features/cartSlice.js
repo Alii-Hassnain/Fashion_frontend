@@ -29,8 +29,8 @@ export const addToCartAsync = createAsyncThunk(
   "cart/addToCartAsync",
   async ({ userId, productId, size,quantity }, { rejectWithValue }) => {
     try {
-      const response = await axios.post(API_URL, { userId, productId, size, quantity });
-      handleSuccess("Product added successfully");
+      const response = await axios.post(API_URL, { userId, productId, size, quantity });      
+        handleSuccess("Product added successfully");
       return response.data;
     } catch (error) {
       handleError(error.response?.data?.message || "Failed to add product");
@@ -103,14 +103,27 @@ const cartSlice = createSlice({
       .addCase(fetchCart.pending, (state) => {
         state.status = "loading";
       })
+      // .addCase(fetchCart.fulfilled, (state, action) => {
+      //   state.cartItems = action.payload.cartItems;
+      //   state.totalQuantity = action.payload.totalQuantity;
+      //   state.totalPrice = action.payload.totalPrice;
+      //   state.subtotal = action.payload.subtotal;
+      //   state.shipping = action.payload.shipping;
+      //   state.status = "succeeded";
+      // })
       .addCase(fetchCart.fulfilled, (state, action) => {
-        state.cartItems = action.payload.cartItems;
-        state.totalQuantity = action.payload.totalQuantity;
-        state.totalPrice = action.payload.totalPrice;
-        state.subtotal = action.payload.subtotal;
-        state.shipping = action.payload.shipping;
+        if (!action.payload) {
+          console.error("fetchCart returned undefined payload!");
+          return;
+        }
+        state.cartItems = action.payload.cartItems || [];  // Ensure it's an array
+        state.totalQuantity = action.payload.totalQuantity || 0;
+        state.totalPrice = action.payload.totalPrice || 0;
+        state.subtotal = action.payload.subtotal || 0;
+        state.shipping = action.payload.shipping || 0;
         state.status = "succeeded";
       })
+      
       .addCase(fetchCart.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload;

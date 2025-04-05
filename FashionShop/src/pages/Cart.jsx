@@ -11,6 +11,7 @@ import CommonHeading from "../components/CommonHeading";
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
 import { fetchCart } from "../features/cartSlice";
+import { checkAuth } from "../components/Admin/Services/UserServices";
 
 const Cart = () => {
   const dispatch = useDispatch();
@@ -21,37 +22,42 @@ const Cart = () => {
   );
   const userData = useSelector((state) => state.user.userData);
 
-  const checkAuthCookie = async () => {
-    try {
-   const response =await fetch("http://localhost:8080/user/verify-session", {
-        method: "GET",
-        credentials: "include", 
-      });
-      const result = await response.json();
-      console.log("reseult from verify session is : ",result)
-      setUserId(result.user._id);
-      return result.success; 
+  // const checkAuthCookie = async () => {
+  //   try {
+  //  const response =await fetch("http://localhost:8080/user/verify-session", {
+  //       method: "GET",
+  //       credentials: "include",
+  //     });
+  //     const result = await response.json();
+  //     console.log("result from verify session in cart component  is : ",result)
+  //     setUserId(result.user._id);
+  //     return result.success;
 
+  //   } catch (error) {
+  //     console.error("Error checking session:", error);
+  //     return false;
+  //   }
+  // };
+  const isAuth = async () => {
+    try {
+      const response = await checkAuth();
+      // console.log("user services response in cart component is : ", response);
+      if (response) {
+        setUserId(response.user._id);
+      } else {
+        setUserId(null);
+      }
+      return response.success;
     } catch (error) {
       console.error("Error checking session:", error);
       return false;
     }
   };
-    useEffect(() => {
-      checkAuthCookie();
-    }, []);
-  console.log("Cart side = ", cartItems);
-  // const userId = userData?._id
-  // useEffect(() => {
-  //   if (userData?._id) {
-  //     setUserId(userData._id);
-  //   } else {
-  //     setUserId(null);
-  //   }
-  // }, [userData]);
-  // const userId = "67a44f834ed50d8f0ad68ae9";
   useEffect(() => {
-    if (userId ) {
+    isAuth();
+  }, []);
+  useEffect(() => {
+    if (userId) {
       dispatch(fetchCart(userId));
     }
   }, [userId]);
@@ -63,10 +69,17 @@ const Cart = () => {
       <CommonHeading title="Shopping Cart" />
 
       {userId === null ? (
+        <div className="flex flex-col items-center   h-screen">
+
         <p className="text-center text-lg font-semibold mt-5">
           Please log in to view your cart 🛒
         </p>
-      ) : cartItems.length === 0 ? (
+        
+            <button onClick={() => window.location.href = "/login"} className="btn btn-primary my-5">Login First</button>
+            <button onClick={() => window.location.href = "/"} className="btn btn-secondary">Explore Products</button>
+        
+        </div>
+      ) : !cartItems || cartItems.length === 0 ? (
         <p className="text-center text-lg font-semibold mt-5">
           Your cart is empty 🛒
         </p>
@@ -97,7 +110,11 @@ const Cart = () => {
                     <button
                       onClick={() =>
                         dispatch(
-                          decreaseQuantityAsync({ userId, productId: _id, size: item.size })
+                          decreaseQuantityAsync({
+                            userId,
+                            productId: _id,
+                            size: item.size,
+                          })
                         )
                       }
                       className="btn btn-sm btn-outline"
@@ -107,7 +124,14 @@ const Cart = () => {
                     <span>{quantity}</span>
                     <button
                       onClick={() =>
-                        dispatch(addToCartAsync({ userId, productId: _id , size: item.size, quantity:1 }))
+                        dispatch(
+                          addToCartAsync({
+                            userId,
+                            productId: _id,
+                            size: item.size,
+                            quantity: 1,
+                          })
+                        )
                       }
                       className="btn btn-sm btn-outline"
                     >
@@ -116,7 +140,12 @@ const Cart = () => {
                     <button
                       onClick={() =>
                         dispatch(
-                          removeFromCartAsync({ userId, productId: _id , size: item.size, quantity:1 })
+                          removeFromCartAsync({
+                            userId,
+                            productId: _id,
+                            size: item.size,
+                            quantity: 1,
+                          })
                         )
                       }
                       className="btn btn-sm btn-error"

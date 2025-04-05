@@ -42,7 +42,7 @@ const AdminDashboard = () => {
     ordersData.forEach(order => {
       if (order.status === "Completed") {
         completed++;
-      } else if (order.status === "Processing"||order.status === "Shipped"||order.status === "Delivered") {
+      } else if (order.status === "Processing"||order.status === "Shipped"||order.status === "Delivered"||order.status === "Pending") {
         active++;
       } else if (order.status === "Cancelled") {
         cancelled++;

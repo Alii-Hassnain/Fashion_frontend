@@ -153,7 +153,7 @@ const OrderTable = ({ filter = "all" }) => {
                       <li key={index}>
                         {item.productId.title}{"  "}
                         <span className="text-gray-500">
-                          (x{item.quantity})
+                          (x{item.quantity} {" "}{item.size || "N/A"})
                         </span>
                       </li>
                     ))}
@@ -220,14 +220,15 @@ const OrderTable = ({ filter = "all" }) => {
               {selectedOrder.cartItems.map((item, index) => (
                 <li key={index}>
                   {item.productId.title} (x
-                  {item.quantity}
+                  {item.quantity} {" "}{item.size || "N/A"})
+                 
                   {/* <input
                     type="number"
                     value={item.quantity}
                     onChange={(e) => handleQuantityChange(index, e.target.value)}
                     className="w-12 text-center border rounded ml-1"
                   /> */}
-                  )
+                  
                 </li>
               ))}
             </ul>

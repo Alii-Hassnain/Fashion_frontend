@@ -117,7 +117,8 @@ const Profile = () => {
 
               {order.status !== "Completed" &&
                 order.status !== "Delivered" &&
-                order.status === "Processing" && (
+                order.status !== "Cancelled" && 
+                 (
                   <button
                     className="btn btn-error text-white mt-3"
                     onClick={() => handleCancelOrder(order._id)}
@@ -129,9 +130,10 @@ const Profile = () => {
               <ul className="mt-2 text-gray-600">
                 {order.cartItems.map((item, index) => (
                   <li key={item.id}>
-                    {item.productId.title} (x{item.quantity})
+                    {console.log(item)}
+                    {item.productId.title} (x{item.quantity} {item.size||"N/A"})
                   </li>
-                ))}
+                ))} 
               </ul>
 
               {order.status === "Cancelled" && (
