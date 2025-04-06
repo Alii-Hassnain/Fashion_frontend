@@ -16,6 +16,7 @@ const AdminAddProducts = () => {
     rating: "",
     category: "",
     gender: "",
+    variants: [{ size: "", quantity: "" }],
   });
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -36,6 +37,20 @@ const AdminAddProducts = () => {
     });
   };
 
+  const handleVariantChange = (e, index) => {
+    const { name, value } = e.target;
+    const updatedVariants = [...product.variants];
+    updatedVariants[index][name] = value;
+    setProduct({ ...product, variants: updatedVariants });
+  };
+
+  const addVariant = () => {
+    setProduct({
+      ...product,
+      variants: [...product.variants, { size: "", quantity: "" }],
+    });
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (
@@ -43,13 +58,19 @@ const AdminAddProducts = () => {
       !product.price ||
       !product.title ||
       !product.description ||
-      product.stock < 0 ||
-      product.rating < 0 ||
+      // product.stock < 0 ||
+      // product.rating < 0 ||
       !product.category ||
       !product.gender
     ) {
       setError("Please fill in all fields correctly");
       return;
+    }
+    for (let i = 0; i < product.variants.length; i++) {
+      if (!product.variants[i].size || !product.variants[i].quantity) {
+        setError("Please fill in all variants correctly");
+        return;
+      }
     }
     const formData = new FormData();
     formData.append("title", product.title);
@@ -60,6 +81,7 @@ const AdminAddProducts = () => {
     formData.append("rating", product.rating);
     formData.append("category", product.category);
     formData.append("gender", product.gender);
+    formData.append("variants", JSON.stringify(product.variants));
 
     console.log(formData);
     console.log("Product added:", formData);
@@ -74,6 +96,7 @@ const AdminAddProducts = () => {
       rating: "",
       category: "",
       gender: "",
+      variants: [{ size: "", quantity: "" }],
     });
     setError(null);
     setSuccess(null);
@@ -201,6 +224,38 @@ const AdminAddProducts = () => {
           </select>
         </div>
 
+        {product.variants.map((variant, index) => (
+          <div key={index} className="form-control">
+            <label className="label">
+              <span className="label-text">Variant {index + 1} Size</span>
+            </label>
+            <input
+              type="text"
+              name="size"
+              value={variant.size}
+              onChange={(e) => handleVariantChange(e, index)}
+              placeholder="Size"
+              className="input input-bordered"
+            />
+            <label className="label">
+              <span className="label-text">Variant {index + 1} Quantity</span>
+            </label>
+            <input
+              type="number"
+              name="quantity"
+              value={variant.quantity}
+              onChange={(e) => handleVariantChange(e, index)}
+              placeholder="Quantity"
+              className="input input-bordered"
+            />
+          </div>
+        ))}
+
+<div className="form-control mt-4">
+          <button type="button" className="btn btn-secondary" onClick={addVariant}>
+            Add Variant
+          </button>
+        </div>
 
         <div className="form-control mt-6">
           <button className="btn btn-primary" type="submit">

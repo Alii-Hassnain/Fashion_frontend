@@ -80,9 +80,12 @@ const Cart = () => {
         
         </div>
       ) : !cartItems || cartItems.length === 0 ? (
+        <div className="flex flex-col items-center ">
         <p className="text-center text-lg font-semibold mt-5">
           Your cart is empty 🛒
         </p>
+         <button onClick={() => window.location.href = "/"} className="btn btn-primary m-5">Explore Products</button>
+        </div>
       ) : (
         <div className="flex flex-row justify-between gap-10 ">
           <div className="space-y-6 w-full">

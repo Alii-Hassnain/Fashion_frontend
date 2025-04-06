@@ -80,11 +80,17 @@ const Products = () => {
           setProducts([]);
           setSuccess(result.success);
           setCount(result.count);
+          handleError("No products found");
+          console.log("No products found");
+         
+          
         }
+
       } catch (error) {
         handleError("No products found");
         // handleError(error.message);
         console.error("Error fetching products:", error);
+      
       } finally {
         setLoading(false);
       }
@@ -147,7 +153,9 @@ const Products = () => {
         />
         <CommonHeading title="Products" />
 
-        <div className="flex flex-row ">
+        <div className="flex flex-row gap-5  " >
+        
+
           <FilterContainer
             key={filterKey}
             onGenderChange={(value) => handleFilterChange("gender", value)}
@@ -171,6 +179,7 @@ const Products = () => {
             success={success}
             count={count}
           />
+          
         </div>
       </div>
     </div>

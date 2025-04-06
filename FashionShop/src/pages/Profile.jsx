@@ -11,6 +11,7 @@ import { checkAuth } from "../components/Admin/Services/UserServices";
 const Profile = () => {
   const [orders, setOrders] = useState([]);
   const [userId, setUserId] = useState("");
+  const [loading, setLoading] = useState(true);
 
   const fetchOrders = async () => {
     try {
@@ -24,12 +25,17 @@ const Profile = () => {
       const data = await result.json();
       console.log("order data is : ", data.orders);
       if (data.success) {
-        setUserId(data.userId);
+        // setUserId(data.userId);
         setOrders(data.orders);
       } else {
         setOrders([]); 
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("Error fetching orders:", error);
+      setOrders([]);
+    } finally {
+      setLoading(false);  
+    }
   };
   // const userIdFetch=async()=>{
   //   const result =await checkAuth()
@@ -39,9 +45,27 @@ const Profile = () => {
   //     console.error("Failed to fetch user ID or user not authenticated.");
   //   }
   // }
+  const isAuth = async () => {
+    try {
+      const response = await checkAuth();
+      console.log("user services response in profile component is : ", response);
+      if (response) {
+        setUserId(response.user._id);
+      } else {
+        setUserId(null);
+      }
+      return response.success;
+    } catch (error) {
+      console.error("Error checking session:", error);
+      return false;
+    }
+  }
 
   useEffect(() => {
     fetchOrders();
+  }, []);
+  useEffect(() => {
+    isAuth();
   }, []);
   const handleCancelOrder = async (orderId) => {
     try {
@@ -73,12 +97,26 @@ const Profile = () => {
     return stepIndex <= currentIndex ? "step step-primary" : "step";
   };
 
+  if (loading) {
+    return <div>Loading...</div>;  // You can add a spinner here instead of "Loading..."
+  }
   return (
     <div className="max-w-6xl mx-auto p-6">
       <CommonHeading title={"My Orders"} />
+      
+      {  !userId ? (
+        <div className="flex flex-col items-center ">
+        
 
-      {Array.isArray(orders) && orders.length === 0 ? (
-        <p className="text-gray-600">No orders found.</p>
+        <p className=" text-lg font-semibold ">Please login to see your orders</p>
+        <button onClick={() => window.location.href = "/login"} className="btn btn-error mt-5">Login First </button>
+        </div>
+      ) : 
+      Array.isArray(orders) && orders.length === 0 ? (
+        <div className="flex flex-col items-center ">
+        <p className=" text-lg font-semibold ">No orders found.</p>
+        <button onClick={() => window.location.href = "/"} className="btn btn-primary mt-5">Explore Products</button>
+        </div>
       ) : (
         <div className="space-y-6">
           {orders.map((order) => (

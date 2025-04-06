@@ -1,5 +1,5 @@
 import React from "react";
-import { FaSearch } from "react-icons/fa";
+import { FaSearch, FaTimes } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
@@ -18,6 +18,10 @@ const applyFilter = ()=>{
     navigate(`/products?${params.toString()}`);
     
 };
+const clearSearch = () => {
+  setSearch(""); // Clear search field
+  applyFilter(); // Apply the filter with an empty query
+};
   return (
     <div className="flex justify-center items-center gap-2">
       <div className="relative w-full max-w-md ">
@@ -29,6 +33,12 @@ const applyFilter = ()=>{
           onChange={(e) => setSearch(e.target.value)}
         />
         <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" />
+        {search && (
+          <FaTimes
+          className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 cursor-pointer"
+          onClick={clearSearch} // Clear search when clicked
+        />
+        )}
       </div>
       <button className="btn btn-outline" onClick={applyFilter}>Search</button>
     </div>
