@@ -49,7 +49,7 @@ const CustomerInfo = ({onCustomerInfoChange}) => {
             <input
               name="mobileNumber"
               type="tel"
-              placeholder="+92 300 1234567"
+              placeholder="+92-300-1234567"
               className="input input-bordered"
               onChange={handleChange}
               required

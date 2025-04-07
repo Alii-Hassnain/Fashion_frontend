@@ -9,7 +9,7 @@ import axios from "axios";
 import { handleError, handleSuccess } from "../../utils/tostify";
 import { useDispatch } from "react-redux";
 import { clearCartAsync } from "../../features/cartSlice";
-import { sendOrderEmail } from "../Admin/Services/EmailServices";
+import { sendOrderEmail,sendWhatsappMessage } from "../Admin/Services/EmailServices";
 
 
 const PaymentForm = ({ customerInfo }) => {
@@ -33,6 +33,27 @@ const PaymentForm = ({ customerInfo }) => {
     const phoneRegex = /^\+92\s\d{4}\s\d{7}$/;
     return phoneRegex.test(number);
   };
+  function formatPhoneNumber(input) {
+    // Remove any non-digit characters (like spaces, dashes, etc.)
+    let cleanedInput = input.replace(/\D/g, '');
+
+    // Check if the cleaned input starts with the country code '92' (Pakistan)
+    if (cleanedInput.startsWith('92')) {
+        // If it starts with the country code, return it in the standard format
+        return '+92' + cleanedInput.slice(2);
+    } else if (cleanedInput.length === 11 && cleanedInput.startsWith('0')) {
+        // If it's a 10-digit number (e.g. '03331234567'), prepend +92
+        return '+92' + cleanedInput.slice(1); // Remove lea
+    }  else if (cleanedInput.length === 13 && cleanedInput.startsWith('923')) {
+        return '+92' + cleanedInput.slice(2); // Remove leading 92
+    } else if (cleanedInput.length === 12 && cleanedInput.startsWith('92')) {
+        return '+92' + cleanedInput.slice(2); // Remove leading 92
+    } else if (cleanedInput.length === 10) {
+        return '+92' + cleanedInput; // Add country code to the number 
+    }else {
+        return null
+    }
+}
 
   const placeOrder = async (orderData) => {
     try {
@@ -73,10 +94,17 @@ const PaymentForm = ({ customerInfo }) => {
       handleError("all fields are required");
       return;
     }
-    if (!validatePhoneNumber(customerInfo.mobileNumber)) {
-      handleError("Invalid phone number format. Use: +92 XXXX XXXXXXX");
+    // if (!validatePhoneNumber(customerInfo.mobileNumber)) {
+    //   handleError("Invalid phone number format. Use: +92 XXXX XXXXXXX");
+    //   return;
+    // }
+    const formattedNumber = formatPhoneNumber(customerInfo.mobileNumber);
+    console.log("formatted number is : ", formattedNumber);
+    if (!formattedNumber) {
+      handleError("Invalid phone number format. Use: +92 -XXX-XXXXXXX");
       return;
     }
+    customerInfo.mobileNumber = formattedNumber;
 
     setLoading(true);
     setError("");
@@ -130,8 +158,22 @@ const PaymentForm = ({ customerInfo }) => {
     // `https://tracking.example.com/${orderResponse.order._id}`,
           customerInfo.mobileNumber
         );
-        
+        const whatsappResponse = await sendWhatsappMessage(
+          customerInfo.mobileNumber,
+          customerInfo.fullName,
+          orderResponse.order._id,
+          totalPrice,
+          "Pending",
+          "Paid",
+          "http://localhost:5173/profile",
+        )
 
+        console.log("Whatsapp Response in payment form : ", whatsappResponse);
+        if (whatsappResponse.success) {
+          handleSuccess("WhatsApp message sent successfully!");
+        } else {
+          handleError("WhatsApp message sending failed!");
+        }
         console.log("Email Response: ", emailResponse);
         if (emailResponse.success) {
           handleSuccess("Email sent successfully!");
