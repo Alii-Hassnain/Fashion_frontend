@@ -167,7 +167,7 @@ const ProductsGridView = ({
           </div>
 
           {/* Pagination Buttons */}
-          <div className="flex justify-center mt-14 ">
+          <div className="flex justify-center m-14">
             <nav className="flex gap-4 items-center">
               <button
                 onClick={() => paginate(currentPage - 1)}

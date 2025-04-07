@@ -14,6 +14,7 @@ import { loader as adminProductsLoader } from './pages/admin/ManageProducts'
 import { ToastContainer } from "react-toastify";
 import { AdminAddProducts } from './components/Admin'
 import { MyProvider } from './components/Admin/MyContext'
+import {AdminReviews} from './components/Admin/AdminReviews'
 
 
 // import { loader as ManageProductsLoader } from './pages/admin/ManageProducts'
@@ -91,6 +92,10 @@ const router = createBrowserRouter([
         path:"orders",
         element:<ManageOrders/>
       },
+      {
+        path:"reviews",
+        element:<AdminReviews/>
+      }
       
     ]
     
@@ -134,6 +139,7 @@ const router = createBrowserRouter([
 
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from '@stripe/stripe-js'
+
 
 
 const stripePromise = loadStripe("pk_test_51Qt5f1IAryIsUHT2nPjN4107b3zi0mUPd9b2LyVN6zj1QaTARwUxzxn3ng06heGxkRd0mYb6iZIS2So7YZyypXoG00ijl0rH8e")

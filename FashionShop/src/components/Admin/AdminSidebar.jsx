@@ -2,6 +2,7 @@ import React from 'react'
 import { FaTachometerAlt } from "react-icons/fa";
 import { FaBoxOpen } from "react-icons/fa";
 import { FaShoppingCart } from "react-icons/fa";
+import { FaRegStar } from "react-icons/fa";
 import { Link } from 'react-router-dom'
 
 
@@ -10,6 +11,7 @@ const navLinks =
     { id: 1, name: "Dashboard", path: "/admin", icon: <FaTachometerAlt /> },
     { id: 2, name: "Products", path: "/admin/products", icon: <FaBoxOpen /> },
     { id: 3, name: "Orders", path: "/admin/orders", icon: <FaShoppingCart /> },
+    { id: 4, name: "Reviews", path: "/admin/reviews", icon: <FaRegStar/> },
   ];
 
 const AdminSidebar = () => {

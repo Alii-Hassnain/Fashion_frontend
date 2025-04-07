@@ -15,8 +15,9 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { TryRoom } from "../pages";
-import { handleError } from "../utils/tostify";
+import { handleError,handleSuccess } from "../utils/tostify";
 import { checkAuth } from "../components/Admin/Services/UserServices";
+import {createReview, getReviews} from "../components/Admin/Services/ReviewServices"; 
 
 export const loader = async ({ params }) => {
   const id = params.id;
@@ -39,6 +40,37 @@ const SingleProduct = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const userData = useSelector((state) => state.user.userData);
+  const { title, description, price, product_image,variants } = singleProduct;
+  console.log("singleProduct",singleProduct)
+  const colors = ["#000000", "#FF5733", "#1E90FF", "#32CD32", "#800080"];
+
+  const [selectedSize, setSelectedSize] = useState("");
+  const [selectedColor, setSelectedColor] = useState("");
+  const [selectedQuantity, setSelectedQuantity] = useState(1);
+  const [showReviews, setShowReviews] = useState(false);
+
+  // const [reviews, setReviews] = useState([
+  //   {
+  //     id: 1,
+  //     user: "Ali",
+  //     rating: 5,
+  //     comment: "Great product!",
+  //     date: "20 Mar 2025",
+  //   },
+  //   {
+  //     id: 2,
+  //     user: "Hassan",
+  //     rating: 4,
+  //     comment: "Good quality but late delivery.",
+  //     date: "21 Mar 2025",
+  //   },
+  // ]);
+
+  const [reviews, setReviews] = useState([]);
+
+
+  const [activeTab, setActiveTab] = useState("description");
+
 
   const isAuth = async () => {
     try {
@@ -58,6 +90,7 @@ const SingleProduct = () => {
   };
   useEffect(() => {
     isAuth();
+    fetchReviews();
   }, []);
   const handleAddToCart = () => {
     if (userId) {
@@ -89,6 +122,27 @@ const SingleProduct = () => {
     }
   };
 
+  const fetchReviews = async () => {
+    try {
+      const response = await getReviews(singleProduct._id);
+      console.log("data from backend for getting reviews  : ", response);
+      if (response.success) {
+        setReviews(response.reviews);
+      }
+       else {
+        handleError(response.message);
+      }
+    } catch (error) {
+      console.log("error in getting reviews : ", error);
+      handleError("Error getting reviews");
+    }
+  };
+  useEffect(() => {
+    if(singleProduct?._id){
+      fetchReviews();
+    }
+  }, []);
+
   // useEffect(() => {
   //   if (userData?._id) {
   //     setUserId(userData._id);
@@ -102,59 +156,71 @@ const SingleProduct = () => {
   //     return true
   //   };
 
-  const { title, description, price, product_image,variants } = singleProduct;
-console.log("singleProduct",singleProduct)
+ 
 
   // const sizes = ["S", "M", "L", "XL", "2XL"];
-  const colors = ["#000000", "#FF5733", "#1E90FF", "#32CD32", "#800080"];
-
-  const [selectedSize, setSelectedSize] = useState("");
-  const [selectedColor, setSelectedColor] = useState("");
-  const [selectedQuantity, setSelectedQuantity] = useState(1);
-  const [showReviews, setShowReviews] = useState(false);
-
-  const [reviews, setReviews] = useState([
-    {
-      id: 1,
-      user: "Ali",
-      rating: 5,
-      comment: "Great product!",
-      date: "20 Mar 2025",
-    },
-    {
-      id: 2,
-      user: "Hassan",
-      rating: 4,
-      comment: "Good quality but late delivery.",
-      date: "21 Mar 2025",
-    },
-  ]);
-
-  const [newReview, setNewReview] = useState({
-    user: "",
-    rating: 5,
-    comment: "",
-  });
-
-  const handleReviewSubmit = () => {
-    if (newReview.user && newReview.comment) {
-      const currentDate = new Date().toLocaleDateString("en-GB", {
-        day: "2-digit",
-        month: "short",
-        year: "numeric",
-      });
-      setReviews([
-        ...reviews,
-        { id: reviews.length + 1, ...newReview, date: currentDate },
-      ]);
-      setNewReview({ user: "", rating: 5, comment: "" });
-    }
-  };
 
 
  
 
-  const [activeTab, setActiveTab] = useState("description");
+  // const handleReviewSubmit = () => {
+  //   if (newReview.user && newReview.comment) {
+  //     const currentDate = new Date().toLocaleDateString("en-GB", {
+  //       day: "2-digit",
+  //       month: "short",
+  //       year: "numeric",
+  //     });
+  //     setReviews([
+  //       ...reviews,
+  //       { id: reviews.length + 1, ...newReview, date: currentDate },
+  //     ]);
+  //     setNewReview({ user: "", rating: 5, comment: "" });
+  //   }
+  // };
+
+  const [newReview, setNewReview] = useState({
+    rating: 5,
+    comment: "",
+  });
+  const handleReviewSubmit = async (e) => {
+    e.preventDefault();
+
+    if(!userId){
+      handleError("Please Login First to add review.");
+      setTimeout(() => {
+        navigate("/login");
+      }, 3000);
+      return
+    }
+    if (!newReview.comment) {
+      handleError("Comment is required.");
+      return;
+    }
+    const reviewData = {
+      productId: singleProduct._id,
+      // userId: userId,
+      comment: newReview.comment,
+      rating: newReview.rating,
+    };
+    console.log("reviewData is : ", reviewData);
+
+  try {
+    const response = await createReview(reviewData);
+    if (response.success) {
+      handleSuccess("Review submitted successfully.");
+      setNewReview({  rating: 5, comment: "" });
+      fetchReviews(); 
+    } else {
+      handleError(response.message || "Failed to submit review.");
+    }
+  } catch (error) {
+    console.error("Error submitting review:", error);
+    handleError("Something went wrong.");
+  } 
+}
+
+
+
 
   return (
     <div className="align-elements">
@@ -299,7 +365,7 @@ console.log("singleProduct",singleProduct)
         </div>
       </div>
 
-      <div className="flex border-b mb-4">
+      <div className="flex border-b mb-2 mt-10 md:mt-0 w-full md:w-auto">
         <button
           className={`py-2 px-4 text-lg font-semibold ${
             activeTab === "description"
@@ -344,14 +410,17 @@ console.log("singleProduct",singleProduct)
         )}
         {activeTab === "reviews" && (
           <div>
+            {reviews.length === 0 && (
+              <p className="text-red-600 text-center mt-0">No reviews yet.</p>
+            )}
             <h2 className="text-md font-bold mb-5">
               Customer Reviews ⭐({reviews.length})
             </h2>
             {reviews.map((review) => (
               <div key={review.id} className="border-b pb-2 mb-2">
                 <p className="font-semibold">
-                  {review.user}{" "}
-                  <span className="text-gray-500 text-sm">({review.date})</span>
+                  {review.userId.username}{" "}
+                  <span className="text-gray-500 text-sm">({review.createdAt})</span>
                 </p>
                 <p className="text-yellow-500">{"⭐".repeat(review.rating)}</p>
                 <p className="text-gray-700">{review.comment}</p>
@@ -359,9 +428,9 @@ console.log("singleProduct",singleProduct)
             ))}
 
             {/* Review Submission */}
-            <div className="mt-4 border p-10">
+            <div className="mt-4 border p-5">
               <h3 className="text-lg font-semibold">Add a Review</h3>
-              <input
+              {/* <input
                 type="text"
                 placeholder="Your Name"
                 className="border p-2 w-full mt-2"
@@ -369,28 +438,31 @@ console.log("singleProduct",singleProduct)
                 onChange={(e) =>
                   setNewReview({ ...newReview, user: e.target.value })
                 }
-              />
+              /> */}
 
               
 
               {/* Star Selection */}
-              <div className="rating flex flex-col gap-2 mt-2">
+              <div className="rating flex flex-col gap-2 mt-4">
                 {[1, 2, 3, 4, 5].map((star) => (
                   <label
                     key={star}
-                    className={`flex items-center gap-2 cursor-pointer border p-2 rounded-md hover:bg-gray-100 ${
+                    className={`flex items-center gap-2 cursor-pointer border p-2 rounded-md hover:bg-gray-200 ${                 
                       newReview.rating === star
-                        ? "border-black bg-gray-200"
+                      
+                        ? "border-black bg-gray-300"
                         : ""
-                    }`}
+                    }` }
                   >
                     <input
                       type="radio"
                       name="rating"
                       className="hidden"
                       checked={newReview.rating === star}
-                      onChange={() =>
-                        setNewReview({ ...newReview, rating: star })
+                      onChange={() =>{
+                        setNewReview({ ...newReview, rating: star }
+                        )
+                      }
                       }
                     />
                     <div className="flex">
@@ -414,7 +486,7 @@ console.log("singleProduct",singleProduct)
 
               <textarea
                 placeholder="Your Review"
-                className="border p-2 w-full mt-2"
+                className="border p-2 w-full mt-2 text-white bg-gray-800"
                 value={newReview.comment}
                 onChange={(e) =>
                   setNewReview({ ...newReview, comment: e.target.value })
