@@ -17,14 +17,19 @@ import {
 import { TryRoom } from "../pages";
 import { handleError,handleSuccess } from "../utils/tostify";
 import { checkAuth } from "../components/Admin/Services/UserServices";
-import {createReview, getReviews} from "../components/Admin/Services/ReviewServices"; 
+import {createReview, getReviews} from "../components/Admin/Services/ReviewServices";
+import { ProductsRecommendation } from "../components"; 
+
 
 export const loader = async ({ params }) => {
   const id = params.id;
   try {
     const res = await axiosFetchProducts.get(`/product/${id}`);
+    const res2 = await axiosFetchProducts.get(`/recommendedproducts/${id}`)
     const singleProduct = res.data.data;
-    return { singleProduct };
+
+    const recommendedProducts = res2.data;
+    return { singleProduct , recommendedProducts };
   } catch (error) {
     console.error("Error fetching product:", error);
     throw new Response("Product not found", { status: 404 });
@@ -35,12 +40,15 @@ export const loader = async ({ params }) => {
 
 
 const SingleProduct = () => {
-    const [userId, setUserId] = useState("");
-  const { singleProduct } = useLoaderData();
+  const [userId, setUserId] = useState("");
+  const { singleProduct,recommendedProducts } = useLoaderData();
+  console.log("singleProduct",singleProduct)
+  console.log("recommendedProducts",recommendedProducts)
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const userData = useSelector((state) => state.user.userData);
   const { title, description, price, product_image,variants } = singleProduct;
+  
   console.log("singleProduct",singleProduct)
   const colors = ["#000000", "#FF5733", "#1E90FF", "#32CD32", "#800080"];
 
@@ -48,6 +56,10 @@ const SingleProduct = () => {
   const [selectedColor, setSelectedColor] = useState("");
   const [selectedQuantity, setSelectedQuantity] = useState(1);
   const [showReviews, setShowReviews] = useState(false);
+
+
+
+  
 
   // const [reviews, setReviews] = useState([
   //   {
@@ -137,11 +149,18 @@ const SingleProduct = () => {
       handleError("Error getting reviews");
     }
   };
-  useEffect(() => {
-    if(singleProduct?._id){
-      fetchReviews();
-    }
-  }, []);
+  // In your SingleProduct component
+useEffect(() => {
+  if (singleProduct?._id) {
+    fetchReviews();
+  }
+}, [singleProduct._id]); // Add product ID as dependency
+
+useEffect(() => {
+  return () => {
+    setReviews([]); // Reset when component unmounts
+  };
+}, []);
 
   // useEffect(() => {
   //   if (userData?._id) {
@@ -224,8 +243,6 @@ const SingleProduct = () => {
 
   return (
     <div className="align-elements">
-
-    
     <div className=" grid grid-cols-1 md:grid-cols-2 items-start px-6 md:px-16 py-10">
       <div className="flex justify-center">
         <Carousel>
@@ -505,6 +522,7 @@ const SingleProduct = () => {
     </div>
         <div>
           <CommonHeading title={"You may also Like"}/>
+          <ProductsRecommendation/>
         </div>
     </div>
   );

@@ -1,8 +1,12 @@
+import  AdminUsers  from '../../components/Admin/AdminUsers'
 import React from 'react'
+
 
 const ManageUsers = () => {
   return (
-    <div>ManageUsers</div>
+    <div className='align-elements'>
+      <AdminUsers/>
+    </div>
   )
 }
 

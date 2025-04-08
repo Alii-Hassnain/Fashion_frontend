@@ -10,6 +10,7 @@ export {default as SubmitMe} from "./SubmitMe"
 export {default as Features} from "./Features"
 export {default as Footer} from "./Footer"
 export {default as SearchProducts} from "./SearchProducts"
+export {default as ProductsRecommendation} from "./ProductsRecommendation"
 
 
 

@@ -4,17 +4,22 @@ import ForgotPassword from './pages/ForgotPassword'
 import ResetPassword from './pages/ResetPassword'
 import VerifyUser from './pages/VerifyUser'
 import {createBrowserRouter,RouterProvider} from "react-router-dom"
+
+///userside loaders
 import { loader as productsLoader } from './pages/Products'
 import { loader as singleProductLoader } from './pages/SingleProduct'
 
 
 ///these are the admin routes
-import {AdminLayout,AdminDashboard,ManageProducts,ManageOrders} from './pages/admin'
+import {AdminLayout,AdminDashboard,ManageProducts,ManageOrders,AdminReviews,ManageUsers} from './pages/admin'
+
+
+///adminside loaders
 import { loader as adminProductsLoader } from './pages/admin/ManageProducts'
 import { ToastContainer } from "react-toastify";
 import { AdminAddProducts } from './components/Admin'
 import { MyProvider } from './components/Admin/MyContext'
-import {AdminReviews} from './components/Admin/AdminReviews'
+
 
 
 // import { loader as ManageProductsLoader } from './pages/admin/ManageProducts'
@@ -86,7 +91,7 @@ const router = createBrowserRouter([
       },
       {
         path:"users",
-        element:<div>Users</div>
+        element:<ManageUsers/>
       },
       {
         path:"orders",
