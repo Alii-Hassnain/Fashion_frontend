@@ -95,6 +95,26 @@ export const updateProduct = async (id, formData, setSuccess, setError) => {
     handleError("Error updating product");
   }
 }
+export const getProducts = async () => {
+  try {
+    const response=await fetch ("http://localhost:8080/admin/get-products",{
+      method:"GET",
+      credentials:"include",
+    })
+    const data=await response.json()
+    console.log("data from backend for getting products in product services : ",data)
+    if(data.success){
+      return data
+    }else{
+      handleError(data.message)
+      return false
+    }
+  }
+  catch (error) {
+    console.log("error in getting products : ",error )
+    handleError("Error getting products");
+  }
+}
   // try {
   //   console.log(id, formData);
   //   const res = await axiosAdminUrl.patch(`/update-product/${id}`, formData);

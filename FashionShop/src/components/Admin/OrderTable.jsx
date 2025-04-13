@@ -151,7 +151,7 @@ const OrderTable = ({ filter = "all" }) => {
                   <ul className="list-inside">
                     {order.cartItems.map((item, index) => (
                       <li key={index}>
-                        {item.productId.title}{"  "}
+                        {item.productId?item.productId.title : ''}{"  "}
                         <span className="text-gray-500">
                           (x{item.quantity} {" "}{item.size || "N/A"})
                         </span>

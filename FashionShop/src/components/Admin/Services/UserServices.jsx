@@ -35,3 +35,67 @@ const BASE_URL = "http://localhost:8080/user"
       return false;
     }
   };
+  export const getAllUsers = async () => {
+    try {
+      const response = await fetch ("http://localhost:8080/admin/get-users", {
+        method: "GET",
+        credentials: "include", 
+      });
+      const data = await response.json();
+      console.log("getAllUsers response is : ",data)
+      if(data.success){
+        return data;
+      }
+      else {
+        console.log("getAllUsers response is : ",data)
+        return false; 
+      }
+    }
+    catch (error) {
+      console.error("Error fetching users:", error);
+      return false; 
+    }
+  }; 
+  export const getAllUsersOrderSummary = async () => {
+    try {
+      const response = await fetch ("http://localhost:8080/admin/getAllUsersOrderSummary", {
+        method: "GET",
+        credentials: "include", 
+      });
+      const data = await response.json();
+      console.log("getAllUsersOrderSummary response is : ",data)
+      if(data.success){
+        return data;
+      }
+      else {
+        console.log("getAllUsersOrderSummary response is : ",data)
+        return false; 
+      }
+    }
+    catch (error) {
+      console.error("Error fetching users:", error);
+      return false; 
+    }
+  } 
+export const deleteUserById=async (userId) => {
+  try {
+    const response = await fetch(`http://localhost:8080/admin/delete-user/${userId}`, {
+      method: "DELETE",
+      credentials: "include",
+    });
+    const data = await response.json();
+    console.log("data from backend for deleting user in user services : ", data);
+    if (data.success) {
+      return data;
+    } else {
+      handleError(data.message);
+      return false;
+
+    }
+  }
+  catch (error) {
+    console.log("error in deleting user in userServices : ", error);
+    handleError("Error deleting user");
+    return false;
+  }
+}

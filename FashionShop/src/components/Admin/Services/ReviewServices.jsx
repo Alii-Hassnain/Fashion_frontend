@@ -93,3 +93,46 @@ export const getReviewsByUser = async (userId) => {
         handleError("Error getting reviews by user");
     }
 }
+
+export const getReviewByUserEmailOrUsername = async (emailOrUsername) => {
+    console.log("emailOrUsername in getReviewByUserEmailOrUsername in review services : ", emailOrUsername);
+    try {
+        const response = await fetch(`http://localhost:8080/api/review-byNameEmail/${emailOrUsername}`, {
+            method: "GET",
+            credentials: "include",
+        });
+        const data = await response.json();
+        console.log("data from backend for getting review by user email or username in review services : ", data);
+        if (data.success) {
+            return data;
+        } else {
+            // handleError(data.message);
+            return false
+        }
+    } catch (error) {
+        console.log("error in getting review by user email or username : ", error);
+        handleError("Error getting review by user email or username");
+    }
+}
+
+export const getReviewByProductId = async (productId) => {
+    console.log("productId in getReviewByProductId in review services : ", productId);
+    try {
+        const response = await fetch(`http://localhost:8080/api/review-byProductId/${productId}`, {
+            method: "GET",
+            credentials: "include",
+        });
+        const data = await response.json();
+        console.log("data from backend for getting review by product id in review services : ", data);
+        if (data.success) {
+            return data;
+        } else {
+            // handleError(data.message);
+            return false
+        }
+    } catch (error) {
+        console.log("error in getting review by product id : ", error);
+        handleError("Error getting review by product id");  
+        return false
+    }
+}

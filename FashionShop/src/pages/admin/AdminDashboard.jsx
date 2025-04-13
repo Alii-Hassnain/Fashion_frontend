@@ -31,6 +31,7 @@ const AdminDashboard = () => {
   const fetchOrders = async () => {
     try {
       const data = await getAllOrders();
+      
       setOrders(data);
       filterOrders(data);
     } catch (error) {

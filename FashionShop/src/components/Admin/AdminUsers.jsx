@@ -10,6 +10,8 @@ import {
     TableCell,
   } from "@/components/ui/table";
   import { useEffect , useState} from "react";
+  import { getAllUsersOrderSummary,deleteUserById} from "./Services/UserServices"
+import { handleSuccess, handleError } from '../../utils/tostify';
  
   const invoices = [
     {
@@ -71,6 +73,40 @@ import {
   ];
 
 const AdminUsers = () => {
+  const [users, setUsers] = useState([]);
+  const [userCount , setUserCount] = useState(0);
+    const fetchUsers = async () => {
+        const response = await getAllUsersOrderSummary();
+      if(response){
+        setUsers(response.data);
+        setUserCount(response.count);
+        // handleSuccess("Users fetched successfully!");
+      }
+      else{
+        console.log("response is : ",response)
+     
+        setUsers([]);
+        setUserCount(0);
+        handleSuccess("No Users found!");
+      }
+    }
+    const handleDelete = async (userId) => {
+        const response = await deleteUserById(userId);
+        if(response){
+          fetchUsers();
+          handleSuccess("User deleted successfully!");
+        }
+        else{
+          console.log("response is : ",response)
+          handleError("Failed to delete user!");  
+
+        }
+      }
+
+    useEffect(() => {
+        fetchUsers();
+      }, []);
+
   return (
     <div>
 
@@ -83,19 +119,21 @@ const AdminUsers = () => {
               <TableHead className="w-[100px]">Profile</TableHead>
               <TableHead>Name</TableHead>
               <TableHead>Email</TableHead>
+              <TableHead className="text-right">Total Orders</TableHead>
               <TableHead className="text-right">Total Amount</TableHead>
               <TableHead className="text-right">Delete</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {invoices.map((user, index) => (
+            {users.map((user, index) => (
               <TableRow key={index}>
-                <TableCell>{user.profile}{user._id}</TableCell>
-                <TableCell className="font-medium">{user.name}</TableCell>
+                <TableCell>{user.profile}{user.userId}</TableCell>
+                <TableCell className="font-medium">{user.username}</TableCell>
                 <TableCell>{user.email}</TableCell>
-                <TableCell className="text-right">{user.totalAmount}</TableCell>
+                <TableCell className="text-right">{user.totalOrders}</TableCell>
+                <TableCell className="text-right">{user.totalSpent}</TableCell>
                 <TableCell className="text-right">
-                    <button className='btn btn-error'>delete</button>
+                    <button className='btn btn-error' onClick={() => handleDelete(user.userId)}>delete</button>
                 </TableCell>
               </TableRow>
             ))}
