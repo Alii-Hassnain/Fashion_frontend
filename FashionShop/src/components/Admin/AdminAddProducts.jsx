@@ -4,9 +4,14 @@ import { deleteProduct } from "./Services/ProductServices";
 import { updateProduct } from "./Services/ProductServices";
 import { MyContext } from "./MyContext";
 import { useContext } from "react";
+import { MdAddPhotoAlternate } from "react-icons/md";
+import { IoIosCloseCircle } from "react-icons/io";
 const AdminAddProducts = () => {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
+  const [previewImage, setPreviewImage] = useState(null);
+  const [images, setImages] = useState([]);
+
   const [product, setProduct] = useState({
     title: "",
     price: "",
@@ -27,14 +32,25 @@ const AdminAddProducts = () => {
       };
     });
   };
-  const handleFile = (e) => {
+  const handleFile = (e, index) => {
     const file = e.target.files[0];
+    if (file) {
+      const newImages = [...images];
+      newImages[index] = URL.createObjectURL(file);
+      setImages(newImages);
+    }
     setProduct((product) => {
       return {
         ...product,
         product_image: file,
       };
     });
+  };
+
+  const handleDeleteImage = (index) => {
+    const newImages = [...images];
+    newImages.splice(index, 1); // selected image remove kar do  
+    setImages(newImages);
   };
 
   const handleVariantChange = (e, index) => {
@@ -110,6 +126,59 @@ const AdminAddProducts = () => {
       <form onSubmit={handleSubmit}>
         <div className="form-control">
           <label className="label">
+            
+            <span className="label-text">Upload Product Images (Max 4)</span>
+            <span className="label-text">First Image will be used for Virual Try</span>
+          </label>
+
+          <div className="flex gap-4 flex-wrap">
+            {[...Array(Math.min(images.length + 1, 4))].map((_, index) => (
+              <div
+                key={index}
+                className="w-32 h-32 p-3  border-2 border-dashed rounded-lg flex items-center justify-center relative"
+              >
+                <input
+                  type="file"
+                  id={`image-${index}`}
+                  onChange={(e) => handleFile(e, index)}
+                  className="hidden"
+                />
+                <label
+                  htmlFor={`image-${index}`}
+                  className="cursor-pointer flex items-center justify-center"
+                >
+                  {images[index] ? (
+                    <div className="relative w-full h-full">
+                      <img
+                        src={images[index]}
+                        alt={`Preview ${index}`}
+                        className="object-scale-down w-32 h-32"
+                      />
+
+                      <button
+                        type="button"
+                        onClick={() => handleDeleteImage(index)}
+                        className="absolute top-0 right-0 rounded-full p-1"
+                      > 
+                      <div className="text-red-800">
+
+                        <IoIosCloseCircle />
+                      </div>
+                      </button>
+                    </div>
+                  ) : (
+                    <MdAddPhotoAlternate className="text-4xl text-gray-400" />
+                  )}
+                </label>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* FOR multiple image upper code is used */}
+
+        <div className="form-control">
+          <label className="label">
             <span className="label-text">Product Title</span>
           </label>
           <input
@@ -135,17 +204,7 @@ const AdminAddProducts = () => {
             className="input input-bordered"
           />
         </div>
-        <div className="form-control">
-          <label className="label">
-            <span className="label-text">Product Image</span>
-          </label>
-          <input
-            type="file"
-            name="product_image"
-            onChange={handleFile}
-            placeholder="Product Image"
-          />
-        </div>
+
         <div className="form-control">
           <label className="label">
             <span className="label-text">Product Stock</span>
@@ -159,7 +218,7 @@ const AdminAddProducts = () => {
             className="input input-bordered"
           />
         </div>
-        <div className="form-control">
+        {/* <div className="form-control">
           <label className="label">
             <span className="label-text">Product Rating</span>
           </label>
@@ -174,7 +233,7 @@ const AdminAddProducts = () => {
             max="5"
             step="0.1"
           />
-        </div>
+        </div> */}
 
         <div className="form-control">
           <label className="label">
@@ -251,8 +310,12 @@ const AdminAddProducts = () => {
           </div>
         ))}
 
-<div className="form-control mt-4">
-          <button type="button" className="btn btn-secondary" onClick={addVariant}>
+        <div className="form-control mt-4">
+          <button
+            type="button"
+            className="btn btn-secondary"
+            onClick={addVariant}
+          >
             Add Variant
           </button>
         </div>

@@ -43,7 +43,7 @@ const AdminProductsGridView = () => {
                 <img
                   src={product_image}
                   alt={title}
-                  className="w-full h-56 object-cover"
+                  className="w-full h-56 object-scale-down"
                 />
                 <h2 className="text-lg font-semibold text-gray-800 mt-2">
                   {title}
