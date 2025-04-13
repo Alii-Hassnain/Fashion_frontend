@@ -30,7 +30,10 @@ const ProductsRecommendation = () => {
                 key={_id}
                 className="bg-white shadow-md rounded-md p-4 cursor-pointer"
               >
-                <Link to={`/singleproduct/${_id}`} className="block">
+                <Link to={`/singleproduct/${_id}`} className="block"
+                onClick={() => window.scrollTo(0, 0)}
+                
+                >
                   <img
                     src={product_image}
                     alt={title}
