@@ -1,34 +1,25 @@
-# Node modules
+# Node modules (keep this)
 node_modules/
-dist/
-.vite/
 
-# Build outputs
+# Vite cache (keep this)
+.vite/
 *.log
 *.cache
 *.tmp
-*.lock
 
-# Environment variables (hide API keys & sensitive data)
+# Environment files (keep this)
 .env
 .env.local
 .env.development
 .env.production
 
-# Vite config (if you want to hide it)
-vite.config.js
-vite.config.ts
-
-# MacOS system files
+# System files (keep this)
 .DS_Store
-
-# IDE/editor files
 .idea/
 .vscode/
 *.swp
 *.swo
 
-# Dependency lock files (optional, if you don't want to track them)
-package-lock.json
-yarn.lock
-pnpm-lock.yaml
+# Remove these exclusions:
+# dist/  ← COMMENT THIS OUT
+# *.lock ← COMMENT THIS OUT
