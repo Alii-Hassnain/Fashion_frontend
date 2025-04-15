@@ -1,11 +1,10 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { CommonHeading } from "../components";
 import { axiosFetchProducts } from "../utils/axiosFetch";
 import { ProductsContainer } from "../components";
 import { FilterContainer } from "../components/filters";
 import { SearchProducts } from "../components";
 import hero1 from "../assets/hero1.webp";
-import { useLoaderData } from "react-router-dom";
 import { handleError, handleSuccess } from "../utils/tostify";
 
 export const loader = async ({ request }) => {
@@ -82,15 +81,11 @@ const Products = () => {
           setCount(result.count);
           handleError("No products found");
           console.log("No products found");
-         
-          
         }
-
       } catch (error) {
         handleError("No products found");
         // handleError(error.message);
         console.error("Error fetching products:", error);
-      
       } finally {
         setLoading(false);
       }
@@ -153,9 +148,7 @@ const Products = () => {
         />
         <CommonHeading title="Products" />
 
-        <div className="flex flex-row gap-5  " >
-        
-
+        <div className="flex flex-row gap-5  ">
           <FilterContainer
             key={filterKey}
             onGenderChange={(value) => handleFilterChange("gender", value)}
@@ -179,7 +172,6 @@ const Products = () => {
             success={success}
             count={count}
           />
-          
         </div>
       </div>
     </div>

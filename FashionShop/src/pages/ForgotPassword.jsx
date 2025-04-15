@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { FormInput } from "../components";
 import { handleError, handleSuccess } from "./../utils/tostify";
 import { useNavigate, useParams } from "react-router-dom";
@@ -15,16 +15,13 @@ const ForgotPassword = () => {
     e.preventDefault();
     console.log("email from frontend", Email);
     try {
-      const response = await fetch(
-        `${baseURL}/user/forgot-password`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ email: Email }),
-        }
-      );
+      const response = await fetch(`${baseURL}/user/forgot-password`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email: Email }),
+      });
       const result = await response.json();
       console.log("result from backend", result.message);
       if (result.success) {

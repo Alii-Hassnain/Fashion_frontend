@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { SiGmail } from "react-icons/si";
 import { FaKey } from "react-icons/fa";
@@ -154,7 +154,7 @@ const Login = () => {
                   </p>
                 </Link>
                 <div className="flex flex-row gap-2 text-white">
-                  <p className="text-white">Does't have an account</p>
+                  <p className="text-white">Does&apos;t have an account</p>
                   <Link to={"/register"}>
                     <p className="text-primary link-hover cursor-pointer">
                       Register
