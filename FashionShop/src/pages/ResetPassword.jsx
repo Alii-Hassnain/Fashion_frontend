@@ -4,6 +4,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { handleError, handleSuccess } from "./../utils/tostify";
 import background from "../assets/hero3.jpg";
 import { RxCross2 } from "react-icons/rx";
+const baseURL = import.meta.env.VITE_SERVER_URI;
 // import { set } from "mongoose";
 const ResetPassword = () => {
   const [password, setPassowrd] = useState("");
@@ -22,7 +23,7 @@ const ResetPassword = () => {
     console.log("token from frontend : ", token);
     try {
       const response = await fetch(
-        `http://localhost:8080/user/reset-password`,
+        `${baseURL}/user/reset-password`,
         {
           method: "POST",
           headers: {

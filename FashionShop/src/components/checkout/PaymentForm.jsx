@@ -10,7 +10,7 @@ import { handleError, handleSuccess } from "../../utils/tostify";
 import { useDispatch } from "react-redux";
 import { clearCartAsync } from "../../features/cartSlice";
 import { sendOrderEmail,sendWhatsappMessage } from "../Admin/Services/EmailServices";
-
+const baseURL = import.meta.env.VITE_SERVER_URI;
 
 const PaymentForm = ({ customerInfo }) => {
   const userData = useSelector((state) => state.user.userData);
@@ -58,7 +58,7 @@ const PaymentForm = ({ customerInfo }) => {
   const placeOrder = async (orderData) => {
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/place-Order",
+        `${baseURL}/api/place-Order`,
         orderData
       );
       if (response.data.success) {
@@ -354,7 +354,7 @@ export default PaymentForm;
 
 //   const placeOrder = async (orderData) => {
 //     try {
-//       const response = await axios.post("http://localhost:8080/api/order", orderData);
+//       const response = await axios.post(`${baseURL}/api/order`, orderData);
 //       console.log("Order Response in payment form:", response.data);
 //       if (response.data) {
 //         handleSuccess("Order Placed Successfully!");

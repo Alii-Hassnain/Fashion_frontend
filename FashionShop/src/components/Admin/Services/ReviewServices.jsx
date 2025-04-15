@@ -1,11 +1,12 @@
 import React from "react";
 import { handleSuccess } from "../../../utils/tostify";
 import { handleError } from "../../../utils/tostify";
+const baseURL = import.meta.env.VITE_SERVER_URI;
 
 export const createReview = async (reviewData) => {
     console.log("reviewData in createReview in review services : ", reviewData);
     try {
-        const response = await fetch("http://localhost:8080/api/create-review", {
+        const response = await fetch(`${baseURL}/api/create-review`, {
             method: "POST",
             headers: { 'Content-Type': 'application/json' },
             credentials: "include",
@@ -33,7 +34,7 @@ export const createReview = async (reviewData) => {
 
 export const getReviews = async (productId) => {
     try {
-        const response = await fetch(`http://localhost:8080/api/get-review/${productId}`, {
+        const response = await fetch(`${baseURL}/api/get-review/${productId}`, {
             method: "GET",
             credentials: "include",
         });
@@ -55,7 +56,7 @@ export const getReviews = async (productId) => {
 export const deleteReview = async (reviewId) => {
     console.log("reviewId in deleteReview in review services : ", reviewId);
     try {
-        const response = await fetch(`http://localhost:8080/api/delete-review/${reviewId}`, {
+        const response = await fetch(`${baseURL}/api/delete-review/${reviewId}`, {
             method: "DELETE",
             credentials: "include",
         });
@@ -77,7 +78,7 @@ export const deleteReview = async (reviewId) => {
 export const getReviewsByUser = async (userId) => {
     console.log("userId in getReviewsByUser in review services : ", userId);
     try {
-        const response = await fetch(`http://localhost:8080/api/get-userReviews/${userId}`, {
+        const response = await fetch(`${baseURL}/api/get-userReviews/${userId}`, {
             method: "GET",
             credentials: "include",
         });
@@ -97,7 +98,7 @@ export const getReviewsByUser = async (userId) => {
 export const getReviewByUserEmailOrUsername = async (emailOrUsername) => {
     console.log("emailOrUsername in getReviewByUserEmailOrUsername in review services : ", emailOrUsername);
     try {
-        const response = await fetch(`http://localhost:8080/api/review-byNameEmail/${emailOrUsername}`, {
+        const response = await fetch(`${baseURL}/api/review-byNameEmail/${emailOrUsername}`, {
             method: "GET",
             credentials: "include",
         });
@@ -118,7 +119,7 @@ export const getReviewByUserEmailOrUsername = async (emailOrUsername) => {
 export const getReviewByProductId = async (productId) => {
     console.log("productId in getReviewByProductId in review services : ", productId);
     try {
-        const response = await fetch(`http://localhost:8080/api/review-byProductId/${productId}`, {
+        const response = await fetch(`${baseURL}/api/review-byProductId/${productId}`, {
             method: "GET",
             credentials: "include",
         });

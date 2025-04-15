@@ -5,6 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import background from "../assets/hero1.webp";
 import { Link } from "react-router-dom";
 import { RxCross2 } from "react-icons/rx";
+const baseURL = import.meta.env.VITE_SERVER_URI;
 const ForgotPassword = () => {
   console.log("this is frogot password commponent ");
   const [Email, setEmail] = useState("");
@@ -15,7 +16,7 @@ const ForgotPassword = () => {
     console.log("email from frontend", Email);
     try {
       const response = await fetch(
-        "http://localhost:8080/user/forgot-password",
+        `${baseURL}/user/forgot-password`,
         {
           method: "POST",
           headers: {

@@ -1,9 +1,10 @@
 import React from 'react'
 import axios from 'axios'
+const baseURL = import.meta.env.VITE_SERVER_URI
 
-const productionUrl = "http://localhost:8080/api"
-const userUrl = "http://localhost:8080/user"
-const AdminUrl = "http://localhost:8080/admin"
+const productionUrl = `${baseURL}/api`;
+const userUrl = `${baseURL}/user`;
+const adminUrl = `${baseURL}/admin`;
 
 export const axiosFetchProducts = axios.create({
     baseURL: productionUrl,
@@ -33,7 +34,7 @@ export const axiosFetchUsers = axios.create({
 })
 
 export const axiosAdminUrl = axios.create({
-    baseURL: AdminUrl,
+    baseURL: adminUrl,
     headers: {
         "Content-type": "application/json",
     }

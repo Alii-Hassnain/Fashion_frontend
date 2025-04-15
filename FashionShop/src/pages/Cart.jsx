@@ -12,7 +12,7 @@ import { Link } from "react-router-dom";
 import { useEffect } from "react";
 import { fetchCart } from "../features/cartSlice";
 import { checkAuth } from "../components/Admin/Services/UserServices";
-
+const baseURL = import.meta.env.VITE_SERVER_URI;
 const Cart = () => {
   const dispatch = useDispatch();
   const [userId, setUserId] = useState(null);
@@ -24,7 +24,7 @@ const Cart = () => {
 
   // const checkAuthCookie = async () => {
   //   try {
-  //  const response =await fetch("http://localhost:8080/user/verify-session", {
+  //  const response =await fetch("${baseURL}/user/verify-session", {
   //       method: "GET",
   //       credentials: "include",
   //     });
