@@ -9,6 +9,8 @@ import {
 } from "@/components/ui/table";
 import { useEffect , useState} from "react";
 import { axiosAdminUrl } from "../../../utils/axiosFetch";
+import {getAllUsersOrderSummary} from "../Services/UserServices";
+import { handleSuccess,handleError } from "../../../utils/tostify";
 
 const invoices = [
   {
@@ -67,18 +69,16 @@ export default function TableDemo() {
 
    const fetchUsers = async () => {
     try {
-      const response = await axiosAdminUrl.get("/get-users", {
-        withCredentials: true,
-      });
-      // const data = response.data.data;
-      // const count=response.data.count;
-      setUserCount(response.data.count);
-      setUsers(response.data.data);
-      console.log("response is : ",response.data.data)
-      console.log("count of users  is : ",response.data.count)
-
-
-      setUsers(response.data.data);
+      const response = await getAllUsersOrderSummary()
+      if(response){
+        setUsers(response.data);
+        handleSuccess(response.data.message);
+        console.log("first 10 users are : ",response.data)
+      }
+      else{
+        setUsers([]);
+        handleSuccess("No users found");
+      }
     } catch (error) {
       console.error("Error fetching users:", error);
     }
@@ -99,16 +99,18 @@ export default function TableDemo() {
           <TableHead className="w-[100px]">Profile</TableHead>
           <TableHead>Name</TableHead>
           <TableHead>Email</TableHead>
-          <TableHead className="text-right">Total Amount</TableHead>
+          <TableHead className="text-right">No of Orders </TableHead>
+          <TableHead className="text-right">Amount Spent </TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
-        {invoices.map((user, index) => (
+        {users.map((user, index) => (
           <TableRow key={index}>
-            <TableCell>{user.profile}</TableCell>
-            <TableCell className="font-medium">{user.name}</TableCell>
-            <TableCell>{user.email}</TableCell>
-            <TableCell className="text-right">{user.totalAmount}</TableCell>
+            <TableCell>{"👤"}{}</TableCell>
+            <TableCell className="font-medium">{user?.username||""}</TableCell>
+            <TableCell>{user.email||""}</TableCell>
+            <TableCell className="text-right">{user.totalOrders||"0"}</TableCell>
+            <TableCell className="text-right">{user.totalSpent||"PKR 0.00"}</TableCell>
           </TableRow>
         ))}
       </TableBody>
