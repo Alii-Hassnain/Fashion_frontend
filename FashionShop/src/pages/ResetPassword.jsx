@@ -22,7 +22,7 @@ const ResetPassword = () => {
     console.log("token from frontend : ", token);
     try {
       const response = await fetch(
-        `http://localhost:8080/user/reset-password`,
+        `https://fashionbackendfork.up.railway.app/user/reset-password`,
         {
           method: "POST",
           headers: {
@@ -58,38 +58,36 @@ const ResetPassword = () => {
         }}
       ></div>
       <div className="relative flex justify-center z-10 items-center h-screen gap-3 ">
-
         {/* ResetPassword */}
         <div className="relative shadow-md shadow-neutral-100 p-12 rounded-xl backdrop-blur-sm">
-        <div className="absolute top-5 right-5 text-2xl text-white hover:bg-red-600 cursor-pointer">
+          <div className="absolute top-5 right-5 text-2xl text-white hover:bg-red-600 cursor-pointer">
             <Link to={"/"}>
-            <RxCross2/>
+              <RxCross2 />
             </Link>
           </div>
-            <div className="flex flex-col justify-center items-center gap-3">
-              <h1 className="font-bold text-center text-2xl mb-4 text-white">
-                Enter Your New password
-              </h1>
-              <FormInput
-                type="password"
-                name="password"
-                value={password}
-                onChange={handleOnChange}
-                placeholder="Enter your password "
-              />
-              {/* <Link to="/newPassword"> */}
-              <button
-                className="my-2 btn btn-outline w-full text-white"
-                onClick={handleSubmit}
-              >
-                Submit
-              </button>
-              {/* </Link> */}
-            </div>
+          <div className="flex flex-col justify-center items-center gap-3">
+            <h1 className="font-bold text-center text-2xl mb-4 text-white">
+              Enter Your New password
+            </h1>
+            <FormInput
+              type="password"
+              name="password"
+              value={password}
+              onChange={handleOnChange}
+              placeholder="Enter your password "
+            />
+            {/* <Link to="/newPassword"> */}
+            <button
+              className="my-2 btn btn-outline w-full text-white"
+              onClick={handleSubmit}
+            >
+              Submit
+            </button>
+            {/* </Link> */}
           </div>
         </div>
       </div>
-  
+    </div>
   );
 };
 

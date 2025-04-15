@@ -1,15 +1,18 @@
-import React,{ useState, useEffect } from "react";
-import { Link , useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { FaChevronDown } from "react-icons/fa";
-import { handleSuccess,handleError } from "../utils/tostify";
+import { handleSuccess, handleError } from "../utils/tostify";
 import axios from "axios";
-import { useDispatch , useSelector} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../features/userSlice";
 import { clearCart } from "../features/cartSlice";
-import { checkAuth , logoutUser} from "../components/Admin/Services/UserServices";
+import {
+  checkAuth,
+  logoutUser,
+} from "../components/Admin/Services/UserServices";
 
 // const deleteCookie = (name) => {
-//   document.cookie = `${name}=; Max-Age=0; path=/;`; // 
+//   document.cookie = `${name}=; Max-Age=0; path=/;`; //
 // };
 const Header = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -20,14 +23,16 @@ const Header = () => {
 
   const checkAuthCookie = async () => {
     try {
-   const response =await fetch("http://localhost:8080/user/verify-session", {
-        method: "GET",
-        credentials: "include", 
-      });
+      const response = await fetch(
+        "https://fashionbackendfork.up.railway.app/user/verify-session",
+        {
+          method: "GET",
+          credentials: "include",
+        }
+      );
       const result = await response.json();
-      console.log(result.success)
-      return result.success; 
-
+      console.log(result.success);
+      return result.success;
     } catch (error) {
       console.error("Error checking session:", error);
       return false;
@@ -43,31 +48,33 @@ const Header = () => {
 
   const handleLogout = async () => {
     try {
-
-      const response =await fetch("http://localhost:8080/user/logout", {
-        method: "POST",
-        credentials: "include", 
-      });
+      const response = await fetch(
+        "https://fashionbackendfork.up.railway.app/user/logout",
+        {
+          method: "POST",
+          credentials: "include",
+        }
+      );
       const result = await response.json();
       const { success, message } = result;
       if (success) {
         handleSuccess(message);
         console.log("Logout result: ", message);
-        setIsLoggedIn(false); 
-        localStorage.removeItem("token"); 
+        setIsLoggedIn(false);
+        localStorage.removeItem("token");
         localStorage.removeItem("user");
         dispatch(logout());
         dispatch(clearCart());
-        
+
         setTimeout(() => {
-          navigate("/login"); 
-        },2000)        
+          navigate("/login");
+        }, 2000);
       }
     } catch (error) {
       console.error("Error during logout: ", error);
       handleError(error);
     }
-  };  
+  };
   return (
     <header className="bg-neutral py-2 text-neutral-content">
       <div className="align-elements flex justify-center sm:justify-between">
@@ -93,59 +100,62 @@ const Header = () => {
             </ul>
           </div>
         </div>
- {/* right */}
- <div className="flex gap-5">
+        {/* right */}
+        <div className="flex gap-5">
           {/* <Link to={"/login"}>
             <p className="link-hover text-sm">Log in</p>
           </Link> */}
           <Link to={"/register"}>
             <p className="link-hover text-sm">Register</p>
           </Link>
-          { isLoggedIn ? (
-          <p className="link-hover text-sm hover:text-red-400 cursor-pointer" onClick={handleLogout} >Logout</p>
-          ):(
+          {isLoggedIn ? (
+            <p
+              className="link-hover text-sm hover:text-red-400 cursor-pointer"
+              onClick={handleLogout}
+            >
+              Logout
+            </p>
+          ) : (
             <Link to={"/login"}>
-            <p className="link-hover text-sm">Log in</p>
+              <p className="link-hover text-sm">Log in</p>
             </Link>
           )}
         </div>
       </div>
     </header>
-
   );
 };
 
+export default Header;
 
- export default Header;
+//     right
+//     <div className="flex gap-5">
 
-    //     right
-    //     <div className="flex gap-5">
-         
-    //           <Link to={"/login"}>
-    //             <p className="link-hover text-sm">Log in</p>
-    //           </Link>
-    //           <Link to={"/register"}>
-    //             <p className="link-hover text-sm">Register</p>
-    //           </Link>
-          
-    //         <button
-    //           className="link-hover text-sm hover:text-red-400"
-    //           onClick={handleLogout} 
-    //         >
-    //           Logout
-    //         </button>
-    //     </div>
-      
-    //       </Link> */}
-    //       <Link to={"/register"}>
-    //         <p className="link-hover text-sm">Register</p>
-    //       </Link>
-    //       { isLoggedIn ? (
-    //       <button className="link-hover text-sm hover:text-red-400" onClick={handleLogout} >logout</button>
-    //       ):(
-    //         <Link to={"/login"}>
-    //         <p className="link-hover text-sm">Log in</p>
-    //         </Link>
-    //       )}
-    //     </div>
-    // </header>
+//           <Link to={"/login"}>
+//             <p className="link-hover text-sm">Log in</p>
+//           </Link>
+//           <Link to={"/register"}>
+//             <p className="link-hover text-sm">Register</p>
+//           </Link>
+
+//         <button
+//           className="link-hover text-sm hover:text-red-400"
+//           onClick={handleLogout}
+//         >
+//           Logout
+//         </button>
+//     </div>
+
+//       </Link> */}
+//       <Link to={"/register"}>
+//         <p className="link-hover text-sm">Register</p>
+//       </Link>
+//       { isLoggedIn ? (
+//       <button className="link-hover text-sm hover:text-red-400" onClick={handleLogout} >logout</button>
+//       ):(
+//         <Link to={"/login"}>
+//         <p className="link-hover text-sm">Log in</p>
+//         </Link>
+//       )}
+//     </div>
+// </header>

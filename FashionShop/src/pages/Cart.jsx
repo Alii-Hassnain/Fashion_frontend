@@ -24,7 +24,7 @@ const Cart = () => {
 
   // const checkAuthCookie = async () => {
   //   try {
-  //  const response =await fetch("http://localhost:8080/user/verify-session", {
+  //  const response =await fetch("https://fashionbackendfork.up.railway.app/user/verify-session", {
   //       method: "GET",
   //       credentials: "include",
   //     });
@@ -70,21 +70,34 @@ const Cart = () => {
 
       {userId === null ? (
         <div className="flex flex-col items-center   h-screen">
+          <p className="text-center text-lg font-semibold mt-5">
+            Please log in to view your cart 🛒
+          </p>
 
-        <p className="text-center text-lg font-semibold mt-5">
-          Please log in to view your cart 🛒
-        </p>
-        
-            <button onClick={() => window.location.href = "/login"} className="btn btn-primary my-5">Login First</button>
-            <button onClick={() => window.location.href = "/"} className="btn btn-secondary">Explore Products</button>
-        
+          <button
+            onClick={() => (window.location.href = "/login")}
+            className="btn btn-primary my-5"
+          >
+            Login First
+          </button>
+          <button
+            onClick={() => (window.location.href = "/")}
+            className="btn btn-secondary"
+          >
+            Explore Products
+          </button>
         </div>
       ) : !cartItems || cartItems.length === 0 ? (
         <div className="flex flex-col items-center ">
-        <p className="text-center text-lg font-semibold mt-5">
-          Your cart is empty 🛒
-        </p>
-         <button onClick={() => window.location.href = "/"} className="btn btn-primary m-5">Explore Products</button>
+          <p className="text-center text-lg font-semibold mt-5">
+            Your cart is empty 🛒
+          </p>
+          <button
+            onClick={() => (window.location.href = "/")}
+            className="btn btn-primary m-5"
+          >
+            Explore Products
+          </button>
         </div>
       ) : (
         <div className="flex flex-row justify-between gap-10 ">

@@ -30,14 +30,17 @@ const Login = () => {
     const { email, password } = loginInfo;
     console.log("email:", email, "password : ", password);
     try {
-      const response = await fetch("http://localhost:8080/user/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify({ email, password }),
-      });
+      const response = await fetch(
+        "https://fashionbackendfork.up.railway.app/user/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({ email, password }),
+        }
+      );
       const result = await response.json();
       console.log("Data recieve from backend : ", result);
       const { success, error, message, data, token } = result;
@@ -77,7 +80,10 @@ const Login = () => {
   };
   const handleGoogleLogin = async () => {
     console.log("google login clicked");
-    window.open("http://localhost:8080/auth/google", "_self");
+    window.open(
+      "https://fashionbackendfork.up.railway.app/auth/google",
+      "_self"
+    );
   };
   return (
     <div className="relative h-screen">

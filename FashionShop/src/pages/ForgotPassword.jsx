@@ -15,7 +15,7 @@ const ForgotPassword = () => {
     console.log("email from frontend", Email);
     try {
       const response = await fetch(
-        "http://localhost:8080/user/forgot-password",
+        "https://fashionbackendfork.up.railway.app/user/forgot-password",
         {
           method: "POST",
           headers: {

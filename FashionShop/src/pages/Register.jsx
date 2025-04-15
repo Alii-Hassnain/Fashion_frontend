@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { handleError, handleSuccess } from "../utils/tostify";
@@ -33,7 +32,8 @@ const Register = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(register.email)) return "Invalid email format";
     if (!register.password) return "Password is required";
-    if (register.password.length < 4) return "Password must be at least 4 characters long";
+    if (register.password.length < 4)
+      return "Password must be at least 4 characters long";
     return null;
   };
   const handleOnChange = (e) => {
@@ -62,13 +62,16 @@ const Register = () => {
     );
 
     try {
-      const response = await fetch("http://localhost:8080/user/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username, password, email, secret }),
-      });
+      const response = await fetch(
+        "https://fashionbackendfork.up.railway.app/user/register",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ username, password, email, secret }),
+        }
+      );
       const result = await response.json();
       //  console.log("Data recieve from backend : ",result)
       const { success, error, message, data } = result;
@@ -100,7 +103,10 @@ const Register = () => {
   };
   const handleGoogleLogin = async () => {
     console.log("google login clicked");
-    window.open("http://localhost:8080/auth/google", "_self");
+    window.open(
+      "https://fashionbackendfork.up.railway.app/auth/google",
+      "_self"
+    );
   };
 
   return (
@@ -112,27 +118,22 @@ const Register = () => {
         }}
       ></div>
       <div className="relative flex justify-center z-10 items-center h-screen gap-3 ">
-
         {/* Register as admin */}
         <div className="absolute top-5 left-5 text-white text-md ">
-          <div 
-          className="flex flex-row items-center cursor-pointer border-x-2 px-1 link-hover gap-2"
-          onClick={() => setIsAdmin(!isAdmin)}
+          <div
+            className="flex flex-row items-center cursor-pointer border-x-2 px-1 link-hover gap-2"
+            onClick={() => setIsAdmin(!isAdmin)}
           >
-          <RiAdminFill/>
-          {!isAdmin ? (
-            <h1>Register As Admin</h1>
-          ) : (
-            <h1>Register As User</h1>
-          )}
+            <RiAdminFill />
+            {!isAdmin ? <h1>Register As Admin</h1> : <h1>Register As User</h1>}
           </div>
         </div>
-        
+
         {/* Register container */}
         <div className="relative shadow-md shadow-neutral-100 p-12 rounded-xl backdrop-blur-sm">
           <div className="absolute top-5 right-5 text-2xl text-white hover:bg-red-600 cursor-pointer">
             <Link to={"/"}>
-            <RxCross2/>
+              <RxCross2 />
             </Link>
           </div>
           <form onSubmit={handleOnSubmit}>
@@ -266,8 +267,6 @@ const Register = () => {
 
 export default Register;
 
-
-
 // import { useState } from "react";
 // import { Link, useNavigate } from "react-router-dom";
 // import { handleError, handleSuccess } from "../utils/tostify";
@@ -318,7 +317,7 @@ export default Register;
 //     );
 
 //     try {
-//       const response = await fetch("http://localhost:8080/user/register", {
+//       const response = await fetch("https://fashionbackendfork.up.railway.app/user/register", {
 //         method: "POST",
 //         headers: {
 //           "Content-Type": "application/json",
@@ -356,7 +355,7 @@ export default Register;
 //   };
 //   const handleGoogleLogin = async () => {
 //     console.log("google login clicked");
-//     window.open("http://localhost:8080/auth/google", "_self");
+//     window.open("https://fashionbackendfork.up.railway.app/auth/google", "_self");
 //   };
 
 //   return (
@@ -371,7 +370,7 @@ export default Register;
 
 //         {/* Register as admin */}
 //         <div className="absolute top-5 left-5 text-white text-md ">
-//           <div 
+//           <div
 //           className="flex flex-row items-center cursor-pointer border-x-2 px-1 link-hover gap-2"
 //           onClick={() => setIsAdmin(!isAdmin)}
 //           >
@@ -379,7 +378,7 @@ export default Register;
 //           <h1>Register As Admin</h1>
 //           </div>
 //         </div>
-        
+
 //         {/* Register container */}
 //         <div className="relative shadow-md shadow-neutral-100 p-12 rounded-xl backdrop-blur-sm">
 //           <div className="absolute top-5 right-5 text-2xl text-white hover:bg-red-600 cursor-pointer">

@@ -9,8 +9,10 @@ import axios from "axios";
 import { handleError, handleSuccess } from "../../utils/tostify";
 import { useDispatch } from "react-redux";
 import { clearCartAsync } from "../../features/cartSlice";
-import { sendOrderEmail,sendWhatsappMessage } from "../Admin/Services/EmailServices";
-
+import {
+  sendOrderEmail,
+  sendWhatsappMessage,
+} from "../Admin/Services/EmailServices";
 
 const PaymentForm = ({ customerInfo }) => {
   const userData = useSelector((state) => state.user.userData);
@@ -35,30 +37,30 @@ const PaymentForm = ({ customerInfo }) => {
   };
   function formatPhoneNumber(input) {
     // Remove any non-digit characters (like spaces, dashes, etc.)
-    let cleanedInput = input.replace(/\D/g, '');
+    let cleanedInput = input.replace(/\D/g, "");
 
     // Check if the cleaned input starts with the country code '92' (Pakistan)
-    if (cleanedInput.startsWith('92')) {
-        // If it starts with the country code, return it in the standard format
-        return '+92' + cleanedInput.slice(2);
-    } else if (cleanedInput.length === 11 && cleanedInput.startsWith('0')) {
-        // If it's a 10-digit number (e.g. '03331234567'), prepend +92
-        return '+92' + cleanedInput.slice(1); // Remove lea
-    }  else if (cleanedInput.length === 13 && cleanedInput.startsWith('923')) {
-        return '+92' + cleanedInput.slice(2); // Remove leading 92
-    } else if (cleanedInput.length === 12 && cleanedInput.startsWith('92')) {
-        return '+92' + cleanedInput.slice(2); // Remove leading 92
+    if (cleanedInput.startsWith("92")) {
+      // If it starts with the country code, return it in the standard format
+      return "+92" + cleanedInput.slice(2);
+    } else if (cleanedInput.length === 11 && cleanedInput.startsWith("0")) {
+      // If it's a 10-digit number (e.g. '03331234567'), prepend +92
+      return "+92" + cleanedInput.slice(1); // Remove lea
+    } else if (cleanedInput.length === 13 && cleanedInput.startsWith("923")) {
+      return "+92" + cleanedInput.slice(2); // Remove leading 92
+    } else if (cleanedInput.length === 12 && cleanedInput.startsWith("92")) {
+      return "+92" + cleanedInput.slice(2); // Remove leading 92
     } else if (cleanedInput.length === 10) {
-        return '+92' + cleanedInput; // Add country code to the number 
-    }else {
-        return null
+      return "+92" + cleanedInput; // Add country code to the number
+    } else {
+      return null;
     }
-}
+  }
 
   const placeOrder = async (orderData) => {
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/place-Order",
+        "https://fashionbackendfork.up.railway.app/api/place-Order",
         orderData
       );
       if (response.data.success) {
@@ -116,7 +118,7 @@ const PaymentForm = ({ customerInfo }) => {
         },
         redirect: "if_required",
       });
-      
+
       if (error) throw error;
       if (paymentIntent && paymentIntent.status === "succeeded") {
         const orderData = {
@@ -142,57 +144,56 @@ const PaymentForm = ({ customerInfo }) => {
           },
           status: "Pending",
         };
-      
-      const orderResponse = await placeOrder(orderData);
-      console.log("Order Response in payment form:", orderResponse);
 
-      if (orderResponse.success) {
-        const emailResponse = await sendOrderEmail(
-          userData.email,
-          customerInfo.fullName,
-          orderResponse.order._id,
-          totalPrice,
-          "Pending", 
-          "Paid",
-   "http://localhost:5173/profile",        
-    // `https://tracking.example.com/${orderResponse.order._id}`,
-          customerInfo.mobileNumber
-        );
-        const whatsappResponse = await sendWhatsappMessage(
-          customerInfo.mobileNumber,
-          customerInfo.fullName,
-          orderResponse.order._id,
-          totalPrice,
-          "Pending",
-          "Paid",
-          "http://localhost:5173/profile",
-        )
+        const orderResponse = await placeOrder(orderData);
+        console.log("Order Response in payment form:", orderResponse);
 
-        console.log("Whatsapp Response in payment form : ", whatsappResponse);
-        if (whatsappResponse.success) {
-          handleSuccess("WhatsApp message sent successfully!");
+        if (orderResponse.success) {
+          const emailResponse = await sendOrderEmail(
+            userData.email,
+            customerInfo.fullName,
+            orderResponse.order._id,
+            totalPrice,
+            "Pending",
+            "Paid",
+            "http://localhost:5173/profile",
+            // `https://tracking.example.com/${orderResponse.order._id}`,
+            customerInfo.mobileNumber
+          );
+          const whatsappResponse = await sendWhatsappMessage(
+            customerInfo.mobileNumber,
+            customerInfo.fullName,
+            orderResponse.order._id,
+            totalPrice,
+            "Pending",
+            "Paid",
+            "http://localhost:5173/profile"
+          );
+
+          console.log("Whatsapp Response in payment form : ", whatsappResponse);
+          if (whatsappResponse.success) {
+            handleSuccess("WhatsApp message sent successfully!");
+          } else {
+            handleError("WhatsApp message sending failed!");
+          }
+          console.log("Email Response: ", emailResponse);
+          if (emailResponse.success) {
+            handleSuccess("Email sent successfully!");
+          } else {
+            handleError("Email sending failed!");
+          }
         } else {
-          handleError("WhatsApp message sending failed!");
+          handleError("Order failed. Cannot send email.");
         }
-        console.log("Email Response: ", emailResponse);
-        if (emailResponse.success) {
-          handleSuccess("Email sent successfully!");
-        } else {
-          handleError("Email sending failed!");
-        }
-      } else {
-        handleError("Order failed. Cannot send email.");
+        setSuccess(true);
       }
-      setSuccess(true);
-    }
     } catch (err) {
       setError(err.message);
     } finally {
       setLoading(false);
     }
   };
-  
-  
+
   // const handleSubmit = async (e) => {
   //   e.preventDefault();
   //   if (!stripe || !elements) {
@@ -241,7 +242,7 @@ const PaymentForm = ({ customerInfo }) => {
   //       },
   //       redirect: "if_required",
   //     });
-      
+
   //     if (error) throw error;
   //     if (paymentIntent && paymentIntent.status === "succeeded") {
   //       const orderData = {
@@ -267,7 +268,7 @@ const PaymentForm = ({ customerInfo }) => {
   //         },
   //         status: "Pending",
   //       };
-      
+
   //     const orderResponse = await placeOrder(orderData);
   //     console.log("Order Response in payment form:", orderResponse);
 
@@ -277,13 +278,12 @@ const PaymentForm = ({ customerInfo }) => {
   //         customerInfo.fullName,
   //         orderResponse.order._id,
   //         totalPrice,
-  //         "Pending", 
+  //         "Pending",
   //         "Paid",
-  //  "http://localhost:5173/profile",        
+  //  "http://localhost:5173/profile",
   //   // `https://tracking.example.com/${orderResponse.order._id}`,
   //         customerInfo.mobileNumber
   //       );
-        
 
   //       console.log("Email Response: ", emailResponse);
   //       if (emailResponse.success) {
@@ -354,7 +354,7 @@ export default PaymentForm;
 
 //   const placeOrder = async (orderData) => {
 //     try {
-//       const response = await axios.post("http://localhost:8080/api/order", orderData);
+//       const response = await axios.post("https://fashionbackendfork.up.railway.app/api/order", orderData);
 //       console.log("Order Response in payment form:", response.data);
 //       if (response.data) {
 //         handleSuccess("Order Placed Successfully!");

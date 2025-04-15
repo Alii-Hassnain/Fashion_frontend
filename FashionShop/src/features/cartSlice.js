@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { handleSuccess, handleError } from "../utils/tostify";
 import axios from "axios";
 
-const API_URL = "http://localhost:8080/api/cart";
+const API_URL = "https://fashionbackendfork.up.railway.app/api/cart";
 
 const initialState = {
   cartItems: [], // Stores product variants
@@ -207,7 +207,7 @@ export default cartSlice.reducer;
 //   error: null,
 // };
 
-// const API_URL = "http://localhost:8080/api/cart"
+// const API_URL = "https://fashionbackendfork.up.railway.app/api/cart"
 // export const fetchCart = createAsyncThunk(
 //   "cart/fetchCart",
 //   async (userId, { rejectWithValue }) => {
@@ -223,7 +223,7 @@ export default cartSlice.reducer;
 //   "cart/addToCartAsync",
 //   async ({userId,productId}, { rejectWithValue }) => {
 //     try {
-//       const response = await axios.post("http://localhost:8080/api/cart",{
+//       const response = await axios.post("https://fashionbackendfork.up.railway.app/api/cart",{
 //         userId:userId,
 //         productId:productId
 //       })   
@@ -249,7 +249,7 @@ export default cartSlice.reducer;
 //       return rejectWithValue("Item not found in cart"); // Prevent unnecessary API call
 //     }
 //     try {
-//       const response = await axios.delete(`http://localhost:8080/api/cart/${userId}/${productId}`)
+//       const response = await axios.delete(`https://fashionbackendfork.up.railway.app/api/cart/${userId}/${productId}`)
 //       return response.data; // Return the ID of the removed product
 //     } catch (error) {
 //       handleError("Failed to remove product");
@@ -261,7 +261,7 @@ export default cartSlice.reducer;
 //   "cart/decreaseQuantityAsync",
 //   async ({ userId, productId }, { rejectWithValue }) => {
 //     try {
-//       const response = await axios.put(`http://localhost:8080/api/cart/decrease`, {
+//       const response = await axios.put(`https://fashionbackendfork.up.railway.app/api/cart/decrease`, {
 //         userId,
 //         productId,
 //       });
@@ -276,7 +276,7 @@ export default cartSlice.reducer;
 //   "cart/clearCartAsync",
 //   async (userId, { dispatch, rejectWithValue }) => {
 //     try {
-//       const response = await axios.delete(`http://localhost:8080/api/cart/${userId}`);
+//       const response = await axios.delete(`https://fashionbackendfork.up.railway.app/api/cart/${userId}`);
 //       console.log(response);
 //       dispatch(clearCart()); // Clear Redux state after successful API call
 //       return { message: "Cart cleared successfully" };

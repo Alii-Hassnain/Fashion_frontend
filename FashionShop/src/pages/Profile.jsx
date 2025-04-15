@@ -15,26 +15,29 @@ const Profile = () => {
 
   const fetchOrders = async () => {
     try {
-      const result = await fetch("http://localhost:8080/api/getOrderById", {
-        method: "GET",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const result = await fetch(
+        "https://fashionbackendfork.up.railway.app/api/getOrderById",
+        {
+          method: "GET",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
       const data = await result.json();
       console.log("order data is : ", data.orders);
       if (data.success) {
         // setUserId(data.userId);
         setOrders(data.orders);
       } else {
-        setOrders([]); 
+        setOrders([]);
       }
     } catch (error) {
       console.error("Error fetching orders:", error);
       setOrders([]);
     } finally {
-      setLoading(false);  
+      setLoading(false);
     }
   };
   // const userIdFetch=async()=>{
@@ -48,7 +51,10 @@ const Profile = () => {
   const isAuth = async () => {
     try {
       const response = await checkAuth();
-      console.log("user services response in profile component is : ", response);
+      console.log(
+        "user services response in profile component is : ",
+        response
+      );
       if (response) {
         setUserId(response.user._id);
       } else {
@@ -59,7 +65,7 @@ const Profile = () => {
       console.error("Error checking session:", error);
       return false;
     }
-  }
+  };
 
   useEffect(() => {
     fetchOrders();
@@ -98,24 +104,33 @@ const Profile = () => {
   };
 
   if (loading) {
-    return <div>Loading...</div>;  // You can add a spinner here instead of "Loading..."
+    return <div>Loading...</div>; // You can add a spinner here instead of "Loading..."
   }
   return (
     <div className="max-w-6xl mx-auto p-6">
       <CommonHeading title={"My Orders"} />
-      
-      {  !userId ? (
-        <div className="flex flex-col items-center ">
-        
 
-        <p className=" text-lg font-semibold ">Please login to see your orders</p>
-        <button onClick={() => window.location.href = "/login"} className="btn btn-error mt-5">Login First </button>
-        </div>
-      ) : 
-      Array.isArray(orders) && orders.length === 0 ? (
+      {!userId ? (
         <div className="flex flex-col items-center ">
-        <p className=" text-lg font-semibold ">No orders found.</p>
-        <button onClick={() => window.location.href = "/"} className="btn btn-primary mt-5">Explore Products</button>
+          <p className=" text-lg font-semibold ">
+            Please login to see your orders
+          </p>
+          <button
+            onClick={() => (window.location.href = "/login")}
+            className="btn btn-error mt-5"
+          >
+            Login First{" "}
+          </button>
+        </div>
+      ) : Array.isArray(orders) && orders.length === 0 ? (
+        <div className="flex flex-col items-center ">
+          <p className=" text-lg font-semibold ">No orders found.</p>
+          <button
+            onClick={() => (window.location.href = "/")}
+            className="btn btn-primary mt-5"
+          >
+            Explore Products
+          </button>
         </div>
       ) : (
         <div className="space-y-6">
@@ -155,8 +170,7 @@ const Profile = () => {
 
               {order.status !== "Completed" &&
                 order.status !== "Delivered" &&
-                order.status !== "Cancelled" && 
-                 (
+                order.status !== "Cancelled" && (
                   <button
                     className="btn btn-error text-white mt-3"
                     onClick={() => handleCancelOrder(order._id)}
@@ -169,9 +183,10 @@ const Profile = () => {
                 {order.cartItems.map((item, index) => (
                   <li key={item.id}>
                     {console.log(item)}
-                    {item.productId.title} (x{item.quantity} {item.size||"N/A"})
+                    {item.productId.title} (x{item.quantity}{" "}
+                    {item.size || "N/A"})
                   </li>
-                ))} 
+                ))}
               </ul>
 
               {order.status === "Cancelled" && (
