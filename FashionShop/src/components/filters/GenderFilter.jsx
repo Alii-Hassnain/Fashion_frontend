@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 const GenderFilter = ({ onFilterChange }) => {
   const [selectedGender, setSelectedGender] = useState("");

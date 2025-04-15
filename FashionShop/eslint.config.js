@@ -12,8 +12,12 @@ export default defineConfig([
     languageOptions: { globals: globals.browser },
     rules: {
       "no-unused-vars": "warn",         // Warn on unused variables
-      "react/prop-types": "warn",       // Downgrade from error to warning
+      "react/prop-types": "off",       // Downgrade from error to warning
     },
     extends: ["js/recommended"],
+
+  },
+  {
+    ignores: ["node_modules", "dist"],
   },
 ]);

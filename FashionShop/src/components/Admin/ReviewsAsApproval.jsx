@@ -1,19 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 const sampleReviews = [
   {
     id: 1,
-    product: 'T-shirt',
-    reviewer: 'Ali Khan',
+    product: "T-shirt",
+    reviewer: "Ali Khan",
     rating: 4,
-    comment: 'Nice fabric but a bit tight.',
+    comment: "Nice fabric but a bit tight.",
   },
   {
     id: 2,
-    product: 'Sneakers',
-    reviewer: 'Sara Ali',
+    product: "Sneakers",
+    reviewer: "Sara Ali",
     rating: 5,
-    comment: 'Very comfortable and stylish!',
+    comment: "Very comfortable and stylish!",
   },
 ];
 
@@ -21,15 +21,19 @@ const ReviewsAsApproval = () => {
   const [reviews, setReviews] = useState(sampleReviews);
 
   const handleApprove = (id) => {
-    setReviews(reviews.map(r => r.id === id ? { ...r, status: 'Approved' } : r));
+    setReviews(
+      reviews.map((r) => (r.id === id ? { ...r, status: "Approved" } : r))
+    );
   };
 
   const handleReject = (id) => {
-    setReviews(reviews.map(r => r.id === id ? { ...r, status: 'Rejected' } : r));
+    setReviews(
+      reviews.map((r) => (r.id === id ? { ...r, status: "Rejected" } : r))
+    );
   };
 
   const handleDelete = (id) => {
-    setReviews(reviews.filter(r => r.id !== id));
+    setReviews(reviews.filter((r) => r.id !== id));
   };
 
   return (
@@ -39,7 +43,7 @@ const ReviewsAsApproval = () => {
           <h2 className="font-bold text-lg">{review.product}</h2>
           <p className="text-sm text-gray-700">Reviewer: {review.reviewer}</p>
           <p className="text-sm text-gray-600">Rating: {review.rating} ⭐</p>
-          <p className="text-gray-800 mt-1">"{review.comment}"</p>
+          <p className="text-gray-800 mt-1">&quot;{review.comment}&quot;</p>
           <div className="mt-3 space-x-2">
             <button
               onClick={() => handleApprove(review.id)}
@@ -60,7 +64,9 @@ const ReviewsAsApproval = () => {
               Delete
             </button>
           </div>
-          <p className="text-sm text-gray-500 mt-2">Status: {review.status || 'Pending'}</p>
+          <p className="text-sm text-gray-500 mt-2">
+            Status: {review.status || "Pending"}
+          </p>
         </div>
       ))}
     </div>

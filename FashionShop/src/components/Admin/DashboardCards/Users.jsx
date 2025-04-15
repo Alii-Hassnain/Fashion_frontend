@@ -7,7 +7,7 @@ import {
   TableBody,
   TableCell,
 } from "@/components/ui/table";
-import { useEffect , useState} from "react";
+import React,{ useEffect , useState} from "react";
 import { axiosAdminUrl } from "../../../utils/axiosFetch";
 import {getAllUsersOrderSummary} from "../Services/UserServices";
 import { handleSuccess,handleError } from "../../../utils/tostify";

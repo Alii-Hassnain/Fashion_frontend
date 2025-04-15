@@ -1,11 +1,10 @@
-
 import Slider from "react-slick";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { HeroData } from "./Links";
 import { FaChevronLeft } from "react-icons/fa";
 import { FaChevronRight } from "react-icons/fa";
-import { useState } from "react";
+import React, { useState } from "react";
 
 const CustomPrevArrow = ({ onClick }) => (
   <button
@@ -44,7 +43,7 @@ const SimpleSlider = () => {
   };
 
   const containerVariants = {
-    hidden: { opacity: 0 , x:100},
+    hidden: { opacity: 0, x: 100 },
     visible: {
       opacity: 1,
       x: 0,

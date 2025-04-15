@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 
 const ColorFilter = ({ onFilterChange }) => {
   const [selectedColors, setSelectedColors] = useState([]);
@@ -9,7 +9,7 @@ const ColorFilter = ({ onFilterChange }) => {
     { name: "Green", hex: "#008000" },
     { name: "Black", hex: "#000000" },
     { name: "White", hex: "#ffffff" },
-    { name: "Yellow", hex: "#ffff00" }
+    { name: "Yellow", hex: "#ffff00" },
   ];
 
   const handleColorChange = (event) => {

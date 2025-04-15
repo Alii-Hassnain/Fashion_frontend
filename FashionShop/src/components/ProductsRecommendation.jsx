@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { useLoaderData, Link } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { useLoaderData, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { handleError } from "../utils/tostify";
 
 const ProductsRecommendation = () => {
   const { recommendedProducts } = useLoaderData();
@@ -15,7 +16,6 @@ const ProductsRecommendation = () => {
       setLoading(false);
     }
   }, [recommendedProducts]);
-  
 
   return (
     <div>
@@ -30,9 +30,10 @@ const ProductsRecommendation = () => {
                 key={_id}
                 className="bg-white shadow-md rounded-md p-4 cursor-pointer"
               >
-                <Link to={`/singleproduct/${_id}`} className="block"
-                onClick={() => window.scrollTo(0, 0)}
-                
+                <Link
+                  to={`/singleproduct/${_id}`}
+                  className="block"
+                  onClick={() => window.scrollTo(0, 0)}
                 >
                   <img
                     src={product_image}
