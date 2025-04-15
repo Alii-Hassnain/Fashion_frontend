@@ -15,7 +15,7 @@ import { axiosFetchUsers } from "../utils/axiosFetch";
 import { RxCross2 } from "react-icons/rx";
 import { RiAdminFill } from "react-icons/ri";
 import background from "../assets/hero1.webp";
-
+const baseURL = import.meta.env.VITE_SERVER_URI;
 const Register = () => {
   const [register, setRegister] = useState({
     username: "",
@@ -62,7 +62,7 @@ const Register = () => {
     );
 
     try {
-      const response = await fetch("http://localhost:8080/user/register", {
+      const response = await fetch(`${baseURL}/user/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -100,7 +100,7 @@ const Register = () => {
   };
   const handleGoogleLogin = async () => {
     console.log("google login clicked");
-    window.open("http://localhost:8080/auth/google", "_self");
+    window.open(`${baseURL}/auth/google`, "_self");
   };
 
   return (
@@ -318,7 +318,7 @@ export default Register;
 //     );
 
 //     try {
-//       const response = await fetch("http://localhost:8080/user/register", {
+//       const response = await fetch("${baseURL}/user/register", {
 //         method: "POST",
 //         headers: {
 //           "Content-Type": "application/json",
@@ -356,7 +356,7 @@ export default Register;
 //   };
 //   const handleGoogleLogin = async () => {
 //     console.log("google login clicked");
-//     window.open("http://localhost:8080/auth/google", "_self");
+//     window.open("${baseURL}/auth/google", "_self");
 //   };
 
 //   return (

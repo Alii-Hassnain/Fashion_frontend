@@ -7,7 +7,7 @@ import {
   getOrdersByUserId,
 } from "../components/Admin/Services/OrderServices";
 import { checkAuth } from "../components/Admin/Services/UserServices";
-
+const baseURL = import.meta.env.VITE_SERVER_URI;
 const Profile = () => {
   const [orders, setOrders] = useState([]);
   const [userId, setUserId] = useState("");
@@ -15,7 +15,7 @@ const Profile = () => {
 
   const fetchOrders = async () => {
     try {
-      const result = await fetch("http://localhost:8080/api/getOrderById", {
+      const result = await fetch(`${baseURL}/api/getOrderById`, {
         method: "GET",
         credentials: "include",
         headers: {

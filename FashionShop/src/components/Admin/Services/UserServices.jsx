@@ -1,9 +1,10 @@
 import { axiosFetchUsers } from './../../../utils/axiosFetch';
-const BASE_URL = "http://localhost:8080/user"
+const baseURL = import.meta.env.VITE_SERVER_URI;
+const BASE_URL = `${baseURL}/user`
 
   export const checkAuth = async () => {
     try {
-   const response =await fetch("http://localhost:8080/user/verify-session", {
+   const response =await fetch(`${baseURL}/user/verify-session`, {
         method: "GET",
         credentials: "include", 
       });
@@ -37,7 +38,7 @@ const BASE_URL = "http://localhost:8080/user"
   };
   export const getAllUsers = async () => {
     try {
-      const response = await fetch ("http://localhost:8080/admin/get-users", {
+      const response = await fetch (`${baseURL}/admin/get-users`, {
         method: "GET",
         credentials: "include", 
       });
@@ -58,7 +59,7 @@ const BASE_URL = "http://localhost:8080/user"
   }; 
   export const getAllUsersOrderSummary = async () => {
     try {
-      const response = await fetch ("http://localhost:8080/admin/getAllUsersOrderSummary", {
+      const response = await fetch (`${baseURL}/admin/getAllUsersOrderSummary`, {
         method: "GET",
         credentials: "include", 
       });
@@ -79,7 +80,7 @@ const BASE_URL = "http://localhost:8080/user"
   } 
 export const deleteUserById=async (userId) => {
   try {
-    const response = await fetch(`http://localhost:8080/admin/delete-user/${userId}`, {
+    const response = await fetch(`${baseURL}/admin/delete-user/${userId}`, {
       method: "DELETE",
       credentials: "include",
     });

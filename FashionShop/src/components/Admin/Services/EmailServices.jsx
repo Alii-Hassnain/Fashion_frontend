@@ -1,5 +1,6 @@
+const baseURL = import.meta.env.VITE_SERVER_URI;
 export const sendOrderEmail = async (email, customerName, orderId, totalPrice,status, paymentStatus, trackingLink, phoneNumber) => {
-    const response = await fetch('http://localhost:8080/api/send-orderEmail', {
+    const response = await fetch(`${baseURL}/api/send-orderEmail`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -23,7 +24,7 @@ export const sendOrderEmail = async (email, customerName, orderId, totalPrice,st
 
 export const sendWhatsappMessage = async ( phoneNumber,customerName, orderId, totalPrice,status, paymentStatus, trackingLink, ) => {
     try {
-        const response = await fetch('http://localhost:8080/api/send-whatsappMessage', {
+        const response = await fetch(`${baseURL}/api/send-whatsappMessage`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({

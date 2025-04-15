@@ -4,10 +4,10 @@ import { handleSuccess } from "../../../utils/tostify";
 import { handleError } from "../../../utils/tostify";
 import { MyContext } from "../MyContext";
 import { useContext } from "react";
-
+const baseURL = import.meta.env.VITE_SERVER_URI;
 export const createProduct = async (formData, setSuccess, setError) => {
   try {
-    const response=await fetch ("http://localhost:8080/admin/create-product",{
+    const response=await fetch (`${baseURL}/admin/create-product`,{
       method:"POST",
       credentials:"include",
       body:formData,
@@ -42,7 +42,7 @@ export const createProduct = async (formData, setSuccess, setError) => {
 };
 export const deleteProduct = async (id) => {
   try {
-    const response=await fetch (`http://localhost:8080/admin/delete-product/${id}`,{
+    const response=await fetch (`${baseURL}/admin/delete-product/${id}`,{
       method:"DELETE",
       credentials:"include",
     })
@@ -72,7 +72,7 @@ export const deleteProduct = async (id) => {
 
 export const updateProduct = async (id, formData, setSuccess, setError) => {
   try {
-    const response=await fetch (`http://localhost:8080/admin/update-product/${id}`,{
+    const response=await fetch (`${baseURL}/admin/update-product/${id}`,{
       method:"PATCH",
       credentials:"include",
       headers:{
@@ -97,7 +97,7 @@ export const updateProduct = async (id, formData, setSuccess, setError) => {
 }
 export const getProducts = async () => {
   try {
-    const response=await fetch ("http://localhost:8080/admin/get-products",{
+    const response=await fetch (`${baseURL}/admin/get-products`,{
       method:"GET",
       credentials:"include",
     })

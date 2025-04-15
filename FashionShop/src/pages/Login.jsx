@@ -13,7 +13,7 @@ import background from "../assets/hero2.webp";
 import { useDispatch } from "react-redux";
 import { loginSuccess, logout } from "../features/userSlice";
 import { fetchCart } from "../features/cartSlice";
-
+const baseURL = import.meta.env.VITE_SERVER_URI;
 const Login = () => {
   const [loginInfo, setLoginInfo] = useState({
     email: "",
@@ -30,7 +30,7 @@ const Login = () => {
     const { email, password } = loginInfo;
     console.log("email:", email, "password : ", password);
     try {
-      const response = await fetch("http://localhost:8080/user/login", {
+      const response = await fetch(`${baseURL}/user/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -77,7 +77,7 @@ const Login = () => {
   };
   const handleGoogleLogin = async () => {
     console.log("google login clicked");
-    window.open("http://localhost:8080/auth/google", "_self");
+    window.open(`${baseURL}/auth/google`, "_self");
   };
   return (
     <div className="relative h-screen">
