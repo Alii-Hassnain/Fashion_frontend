@@ -2,13 +2,14 @@
 import React ,{useEffect,useState}from "react";
 import { NavLink , useNavigate} from "react-router-dom";
 import { handleSuccess,handleError } from "../../utils/tostify";
+const baseURL = import.meta.env.VITE_SERVER_URI;
 
 const AdminNavbar = () => {
     const [userName,setUserName]=useState("");
     const navigate=useNavigate();
     const getAdminDetails=async()=>{
       try{
-       const response =await fetch("http://localhost:8080/admin/admin-details",{
+       const response =await fetch(`${baseURL}/admin/admin-details`,{
         method:"GET",
         credentials:"include",
        });
@@ -28,7 +29,7 @@ const AdminNavbar = () => {
 
     const handleLogout = async () => {
       try {
-        const response = await fetch("http://localhost:8080/user/logout", {
+        const response = await fetch(`${baseURL}/user/logout`, {
           method: "POST",
           credentials: "include", 
         });

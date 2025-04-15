@@ -1,8 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { handleSuccess, handleError } from "../utils/tostify";
 import axios from "axios";
+const baseURL = import.meta.env.VITE_SERVER_URI;
 
-const API_URL = "http://localhost:8080/api/cart";
+const API_URL = `${baseURL}/api/cart`;
 
 const initialState = {
   cartItems: [], // Stores product variants

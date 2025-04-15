@@ -3,7 +3,7 @@ import OtpInput from "react-otp-input";
 import {handleSuccess,handleError} from "../utils/tostify"
 import { useNavigate } from "react-router-dom";
 import { Header } from "../components";
-
+const baseURL = import.meta.env.VITE_SERVER_URI;
 const VerifyUser = () => {
   const [otp, setOtp] = useState(""); 
   const  navigate = useNavigate()
@@ -16,7 +16,7 @@ const VerifyUser = () => {
   const handleOnSubmit = async () => {
     console.log("OTP submitted:", otp);
     try {
-        const response = await fetch("http://localhost:8080/user/verify-user", {
+        const response = await fetch(`${baseURL}/user/verify-user`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
