@@ -7,11 +7,11 @@ import { AdminAddProducts } from '../../components/Admin';
 import {AdminProductsContainer} from '../../components/Admin';
 import { axiosAdminUrl } from '../../utils/axiosFetch';
 import { Link } from 'react-router-dom';
-
+const baseURL = import.meta.env.VITE_SERVER_URI;
 
 export const loader = async () => {
   try {
-    const response=await fetch("http://localhost:8080/admin/get-products",{
+    const response=await fetch(`${baseURL}/admin/get-products`,{
       method:"GET",
       credentials:"include",
     
@@ -45,10 +45,8 @@ const ManageProducts = () => {
       <CommonHeading title='Manage Products' />
 
       <Link to="/admin/addproduct">
-        <button className='btn btn-primary mb-3'>Add Product</button>
+        <button className='btn btn-ghost border border-purple-500 mb-3'>Add Product</button>
       </Link>
-
-      <button className='btn ml-3 btn-primary mb-3'>Add Category</button>
       {/* <ProductsContainer /> */}
       <AdminProductsContainer />
     </div>

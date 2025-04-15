@@ -12,6 +12,7 @@ import { checkAuth , logoutUser} from "../components/Admin/Services/UserServices
 //   document.cookie = `${name}=; Max-Age=0; path=/;`; // 
 // };
 const Header = () => {
+  const baseURL = import.meta.env.VITE_SERVER_URI;
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
 
@@ -20,7 +21,7 @@ const Header = () => {
 
   const checkAuthCookie = async () => {
     try {
-   const response =await fetch("http://localhost:8080/user/verify-session", {
+   const response =await fetch(`${baseURL}/user/verify-session`, {
         method: "GET",
         credentials: "include", 
       });
@@ -44,7 +45,7 @@ const Header = () => {
   const handleLogout = async () => {
     try {
 
-      const response =await fetch("http://localhost:8080/user/logout", {
+      const response =await fetch(`${baseURL}/user/logout`, {
         method: "POST",
         credentials: "include", 
       });

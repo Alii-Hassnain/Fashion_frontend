@@ -21,11 +21,12 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 const Navbar = () => {
+  const baseURL = import.meta.env.VITE_SERVER_URI;
   const cartNumber = useSelector((state) => state.cart.totalQuantity);
   const [userName, setUserName] = useState(null);
   const checkAuthCookie = async () => {
     try {
-   const response =await fetch("http://localhost:8080/user/verify-session", {
+   const response =await fetch(`${baseURL}/user/verify-session`, {
         method: "GET",
         credentials: "include", 
       });

@@ -90,7 +90,7 @@ const ProductsGridView = ({
         <>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {currentProducts.map((product) => {
-              const { _id, product_image, price, title } = product;
+              const { _id, product_image, price, title , rating } = product;
               return (
                 <div
                   key={_id}
@@ -109,48 +109,13 @@ const ProductsGridView = ({
                     </h2>
                     <p className="text-gray-800 mt-2 text-sm">PKR {price}</p>
                   </Link>
+                 
+                  {
+                    rating?<p className="text-green-500 text-sm">
+                    {"⭐".repeat(rating)}
+                  </p>:<p className="text-red-500 text-sm">Not reviewed yet</p>
 
-                  <div className="rating rating-md ">
-                  <input
-                    type="radio"
-                    name="rating-10"
-                    className="rating-hidden"
-                    aria-label="clear"
-                  />
-                  <input
-                    type="radio"
-                    name="rating-10"
-                    className="mask mask-star-2"
-                    aria-label="1 star"
-                  />
-                  <input
-                    type="radio"
-                    name="rating-10"
-                    className="mask mask-star-2"
-                    aria-label="2 star"
-                    defaultChecked
-                  />
-                  <input
-                    type="radio"
-                    name="rating-10"
-                    className="mask mask-star-2"
-                    aria-label="3 star"
-                  />
-                  <input
-                    type="radio"
-                    name="rating-10"
-                    className="mask mask-star-2"
-                    aria-label="4 star"
-                  />
-                  <input
-                    type="radio"
-                    name="rating-10"
-                    className="mask mask-star-2"
-                    aria-label="5 star"
-                  />
-                </div>
-
-
+                  }
 
                   <button
                     className="btn btn-secondary w-full mt-4"
