@@ -3,7 +3,7 @@ import { FeaturesData } from "./Links";
 import { Link, Navigate } from "react-router-dom";
 import support24Hours from "../assets/featureImg/support24hours.png";
 import freeShipping from "../assets/featureImg/freeShipping.png";
-import tryVirtually from "../assets/featureImg/TryVirtually.png";
+import tryVirtually from "../assets/featureImg/tryVirtually.png";
 import easyReturn from "../assets/featureImg/easyReturn.png";
 
 const Features = () => {
