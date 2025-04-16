@@ -13,7 +13,7 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from "@/components/ui/carousel";
+} from "../components/UI/carousel";
 import { TryRoom } from "../pages";
 import { handleError,handleSuccess } from "../utils/tostify";
 import { checkAuth } from "../components/Admin/Services/UserServices";

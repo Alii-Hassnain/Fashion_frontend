@@ -1,10 +1,11 @@
 import React from "react";
-import { FeaturesData } from "./Links";
+// import { FeaturesData } from "./Links";
 import { Link, Navigate } from "react-router-dom";
-import support24Hours from "../assets/featureImg/support24Hours.png";
-import freeShipping from "../assets/featureImg/freeShipping.png";
-import tryVirtually from "../assets/featureImg/TryVirtually.png";
-import easyReturn from "../assets/featureImg/easyReturn.png";
+// import support24Hours from "/assets/featureImg/support24Hours.png";
+// import freeShipping from "/assets/featureImg/freeShipping.png";
+// import tryVirtually from "public/assets/featureImg/tryVirtually.png";
+// import easyReturn from "public/assets/featureImg/easyReturn.png";
+
 
 const Features = () => {
   return (
@@ -36,7 +37,7 @@ const Features = () => {
                      "
         >
           <div className="h-10 w-10 mb-3">
-            <img src={tryVirtually} alt={tryVirtually} />
+            <img src="/assets/featureImg/tryVirtually.png" alt="try Virtually" />
           </div>
           <h2>Try Room</h2>
         </div>
@@ -50,7 +51,7 @@ const Features = () => {
                      "
       >
         <div className="h-10 w-10 mb-3">
-          <img src={support24Hours} alt={support24Hours} />
+          <img src="/assets/featureImg/support.png" alt="support 24Hours" />
         </div>
         <h2>Chatbot Support</h2>
       </div>
@@ -62,7 +63,7 @@ const Features = () => {
                      "
       >
         <div className="h-10 w-10 mb-3">
-          <img src={freeShipping} alt={freeShipping} />
+          <img src="/assets/featureImg/freeShipping.png" alt="free Shipping" />
         </div>
         <h2>Free Shipping</h2>
       </div>
@@ -74,7 +75,7 @@ const Features = () => {
                      "
       >
         <div className="h-10 w-10 mb-3">
-          <img src={easyReturn} alt={easyReturn} />
+          <img src="/assets/featureImg/easyReturn.png" alt="easy Return" />
         </div>
         <h2>Easy Return</h2>
       </div>

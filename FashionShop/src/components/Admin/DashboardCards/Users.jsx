@@ -6,7 +6,7 @@ import {
   TableHead,
   TableBody,
   TableCell,
-} from "@/components/ui/table";
+} from "../../../components/UI/table";
 import { useEffect , useState} from "react";
 import { axiosAdminUrl } from "../../../utils/axiosFetch";
 
