@@ -1,5 +1,5 @@
 import axios from 'axios';
-const baseURL = import.meta.env.VITE_SERVER_URI
+const baseURL = import.meta.env.VITE_SERVER_URI || "http://localhost:8080";
 
 const productionUrl = `${baseURL}/api`;
 const userUrl = `${baseURL}/user`;
