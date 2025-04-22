@@ -6,8 +6,13 @@ import {
   TableHead,
   TableBody,
   TableCell,
+<<<<<<< HEAD
 } from "@/components/ui/table";
 import React,{ useEffect , useState} from "react";
+=======
+} from "../../../components/UI/table";
+import { useEffect , useState} from "react";
+>>>>>>> endingg_tryroomUiImprove
 import { axiosAdminUrl } from "../../../utils/axiosFetch";
 import {getAllUsersOrderSummary} from "../Services/UserServices";
 import { handleSuccess,handleError } from "../../../utils/tostify";

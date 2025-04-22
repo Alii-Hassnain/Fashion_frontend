@@ -13,7 +13,11 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
+<<<<<<< HEAD
 } from "@/components/ui/carousel.jsx";
+=======
+} from "../components/UI/carousel";
+>>>>>>> endingg_tryroomUiImprove
 import { TryRoom } from "../pages";
 import { handleError,handleSuccess } from "../utils/tostify";
 import { checkAuth } from "../components/Admin/Services/UserServices";

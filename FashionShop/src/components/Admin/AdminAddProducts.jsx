@@ -13,7 +13,6 @@ const AdminAddProducts = () => {
     product_image: "",
     stock: "",
     description: "",
-    rating: "",
     category: "",
     gender: "",
     variants: [{ size: "", quantity: "" }],
@@ -59,7 +58,6 @@ const AdminAddProducts = () => {
       !product.title ||
       !product.description ||
       // product.stock < 0 ||
-      // product.rating < 0 ||
       !product.category ||
       !product.gender
     ) {
@@ -78,7 +76,6 @@ const AdminAddProducts = () => {
     formData.append("product_image", product.product_image);
     formData.append("stock", product.stock);
     formData.append("description", product.description);
-    formData.append("rating", product.rating);
     formData.append("category", product.category);
     formData.append("gender", product.gender);
     formData.append("variants", JSON.stringify(product.variants));
@@ -93,7 +90,6 @@ const AdminAddProducts = () => {
       title: "",
       description: "",
       stock: "",
-      rating: "",
       category: "",
       gender: "",
       variants: [{ size: "", quantity: "" }],
@@ -159,23 +155,6 @@ const AdminAddProducts = () => {
             className="input input-bordered"
           />
         </div>
-        <div className="form-control">
-          <label className="label">
-            <span className="label-text">Product Rating</span>
-          </label>
-          <input
-            type="number"
-            value={product.rating}
-            name="rating"
-            onChange={handleChange}
-            placeholder="Product Rating (0-5)"
-            className="input input-bordered"
-            min="0"
-            max="5"
-            step="0.1"
-          />
-        </div>
-
         <div className="form-control">
           <label className="label">
             <span className="label-text">Product Description</span>

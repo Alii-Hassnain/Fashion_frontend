@@ -21,6 +21,7 @@ const ProductsGridView = ({
   resetFilters,
   success,
   count,
+  activeTab
 }) => {
   const { products } = useLoaderData();
   const [userId, setUserId] = useState("");
@@ -33,6 +34,23 @@ const ProductsGridView = ({
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.user.userData);
+
+
+  const filterProductsByTab = (products, activeTab) => {
+    let filtered = [...products];
+    switch (activeTab) {
+      case "New Products":
+        return filtered.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      case "Best Sellers":
+        return filtered.filter((product) => product.rating > 0);
+      case "Big Discount":
+        return filtered.filter((product) => product.price < 5000);
+      case "Featured Products":
+        return shuffleArray(filtered).slice(0, 12);
+      default:
+        return filtered;
+    }
+  };
   
 
   useEffect(() => {
@@ -47,19 +65,31 @@ const ProductsGridView = ({
     }
   }, [products]);
   
+ 
+
   useEffect(() => {
     if (success && count > 0) {
       setDisplayProducts(product);
       setFilterApplied(true);
-    } else if (success && count === 0) {
+      return;
+    }
+  
+    if (success && count === 0) {
       setDisplayProducts([]);
       setFilterApplied(true);
+      return;
+    }
+  
+    if (activeTab && products?.length > 0) {
+      const filtered = filterProductsByTab(products, activeTab);
+      setDisplayProducts(filtered);
+      setFilterApplied(false);
     } else {
       setDisplayProducts(products);
       setFilterApplied(false);
     }
-  }, [product, success, count, products]);
-
+  }, [product, success, count, activeTab, products]);
+  
 
     const checkUser = () => {
     if (!userId) {
@@ -99,11 +129,18 @@ const ProductsGridView = ({
                   <Link to={`/singleproduct/${_id}`} key={_id} className="block"
                   onClick={() => window.scrollTo(0, 0)}
                   >
+                        {/* Discount Tag */}
+                        {activeTab === "Big Discount" && (
+                        <div className=" text-right bg-red-100 text-red-600 font-bold py-2 rounded mb-4 text-xs shadow w-fit px-2 ">
+                          🔥 10% OFF
+                        </div>
+                    )} 
                     <img
                       src={product_image}
                       alt={title}
                       className="w-full h-56 object-contain"
-                    />
+                      />
+                   
                     <h2 className="text-sm font-semibold text-gray-800 mt-2">
                       {title}
                     </h2>
@@ -206,210 +243,3 @@ export default ProductsGridView;
 
 
 
-// import React, { useState } from "react";
-// import {  useNavigate, useLoaderData } from "react-router-dom";
-// import { Link } from "react-router-dom";
-// import { useDispatch } from "react-redux";
-// import { addToCart, addToCartAsync } from "../features/cartSlice";
-// import { handleError, handleSuccess } from "../utils/tostify";
-// import { useSelector } from "react-redux";
-// import { useEffect } from "react";
-
-// const ProductsGridView = ({
-//   product,
-//   loading,
-//   resetFilters,
-//   success,
-//   count,
-// }) => {
-//   const { products } = useLoaderData();
-//   const [userId, setUserId] = useState("");
-//   const [displayProducts, setDisplayProducts] = useState(products);
-//   const [filterApplied, setFilterApplied] = useState(false);
-//   const [currentPage, setCurrentPage] = useState(1);//--- 
-//   const productsPerPage = 8; // -- Number of products per page
-
-//   const navigate = useNavigate();
-//   const dispatch = useDispatch();
-//   const userData = useSelector((state) => state.user.userData);
-
-
-//   useEffect(() => {
-//     if (userData?._id) {
-//       setUserId(userData._id);
-//     }
-//   }, [userData]);
-
-//   useEffect(() => {
-//     if (success && count > 0) {
-//       setDisplayProducts(product);
-//       setFilterApplied(true);
-//     } else if (success && count === 0) {
-//       setDisplayProducts([]);
-//       setFilterApplied(true);
-//     } else {
-//       // resetFilters();
-//       setDisplayProducts(products);
-//       setFilterApplied(false);
-//     }
-//   }, [product, success, count, products]);
-
-//   const checkUser = () => {
-//     if (!userId) {
-//       handleError("please Login first");
-//     }
-//   };
-
-//   const handleRemoveFilter = () => {
-//     resetFilters();
-//     setDisplayProducts(products);
-//     setFilterApplied(false);
-//     setCurrentPage(1); // Reset to the first page when filters are removed
-//   };
-// //--
-//   const indexOfLastProduct = currentPage * productsPerPage;
-//   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-//   const currentProducts = displayProducts.slice(
-//     indexOfFirstProduct,
-//     indexOfLastProduct
-//   );
-
-//   const totalPages = Math.ceil(displayProducts.length / productsPerPage);
-
-//   const handlePageChange = (pageNumber) => {
-
-//     setCurrentPage(pageNumber);
-//   };
-//   const handleNextPage = () => {
-//     if (currentPage < totalPages) {
-//       setCurrentPage((prevPage) => prevPage + 1);
-//     }
-//   };
-//   const handlePrevPage = () => {    
-//     if (currentPage > 1) {
-//       setCurrentPage((prevPage) => prevPage - 1);
-//     }
-//   };
-//   const handleFirstPage = () => {
-//     setCurrentPage(1);
-//   };
-//   const handleLastPage = () => {
-//     setCurrentPage(totalPages);
-//   };
-//   const handlePageClick = (pageNumber) => {
-//     setCurrentPage(pageNumber);
-//   };
-//   const handlePageNumbers = () => {
-//     const pageNumbers = [];
-//     for (let i = 1; i <= totalPages; i++) {
-//       pageNumbers.push(
-//         <button 
-//           key={i}
-//           className={`px-3 py-1 rounded-md ${
-//             currentPage === i ? "bg-blue-500 text-white" : "bg-gray-200"
-//           }`}
-//           onClick={() => handlePageClick(i)}
-//         >
-//           {i}
-//         </button>
-//       );
-//     }
-//     return pageNumbers;
-//   }
-
-//   // const userId = "67a44f834ed50d8f0ad68ae9";
-//   return (
-//     <div>
-//       {loading ? (
-//         <p>Loading products...</p>
-//       ) : displayProducts?.length > 0 ? (
-//         // {products?.length > 0 ? (
-//         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 ">
-//           {displayProducts.map((product) => {
-//             const { _id, product_image, price, title, description } = product;
-//             return (
-//               <div
-//                 key={_id}
-//                 className="bg-white shadow-md rounded-md p-4 cursor-pointer"
-//               >
-//                 <Link to={`/singleproduct/${_id}`} key={_id} className="block">
-//                   <img
-//                     src={product_image}
-//                     alt={title}
-//                     className="w-full h-56 object-contain"
-//                   />
-//                   <h2 className="text-sm font-semibold text-gray-800 mt-2">
-//                     {title}
-//                   </h2>
-//                   {/* <p className="text-gray-600 mt-2">{description}</p> */}
-//                   <p className="text-gray-800 mt-2 text-sm">PKR {price}</p>
-
-//                 </Link>
-//                 <div className="rating rating-md">
-//                   <input
-//                     type="radio"
-//                     name="rating-10"
-//                     className="rating-hidden"
-//                     aria-label="clear"
-//                   />
-//                   <input
-//                     type="radio"
-//                     name="rating-10"
-//                     className="mask mask-star-2"
-//                     aria-label="1 star"
-//                   />
-//                   <input
-//                     type="radio"
-//                     name="rating-10"
-//                     className="mask mask-star-2"
-//                     aria-label="2 star"
-//                     defaultChecked
-//                   />
-//                   <input
-//                     type="radio"
-//                     name="rating-10"
-//                     className="mask mask-star-2"
-//                     aria-label="3 star"
-//                   />
-//                   <input
-//                     type="radio"
-//                     name="rating-10"
-//                     className="mask mask-star-2"
-//                     aria-label="4 star"
-//                   />
-//                   <input
-//                     type="radio"
-//                     name="rating-10"
-//                     className="mask mask-star-2"
-//                     aria-label="5 star"
-//                   />
-//                 </div>
-
-//                 <button
-//                   className="btn btn-secondary w-full mt-4"
-//                   // onClick={() => {
-//                   //   checkUser();
-//                   //   dispatch(addToCartAsync({ userId, productId: _id }));
-//                   // }}
-//                   onClick={() => {
-//                     handleError("First Select Size and Quantity"); 
-//                     setTimeout(() => {
-                      
-//                    navigate(`/singleproduct/${_id}`);
-//                     },1000)
-//                   }}
-//                 >
-//                   🛒Add to cart
-//                 </button>
-//               </div>
-//             );
-//           })}
-//         </div>
-//       ) : (
-//         <p>No products available</p>
-//       )}
-//     </div>
-//   );
-// };
-
-// export default ProductsGridView;

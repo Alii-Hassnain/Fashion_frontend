@@ -23,3 +23,4 @@ node_modules/
 # Remove these exclusions:
 # dist/  ← COMMENT THIS OUT
 # *.lock ← COMMENT THIS OUT
+.vercel

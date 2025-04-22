@@ -45,7 +45,7 @@ const Landing = () => {
           ))}
         </div>
         <CommonHeading title={activeTab} />
-        <ProductsContainer />
+        <ProductsContainer activeTab={activeTab}/>
       </div>
 
       <div className="mt-40">

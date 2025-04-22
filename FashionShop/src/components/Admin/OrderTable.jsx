@@ -7,7 +7,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+} from "../../components/UI/table";
 import { getAllOrders, updateOrder } from "./Services/OrderServices";
 
 const OrderTable = ({ filter = "all" }) => {

@@ -8,7 +8,7 @@ import {
     TableHead,
     TableBody,
     TableCell,
-  } from "@/components/ui/table";
+  } from "../../components/UI/table";
   import { useEffect , useState} from "react";
   import { getAllUsersOrderSummary,deleteUserById} from "./Services/UserServices"
 import { handleSuccess, handleError } from '../../utils/tostify';
