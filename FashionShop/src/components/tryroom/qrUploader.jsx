@@ -11,6 +11,12 @@ const QRUploader = ({ qrValue, showQR, setShowQR }) => {
         <div className="mt-4 text-center">
           <QRCodeSVG value={qrValue} size={200} />
           <p>Scan with your phone to upload</p>
+          <button
+            onClick={() => setShowQR(false)}
+            className="btn btn-secondary mt-2"
+          >
+            Close
+          </button>
         </div>
       )}
     </div>

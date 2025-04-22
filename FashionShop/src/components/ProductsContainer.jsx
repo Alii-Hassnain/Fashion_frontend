@@ -9,6 +9,7 @@ const ProductsContainer = ({
   resetFilters,
   success,
   count,
+  activeTab
 }) => {
   return (
     <div>
@@ -18,6 +19,7 @@ const ProductsContainer = ({
         resetFilters={resetFilters}
         success={success}
         count={count}
+        activeTab={activeTab}
       />
     </div>
   );

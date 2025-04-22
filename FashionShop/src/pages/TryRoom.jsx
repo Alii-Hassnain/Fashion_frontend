@@ -7,6 +7,8 @@ import { v4 as uuidv4 } from "uuid";
 import { handleError } from "../utils/tostify";
 import { useLocation } from "react-router-dom";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { QRCodeSVG } from "qrcode.react";
+const baseURL = import.meta.env.VITE_SERVER_URI;
 
 const IMAGE_UPLOAD_INTERVAL = 2000;
 const POLL_STATUS_INTERVAL = 5000;
@@ -14,17 +16,19 @@ const POLL_STATUS_INTERVAL = 5000;
 const TryRoom = () => {
   const location = useLocation();
   const initialImage = location.state?.image;
-
   const [sessionId] = useState(uuidv4());
   const [showQR, setShowQR] = useState(false);
-
   const [responseData, setResponseData] = useState("");
   const [statusData, setStatusData] = useState("");
   const [imageSrc, setImageSrc] = useState("");
   const [selectImageScr, setSelectImageScr] = useState(
-    initialImage || "/assets/shirt.jpg"
+    initialImage || "src/assets/shirt.jpg"
   );
   const [startProcess, setStartProcess] = useState(false);
+  const [isPolling, setIsPolling] = useState(false);
+
+  const [showQRScanner, setShowQRScanner] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const deleteImage = () => {
     setImageSrc("");
@@ -99,69 +103,140 @@ const TryRoom = () => {
     runApiCall();
   };
 
-  const qrValue = `https://YOUR_NGROK_URL/upload/${sessionId}`;
+    const qrValue = `http://192.168.18.13:8080/api/upload/${sessionId}`;
+  // const qrValue = `${baseURL}/api/upload/${sessionId}`;
+
+  const handleScan = (data) => {
+    if (data && data === qrValue) {
+      setImageSrc(""); // Clear previous image
+      setShowQRScanner(false); // Hide scanner
+      setShowQR(true); // Trigger polling logic
+    } else if (data) {
+      handleError("Invalid QR code scanned");
+    }
+  };
+
+  const handleScanError = (err) => {
+    console.error("QR Scan Error:", err);
+    handleError("Failed to scan QR code. Please try again.");
+  };
+  const startPolling = () => {
+    setImageSrc(""); // Clear previous image
+    setShowQR(false); // Hide QR code
+    setIsPolling(true); // Start polling
+    setIsLoading(true); // Show loading state
+  };
 
   useEffect(() => {
-    if (!showQR) return;
+    if (!isPolling) return;
+    let poolAttempt=0
     const interval = setInterval(async () => {
+      if(poolAttempt>=5){
+        clearInterval(interval);
+        setShowQR(false);
+        setIsLoading(false);
+        handleError("Polling stopped after 5 attempts.");
+        return
+      }
       try {
         const res = await fetch(
-          `https://YOUR_NGROK_URL/api/image/${sessionId}`
+           `http://192.168.18.13:8080/api/image/${sessionId}`
+          // `${baseURL}/api/image/${sessionId}`
         );
-        if (res.ok) {
-          const { imageDataUrl } = await res.json();
+
+        const result = await res.json();
+        if (res.ok && result.success) {
+          const { imageDataUrl } = result;
+          console.log("image is : ", imageDataUrl);
           setImageSrc(imageDataUrl);
           clearInterval(interval);
+          setShowQR(false);
+          setIsLoading(false);
+        } else {
+          poolAttempt++
         }
-      } catch {
-        // not uploaded yet
+      } catch (error) {
+        console.error("Polling error:", error);
+        handleError("Error polling for image");
+        clearInterval(interval);
+        setShowQR(false);
+        setIsLoading(false);
       }
     }, IMAGE_UPLOAD_INTERVAL);
     return () => clearInterval(interval);
-  }, [showQR, sessionId]);
+  }, [sessionId, isPolling]);
 
   return (
     <div className="align-elements">
-      <h1 className="text-center font-bold text-2xl m-8">Welcome To Try Room</h1>
+      <h1 className="text-center font-bold text-2xl m-8">
+        Welcome To Try Room
+      </h1>
 
       <div className="flex flex-row justify-between">
-      <Tabs defaultValue="upload" className="w-full max-w-sm">
-        {/* Tabs Header */}
-        <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="upload">Upload</TabsTrigger>
-          <TabsTrigger value="camera">Camera</TabsTrigger>
-          <TabsTrigger value="qr">QR Code</TabsTrigger>
-        </TabsList>
+        <Tabs defaultValue="upload" className="w-full max-w-sm">
+          {/* Tabs Header */}
+          <TabsList className="grid w-full grid-cols-3">
+            <TabsTrigger value="upload">Upload</TabsTrigger>
+            <TabsTrigger value="camera">Camera</TabsTrigger>
+            <TabsTrigger value="qr">QR Code</TabsTrigger>
+          </TabsList>
 
-        {/* Upload Image Tab */}
-        <TabsContent value="upload" className="mt-4">
-          <ImageUploader
-            imageSrc={imageSrc}
-            setImageSrc={setImageSrc}
-            deleteImage={deleteImage}
-          />
-        </TabsContent>
+          {/* Upload Image Tab */}
+          <TabsContent value="upload" className="mt-4">
+            <ImageUploader
+              imageSrc={imageSrc}
+              setImageSrc={setImageSrc}
+              deleteImage={deleteImage}
+            />
+          </TabsContent>
 
-        {/* Camera Tab */}
-        <TabsContent value="camera" className="mt-4">
-          <CameraCapture
-            imageSrc={imageSrc}
-            setImageSrc={setImageSrc}
-          />
-        </TabsContent>
+          {/* Camera Tab */}
+          <TabsContent value="camera" className="mt-4">
+            <CameraCapture imageSrc={imageSrc} setImageSrc={setImageSrc} />
+          </TabsContent>
 
-        {/* QR Code Tab */}
-        <TabsContent value="qr" className="mt-4">
-          <QRUploader
-            qrValue={qrValue}
-            showQR={showQR}
-            setShowQR={setShowQR}
-          />
-        </TabsContent>
-      </Tabs>
+          {/* QR Code Tab */}
+          <TabsContent value="qr" className="mt-4">
+            <QRUploader
+              qrValue={qrValue}
+              showQR={showQR}
+              setShowQR={setShowQR}
+            />
+            {showQR && (
+              <button onClick={startPolling} className="btn btn-primary mt-4">
+                Start Polling for Image
+              </button>
+            )}
+            {imageSrc && (
+              <div className="mt-4">
+                <p className="text-center">Image received from mobile:</p>
+                <img
+                  src={imageSrc}
+                  alt="From mobile"
+                  className="w-64 h-64 object-scale-down border rounded shadow"
+                />
+              </div>
+            )}
+          </TabsContent>
+        </Tabs>
+        <div className="flex flex-col items-center gap-4">
+          {isLoading && (
+            <p className="text-center">Waiting for image upload...</p>
+          )}
+          <button onClick={handleClick} className="btn btn-primary">
+            {startProcess ? "Processing..." : "Change Outfit"}
+          </button>
+          {statusData.status && <p>Status: {statusData.status}</p>}
+          {statusData.output && (
+            <img
+              src={statusData.output}
+              alt="Result"
+              className="w-64 h-64 mt-4 object-scale-down"
+            />
+          )}
+        </div>
 
-      <div>
-
+        {/* <div>
       <button onClick={handleClick} className="btn btn-primary">
         {startProcess ? "Processing..." : "Change Outfit"}
       </button>
@@ -169,9 +244,8 @@ const TryRoom = () => {
       {statusData.output && (
         <img src={statusData.output} alt="Result" className="w-64 h-64 mt-4 object-scale-down" />
       )}
+      </div> */}
 
-      </div>
-      
         <SelectedOutfit
           selectImageScr={selectImageScr}
           handleClick={handleClick}
