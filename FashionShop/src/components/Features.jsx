@@ -1,18 +1,12 @@
 import React from "react";
 // import { FeaturesData } from "./Links";
 import { Link, Navigate } from "react-router-dom";
-<<<<<<< HEAD
+
 import support24Hours from "../assets/featureImg/support24hours.png";
 import freeShipping from "../assets/featureImg/freeShipping.png";
 import tryVirtually from "../assets/featureImg/tryVirtually.png";
 import easyReturn from "../assets/featureImg/easyReturn.png";
-=======
-// import support24Hours from "/assets/featureImg/support24Hours.png";
-// import freeShipping from "/assets/featureImg/freeShipping.png";
-// import tryVirtually from "public/assets/featureImg/tryVirtually.png";
-// import easyReturn from "public/assets/featureImg/easyReturn.png";
 
->>>>>>> endingg_tryroomUiImprove
 
 const Features = () => {
   return (

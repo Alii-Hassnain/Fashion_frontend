@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
-<<<<<<< HEAD
-import { Button } from "@/components/ui/button";
-=======
-// import { Button } from UI/button";
->>>>>>> endingg_tryroomUiImprove
+
+import { Button } from "@/components/UI/button";
+
 import { OverView, Users } from "../../components/Admin/DashboardCards";
 import { Graph } from "../../components/Admin/DashboardCards";
 import { axiosAdminUrl } from "../../utils/axiosFetch";
