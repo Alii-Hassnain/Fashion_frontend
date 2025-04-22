@@ -1,4 +1,4 @@
-import React, { useState ,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { Links } from "./Links";
 import { Link } from "react-router-dom";
 import NavLinks from "./NavLinks";
@@ -9,7 +9,6 @@ import { useSelector } from "react-redux";
 import Cookies from "js-cookie";
 import axios from "axios";
 
-
 // const username = Cookies.get("username");
 // console.log("Username from cookie:", username);
 import {
@@ -19,7 +18,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "../components/UI/dropdown-menu";
+} from "./UI/dropdown-menu";
 
 const Navbar = () => {
   const baseURL = import.meta.env.VITE_SERVER_URI;
@@ -27,26 +26,23 @@ const Navbar = () => {
   const [userName, setUserName] = useState(null);
   const checkAuthCookie = async () => {
     try {
-   const response =await fetch(`${baseURL}/user/verify-session`, {
+      const response = await fetch(`${baseURL}/user/verify-session`, {
         method: "GET",
-        credentials: "include", 
+        credentials: "include",
       });
       const result = await response.json();
-      console.log("reseult from verify session is : ",result)
+      console.log("reseult from verify session is : ", result);
       setUserName(result.user.username);
-      console.log(result.success)
-      return result.success; 
-
+      console.log(result.success);
+      return result.success;
     } catch (error) {
       console.error("Error checking session:", error);
       return false;
     }
   };
-    useEffect(() => {
-      checkAuthCookie();
-    }, []);
-
-
+  useEffect(() => {
+    checkAuthCookie();
+  }, []);
 
   return (
     <nav className="bg-base-200">
@@ -86,7 +82,7 @@ const Navbar = () => {
           <div className="flex flex-row gap-4 items-center">
             <div className="indicator">
               <span className="indicator-item badge badge-base-200">
-                {cartNumber ? userName ? cartNumber : 0 : 0}
+                {cartNumber ? (userName ? cartNumber : 0) : 0}
               </span>
               <div className="grid place-items-center">
                 <NavLink to="cart">
@@ -94,9 +90,14 @@ const Navbar = () => {
                 </NavLink>
               </div>
             </div>
-{userName ? <div className="text-sm font-light">{userName}</div> : " "
-            // <div className="text-sm font-light">Ali Hassnain</div>
-}
+            {
+              userName ? (
+                <div className="text-sm font-light">{userName}</div>
+              ) : (
+                " "
+              )
+              // <div className="text-sm font-light">Ali Hassnain</div>
+            }
             <DropdownMenu>
               <DropdownMenuTrigger>
                 <div className="avatar w-10">
@@ -109,7 +110,9 @@ const Navbar = () => {
                 <DropdownMenuLabel>{userName}</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <Link to="/profile">
-                  <DropdownMenuItem className="cursor-pointer">Profile</DropdownMenuItem>
+                  <DropdownMenuItem className="cursor-pointer">
+                    Profile
+                  </DropdownMenuItem>
                 </Link>
               </DropdownMenuContent>
             </DropdownMenu>

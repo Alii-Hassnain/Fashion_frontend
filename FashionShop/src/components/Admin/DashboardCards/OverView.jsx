@@ -7,21 +7,19 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "../../../components/UI/card";
+} from "../../UI/card";
 
-const OverView = ({title,number}) => {
+const OverView = ({ title, number }) => {
   return (
-    
     <div className="w-60">
       <Card>
         <CardHeader>
           <CardTitle>{title}</CardTitle>
           <CardDescription>users report</CardDescription>
         </CardHeader>
-        <CardContent className = "text-center">
+        <CardContent className="text-center">
           <p>{number}</p>
         </CardContent>
-        
       </Card>
     </div>
   );

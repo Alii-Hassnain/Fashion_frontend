@@ -7,7 +7,6 @@ import { v4 as uuidv4 } from "uuid";
 import { handleError } from "../utils/tostify";
 import { useLocation } from "react-router-dom";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { QRCodeSVG } from "qrcode.react";
 const baseURL = import.meta.env.VITE_SERVER_URI;
 
 const IMAGE_UPLOAD_INTERVAL = 2000;
@@ -103,8 +102,8 @@ const TryRoom = () => {
     runApiCall();
   };
 
-    const qrValue = `http://192.168.18.13:8080/api/upload/${sessionId}`;
-  // const qrValue = `${baseURL}/api/upload/${sessionId}`;
+    // const qrValue = `http://192.168.18.13:8080/api/upload/${sessionId}`;
+  const qrValue = `${baseURL}/api/upload/${sessionId}`;
 
   const handleScan = (data) => {
     if (data && data === qrValue) {
@@ -140,8 +139,8 @@ const TryRoom = () => {
       }
       try {
         const res = await fetch(
-           `http://192.168.18.13:8080/api/image/${sessionId}`
-          // `${baseURL}/api/image/${sessionId}`
+          //  `http://192.168.18.13:8080/api/image/${sessionId}`
+          `${baseURL}/api/image/${sessionId}`
         );
 
         const result = await res.json();

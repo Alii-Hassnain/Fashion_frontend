@@ -7,7 +7,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "../../components/UI/table";
+} from "../UI/table";
 import { getAllOrders, updateOrder } from "./Services/OrderServices";
 
 const OrderTable = ({ filter = "all" }) => {
@@ -38,7 +38,9 @@ const OrderTable = ({ filter = "all" }) => {
         // if (filter === "active") return order.status === "Processing";
         if (filter === "completed") return order.status === "Completed";
         if (filter === "active")
-          return ["Pending", "Processing", "Shipped", "Delivered"].includes(order.status);
+          return ["Pending", "Processing", "Shipped", "Delivered"].includes(
+            order.status
+          );
         if (filter === "cancelled") return order.status === "Cancelled";
         return true;
       })
@@ -151,9 +153,10 @@ const OrderTable = ({ filter = "all" }) => {
                   <ul className="list-inside">
                     {order.cartItems.map((item, index) => (
                       <li key={index}>
-                        {item.productId?item.productId.title : ''}{"  "}
+                        {item.productId ? item.productId.title : ""}
+                        {"  "}
                         <span className="text-gray-500">
-                          (x{item.quantity} {" "}{item.size || "N/A"})
+                          (x{item.quantity} {item.size || "N/A"})
                         </span>
                       </li>
                     ))}
@@ -220,15 +223,13 @@ const OrderTable = ({ filter = "all" }) => {
               {selectedOrder.cartItems.map((item, index) => (
                 <li key={index}>
                   {item.productId.title} (x
-                  {item.quantity} {" "}{item.size || "N/A"})
-                 
+                  {item.quantity} {item.size || "N/A"})
                   {/* <input
                     type="number"
                     value={item.quantity}
                     onChange={(e) => handleQuantityChange(index, e.target.value)}
                     className="w-12 text-center border rounded ml-1"
                   /> */}
-                  
                 </li>
               ))}
             </ul>
