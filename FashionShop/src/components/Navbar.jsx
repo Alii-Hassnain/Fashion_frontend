@@ -18,7 +18,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "./UI/dropdown-menu";
+} from "./ui/dropdown-menu";
 
 const Navbar = () => {
   const baseURL = import.meta.env.VITE_SERVER_URI;

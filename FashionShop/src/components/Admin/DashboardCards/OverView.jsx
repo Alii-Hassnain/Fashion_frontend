@@ -7,7 +7,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "../../UI/card";
+} from "../../ui/card";
 
 const OverView = ({ title, number }) => {
   return (

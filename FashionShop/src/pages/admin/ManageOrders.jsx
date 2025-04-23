@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { OrderTable } from "../../components/Admin";
 import { CommonHeading } from "@/components";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "../../components/UI/tabs";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "../../components/ui/tabs";
 
 const ManageOrders = () => {
   const [filter, setFilter] = useState("all");

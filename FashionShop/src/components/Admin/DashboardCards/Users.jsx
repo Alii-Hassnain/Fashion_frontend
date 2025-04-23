@@ -6,12 +6,11 @@ import {
   TableHead,
   TableBody,
   TableCell,
-
-} from "../../../components/UI/table";
-import { useEffect , useState} from "react";
+} from "../../ui/table";
+import { useEffect, useState } from "react";
 import { axiosAdminUrl } from "../../../utils/axiosFetch";
-import {getAllUsersOrderSummary} from "../Services/UserServices";
-import { handleSuccess,handleError } from "../../../utils/tostify";
+import { getAllUsersOrderSummary } from "../Services/UserServices";
+import { handleSuccess, handleError } from "../../../utils/tostify";
 
 const invoices = [
   {
@@ -66,17 +65,16 @@ const invoices = [
 
 export default function TableDemo() {
   const [users, setUsers] = useState([]);
-  const [userCount , setUserCount] = useState(0);
+  const [userCount, setUserCount] = useState(0);
 
-   const fetchUsers = async () => {
+  const fetchUsers = async () => {
     try {
-      const response = await getAllUsersOrderSummary()
-      if(response){
+      const response = await getAllUsersOrderSummary();
+      if (response) {
         setUsers(response.data);
         handleSuccess(response.data.message);
-        console.log("first 10 users are : ",response.data)
-      }
-      else{
+        console.log("first 10 users are : ", response.data);
+      } else {
         setUsers([]);
         handleSuccess("No users found");
       }
@@ -88,9 +86,6 @@ export default function TableDemo() {
   useEffect(() => {
     fetchUsers();
   }, []);
-
-  
-  
 
   return (
     <Table>
@@ -107,11 +102,20 @@ export default function TableDemo() {
       <TableBody>
         {users.map((user, index) => (
           <TableRow key={index}>
-            <TableCell>{"👤"}{}</TableCell>
-            <TableCell className="font-medium">{user?.username||""}</TableCell>
-            <TableCell>{user.email||""}</TableCell>
-            <TableCell className="text-right">{user.totalOrders||"0"}</TableCell>
-            <TableCell className="text-right">{user.totalSpent||"PKR 0.00"}</TableCell>
+            <TableCell>
+              {"👤"}
+              {}
+            </TableCell>
+            <TableCell className="font-medium">
+              {user?.username || ""}
+            </TableCell>
+            <TableCell>{user.email || ""}</TableCell>
+            <TableCell className="text-right">
+              {user.totalOrders || "0"}
+            </TableCell>
+            <TableCell className="text-right">
+              {user.totalSpent || "PKR 0.00"}
+            </TableCell>
           </TableRow>
         ))}
       </TableBody>

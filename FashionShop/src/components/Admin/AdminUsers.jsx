@@ -7,7 +7,7 @@ import {
   TableHead,
   TableBody,
   TableCell,
-} from "../UI/table";
+} from "../ui/table";
 import { useEffect, useState } from "react";
 import {
   getAllUsersOrderSummary,
