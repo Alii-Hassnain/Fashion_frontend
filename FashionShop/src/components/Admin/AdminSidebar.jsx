@@ -5,6 +5,7 @@ import { FaShoppingCart } from "react-icons/fa";
 import { FaRegStar } from "react-icons/fa";
 import { FaUsers } from "react-icons/fa";
 import { Link } from 'react-router-dom'
+import { RiAdminFill } from "react-icons/ri";
 
 
 const navLinks =
@@ -24,6 +25,7 @@ const [isActive , setIsActive] = React.useState(true );
       {/* Logo or Branding */}
       <div className="p-4 text-center bg-gray-900">
         <h1 className="text-xl font-bold">Admin Panel</h1>
+        <RiAdminFill />
       </div>
       {/* Navigation Links */}
       <nav className="flex-grow">

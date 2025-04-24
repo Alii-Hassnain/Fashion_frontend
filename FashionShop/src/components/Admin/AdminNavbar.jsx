@@ -65,18 +65,25 @@ useEffect(()=>{
 },[])
 
   return (
-    <nav className="bg-base-200 ml-64">
-      <div className="navbar align-elements">
-        <div className="navbar-start">
-          <NavLink to="/admin" className="flex lg:flex text-3xl items-center">
-            <h1 className="font-bold text-xl">Welcome: {userName}</h1>
-          </NavLink>
-        </div>
-        <div className="navbar-end">          
-            <button type ="button" className="hover:text-red-500 " onClick={handleLogout}>logout</button>
-        </div>
+    <nav className="bg-white border-b border-gray-200 shadow-sm ml-64">
+    <div className="navbar align-elements px-4 py-3">
+      <div className="navbar-start">
+        <NavLink to="/admin" className="flex items-center text-gray-800">
+          <h1 className="font-bold text-2xl">Welcome: {userName}</h1>
+        </NavLink>
       </div>
-    </nav>
+      <div className="navbar-end">
+        <button
+          type="button"
+          onClick={handleLogout}
+          className="text-red-600 font-medium hover:text-red-800 transition-colors"
+        >
+          Logout
+        </button>
+      </div>
+    </div>
+  </nav>
+  
   );
 };
 

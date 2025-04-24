@@ -33,7 +33,7 @@ const AdminDashboard = () => {
   const fetchOrders = async () => {
     try {
       const data = await getAllOrders();
-      
+
       setOrders(data);
       filterOrders(data);
     } catch (error) {
@@ -41,11 +41,18 @@ const AdminDashboard = () => {
     }
   };
   const filterOrders = (ordersData) => {
-    let completed = 0, active = 0, cancelled = 0;
-    ordersData.forEach(order => {
+    let completed = 0,
+      active = 0,
+      cancelled = 0;
+    ordersData.forEach((order) => {
       if (order.status === "Completed") {
         completed++;
-      } else if (order.status === "Processing"||order.status === "Shipped"||order.status === "Delivered"||order.status === "Pending") {
+      } else if (
+        order.status === "Processing" ||
+        order.status === "Shipped" ||
+        order.status === "Delivered" ||
+        order.status === "Pending"
+      ) {
         active++;
       } else if (order.status === "Cancelled") {
         cancelled++;
@@ -62,15 +69,17 @@ const AdminDashboard = () => {
   }, []);
 
   return (
-    <div className="align-elements">
-      <h1>This is Admin Dashboard</h1>
-      <div className="flex flex-row gap-5">
-        <OverView title={"Total Users"} number={userCount} />
-        <OverView title={"Total Orders Completed"} number={completedOrders} />
-        <OverView title={"Active Orders"} number={activeOrders} />
-        <OverView title={"Cancelled Order"} number={cancelledOrders} />
+    <div className="mt-6  align-elements">
+      {/* Overview Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <OverView title="Total Users" number={userCount} />
+        <OverView title="Total Orders Completed" number={completedOrders} />
+        <OverView title="Active Orders" number={activeOrders} />
+        <OverView title="Cancelled Order" number={cancelledOrders} />
       </div>
-      <div className="flex flex-row gap-5 mt-5">
+
+      {/* Graph & Users Section */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-6">
         <Graph />
         <Users />
       </div>
