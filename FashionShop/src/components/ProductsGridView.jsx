@@ -3,9 +3,9 @@ import { useNavigate, useLoaderData, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { handleError } from "../utils/tostify";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
- import { addToCart, addToCartAsync } from "../features/cartSlice";
+import { addToCart, addToCartAsync } from "../features/cartSlice";
 
- const shuffleArray = (array) => {
+const shuffleArray = (array) => {
   let shuffledArray = [...array];
   for (let i = shuffledArray.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -14,20 +14,19 @@ import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
   return shuffledArray;
 };
 
- 
 const ProductsGridView = ({
   product,
   loading,
   resetFilters,
   success,
   count,
-  activeTab
+  activeTab,
 }) => {
   const { products } = useLoaderData();
   const [userId, setUserId] = useState("");
   const [displayProducts, setDisplayProducts] = useState(products);
   const [filterApplied, setFilterApplied] = useState(false);
-  
+
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 12;
 
@@ -35,23 +34,23 @@ const ProductsGridView = ({
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.user.userData);
 
-
   const filterProductsByTab = (products, activeTab) => {
     let filtered = [...products];
     switch (activeTab) {
       case "New Products":
-        return filtered.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        return filtered.sort(
+          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+        );
       case "Best Sellers":
         return filtered.filter((product) => product.rating > 0);
       case "Big Discount":
-        return filtered.filter((product) => product.price < 5000);
+        return filtered.filter((product) => product.price < 4000);
       case "Featured Products":
         return shuffleArray(filtered).slice(0, 12);
       default:
         return filtered;
     }
   };
-  
 
   useEffect(() => {
     if (userData?._id) {
@@ -64,8 +63,6 @@ const ProductsGridView = ({
       setDisplayProducts(shuffleArray(products));
     }
   }, [products]);
-  
- 
 
   useEffect(() => {
     if (success && count > 0) {
@@ -73,13 +70,13 @@ const ProductsGridView = ({
       setFilterApplied(true);
       return;
     }
-  
+
     if (success && count === 0) {
       setDisplayProducts([]);
       setFilterApplied(true);
       return;
     }
-  
+
     if (activeTab && products?.length > 0) {
       const filtered = filterProductsByTab(products, activeTab);
       setDisplayProducts(filtered);
@@ -89,9 +86,8 @@ const ProductsGridView = ({
       setFilterApplied(false);
     }
   }, [product, success, count, activeTab, products]);
-  
 
-    const checkUser = () => {
+  const checkUser = () => {
     if (!userId) {
       handleError("please Login first");
     }
@@ -106,7 +102,10 @@ const ProductsGridView = ({
 
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  const currentProducts = displayProducts.slice(indexOfFirstProduct, indexOfLastProduct);
+  const currentProducts = displayProducts.slice(
+    indexOfFirstProduct,
+    indexOfLastProduct
+  );
 
   const totalPages = Math.ceil(displayProducts.length / productsPerPage);
 
@@ -120,39 +119,57 @@ const ProductsGridView = ({
         <>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {currentProducts.map((product) => {
-              const { _id, product_image, price, title , rating } = product;
+              const { _id, product_image, price, title, rating } = product;
               return (
                 <div
                   key={_id}
                   className="bg-white shadow-md rounded-md p-4 cursor-pointer"
                 >
-                  <Link to={`/singleproduct/${_id}`} key={_id} className="block"
-                  onClick={() => window.scrollTo(0, 0)}
+                  <Link
+                    to={`/singleproduct/${_id}`}
+                    key={_id}
+                    className="block"
+                    onClick={() => window.scrollTo(0, 0)}
                   >
-                        {/* Discount Tag */}
-                        {activeTab === "Big Discount" && (
-                        <div className=" text-right bg-red-100 text-red-600 font-bold py-2 rounded mb-4 text-xs shadow w-fit px-2 ">
-                          🔥 10% OFF
-                        </div>
-                    )} 
+                    {/* Discount Tag */}
+                    {activeTab === "Big Discount" && (
+                      <div className=" text-right bg-red-100 text-red-600 font-bold py-2 rounded mb-4 text-xs shadow w-fit px-2 ">
+                        🔥 10% OFF
+                      </div>
+                    )}
                     <img
                       src={product_image}
                       alt={title}
                       className="w-full h-56 object-contain"
-                      />
-                   
+                    />
+
                     <h2 className="text-sm font-semibold text-gray-800 mt-2">
                       {title}
                     </h2>
-                    <p className="text-gray-800 mt-2 text-sm">PKR {price}</p>
+                    {/* <p className="text-gray-800 mt-2 text-sm">PKR {price}</p> */}
+                    {activeTab === "Big Discount" ? (
+                      <div className="mt-2 space-y-1">
+                        <p className="text-red-600 font-semibold text-sm">
+                          PKR {price.toLocaleString()}
+                        </p>
+                        <p className="text-black line-through text-xs">
+                          PKR {(price + price * 0.2).toLocaleString()}
+                        </p>
+                      </div>
+                    ) : (
+                      <p className="text-gray-800 mt-2 text-sm">
+                        PKR {price.toLocaleString()}
+                      </p>
+                    )}
                   </Link>
-                 
-                  {
-                    rating?<p className="text-green-500 text-sm">
-                    {"⭐".repeat(rating)}
-                  </p>:<p className="text-red-500 text-sm">Not reviewed yet</p>
 
-                  }
+                  {rating ? (
+                    <p className="text-green-500 text-sm">
+                      {"⭐".repeat(rating) }
+                    </p>
+                  ) : (
+                    <p className="text-red-500 text-sm">Not reviewed yet</p>
+                  )}
 
                   <button
                     className="btn btn-secondary w-full mt-4"
@@ -236,10 +253,3 @@ const ProductsGridView = ({
 };
 
 export default ProductsGridView;
-
-
-
-
-
-
-

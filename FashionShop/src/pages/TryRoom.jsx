@@ -22,10 +22,10 @@ const TryRoom = () => {
   const [imageSrc, setImageSrc] = useState("");
   const [selectImageScr, setSelectImageScr] = useState(
     initialImage || "src/assets/shirt.jpg"
-  );
+  ); 
   const [startProcess, setStartProcess] = useState(false);
   const [isPolling, setIsPolling] = useState(false);
-
+  
   const [showQRScanner, setShowQRScanner] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -191,7 +191,9 @@ const TryRoom = () => {
 
           {/* Camera Tab */}
           <TabsContent value="camera" className="mt-4">
-            <CameraCapture imageSrc={imageSrc} setImageSrc={setImageSrc} />
+            <CameraCapture imageSrc={imageSrc} setImageSrc={setImageSrc} 
+            
+            />
           </TabsContent>
 
           {/* QR Code Tab */}
@@ -202,13 +204,13 @@ const TryRoom = () => {
               setShowQR={setShowQR}
             />
             {showQR && (
-              <button onClick={startPolling} className="btn btn-primary mt-4">
+              <button onClick={startPolling} className="btn btn-primary mt-4 mb-10  ">
                 Start Polling for Image
               </button>
             )}
             {imageSrc && (
               <div className="mt-4">
-                <p className="text-center">Image received from mobile:</p>
+                <p className="text-center text-xl ">Image received from mobile:</p>
                 <img
                   src={imageSrc}
                   alt="From mobile"
@@ -219,9 +221,7 @@ const TryRoom = () => {
           </TabsContent>
         </Tabs>
         <div className="flex flex-col items-center gap-4">
-          {isLoading && (
-            <p className="text-center">Waiting for image upload...</p>
-          )}
+          
           <button onClick={handleClick} className="btn btn-primary">
             {startProcess ? "Processing..." : "Change Outfit"}
           </button>
@@ -232,6 +232,9 @@ const TryRoom = () => {
               alt="Result"
               className="w-64 h-64 mt-4 object-scale-down"
             />
+          )}
+          {isLoading && (
+            <p className="text-center text-2xl">Waiting for image upload...</p>
           )}
         </div>
 

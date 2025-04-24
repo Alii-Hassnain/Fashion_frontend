@@ -20,6 +20,8 @@ const AdminEditProducts = () => {
     stock: editProduct.stock || "",
     rating: editProduct.rating || "",
     description: editProduct.description || "",
+    variants: editProduct.variants || [{ size: "", quantity: "" }],
+    
   });
   useEffect(() => {
     setProduct({
@@ -29,6 +31,8 @@ const AdminEditProducts = () => {
       stock: editProduct.stock || "",
       rating: editProduct.rating || "",
       description: editProduct.description || "",
+      variants: editProduct.variants || [{ size: "", quantity: "" }],
+    
     });
   }, [editProduct]);
 
@@ -44,6 +48,32 @@ const AdminEditProducts = () => {
       };
     });
   };
+
+  const handleVariantChange = (index, e) => {
+    const { name, value } = e.target;
+    const updatedVariants = [...product.variants];
+    updatedVariants[index][name] = value;
+    setProduct((prev) => ({
+      ...prev,
+      variants: updatedVariants,
+    }));
+  };
+
+  const handleAddVariant = () => {
+    setProduct((prev) => ({
+      ...prev,
+      variants: [...prev.variants, { size: "", quantity: 0 }],
+    }));
+  };
+
+  const handleRemoveVariant = (index) => {
+    const updatedVariants = product.variants.filter((_, i) => i !== index);
+    setProduct((prev) => ({
+      ...prev,
+      variants: updatedVariants,
+    }));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const productData = {
@@ -52,6 +82,8 @@ const AdminEditProducts = () => {
       stock: product.stock,
       rating: product.rating,
       description: product.description,
+      variants: product.variants,
+      
     };
   
     const response = await updateProduct(product.id, productData, setSuccess, setError);
@@ -62,35 +94,7 @@ const AdminEditProducts = () => {
     }
   };
   
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-
-  //   if (
-  //     !product.price ||
-  //     !product.title ||
-  //     !product.description ||
-  //     product.stock < 0 ||
-  //     product.rating < 0
-  //   ) {
-  //     setError("Please fill in all fields correctly");
-  //     return;
-  //   }
-
-  //   const formData = new FormData();
-  //   formData.append("title", product.title);
-  //   formData.append("price", product.price);
-  //   formData.append("stock", product.stock);
-  //   formData.append("rating", product.rating);
-  //   formData.append("description", product.description);
-  //   console.log("productImage", product.product_image);
-  //   updateProduct(product.id, formData, setSuccess, setError);
-
-  //   await setManageProducts((prevProducts) =>
-  //     prevProducts.map((prod) =>
-  //       prod._id === product.id ? { ...prod, ...product } : prod
-  //     )
-  //   );
-  // };
+ 
   return (
     <div className="p-4">
       <h2 className="text-2xl font-bold mb-4">Edit Product</h2>
@@ -124,30 +128,8 @@ const AdminEditProducts = () => {
             className="input input-bordered"
           />
         </div>
-        {/* <div className="form-control">
-          <label className="label">
-            <span className="label-text">Product Image</span>
-          </label>
-          <input
-            type="file"
-            name="product_image"
-            onChange={handleFile}
-            placeholder="Product Image"
-          />
-        </div> */}
-        <div className="form-control">
-          <label className="label">
-            <span className="label-text">Product Stock</span>
-          </label>
-          <input
-            type="number"
-            value={product.stock}
-            name="stock"
-            onChange={handleChange}
-            placeholder="Product Stock"
-            className="input input-bordered"
-          />
-        </div>
+      
+       
         <div className="form-control">
           <label className="label">
             <span className="label-text">Product Rating</span>
@@ -177,6 +159,44 @@ const AdminEditProducts = () => {
             name="description"
           />
         </div>
+
+        <div className="mt-6">
+          <h3 className="font-bold text-lg mb-2">Product Variants</h3>
+          {product.variants.map((variant, index) => (
+            <div key={index} className="grid grid-cols-3 gap-4 items-end mb-4">
+              <input
+                type="text"
+                name="size"
+                value={variant.size}
+                onChange={(e) => handleVariantChange(index, e)}
+                className="input input-bordered"
+                placeholder="Size"
+              />
+          
+              <input
+                type="number"
+                name="quantity"
+                value={variant.quantity}
+                onChange={(e) => handleVariantChange(index, e)}
+                className="input input-bordered"
+                placeholder="Quantity"
+              />
+              {product.variants.length > 1 && (
+                <button
+                  type="button"
+                  onClick={() => handleRemoveVariant(index)}
+                  className="btn btn-sm btn-error mt-2"
+                >
+                  Remove
+                </button>
+              )}
+            </div>
+          ))}
+          <button type="button" onClick={handleAddVariant} className="btn btn-sm btn-accent">
+            Add Variant
+          </button>
+        </div>
+
 
         <div className="form-control mt-6">
           <button className="btn btn-primary" type="submit ">

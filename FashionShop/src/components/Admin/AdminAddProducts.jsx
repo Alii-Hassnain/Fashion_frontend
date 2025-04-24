@@ -11,7 +11,7 @@ const AdminAddProducts = () => {
     title: "",
     price: "",
     product_image: "",
-    stock: "",
+
     description: "",
     category: "",
     gender: "",
@@ -57,7 +57,6 @@ const AdminAddProducts = () => {
       !product.price ||
       !product.title ||
       !product.description ||
-      // product.stock < 0 ||
       !product.category ||
       !product.gender
     ) {
@@ -74,7 +73,7 @@ const AdminAddProducts = () => {
     formData.append("title", product.title);
     formData.append("price", product.price);
     formData.append("product_image", product.product_image);
-    formData.append("stock", product.stock);
+
     formData.append("description", product.description);
     formData.append("category", product.category);
     formData.append("gender", product.gender);
@@ -89,7 +88,6 @@ const AdminAddProducts = () => {
       price: "",
       title: "",
       description: "",
-      stock: "",
       category: "",
       gender: "",
       variants: [{ size: "", quantity: "" }],
@@ -142,19 +140,7 @@ const AdminAddProducts = () => {
             placeholder="Product Image"
           />
         </div>
-        <div className="form-control">
-          <label className="label">
-            <span className="label-text">Product Stock</span>
-          </label>
-          <input
-            type="number"
-            value={product.stock}
-            name="stock"
-            onChange={handleChange}
-            placeholder="Product Stock"
-            className="input input-bordered"
-          />
-        </div>
+
         <div className="form-control">
           <label className="label">
             <span className="label-text">Product Description</span>
@@ -230,8 +216,12 @@ const AdminAddProducts = () => {
           </div>
         ))}
 
-<div className="form-control mt-4">
-          <button type="button" className="btn btn-secondary" onClick={addVariant}>
+        <div className="form-control mt-4">
+          <button
+            type="button"
+            className="btn btn-secondary"
+            onClick={addVariant}
+          >
             Add Variant
           </button>
         </div>
