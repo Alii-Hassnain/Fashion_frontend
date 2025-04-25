@@ -20,7 +20,7 @@ const FiltersContainer = ({
     console.log("filter in filter component : ", filters);
   }, [filters]);
   return (
-    <div className="w-64 p-4 bg-base-100 shadow-lg rounded-xl">
+    <div className="w-64 h-screen p-4 bg-base-100 shadow-lg rounded-xl">
       <h2 className="text-xl font-bold mb-4">Filters</h2>
 
       {/* <ColorFilter onColorChange={onColorChange} /> */}

@@ -102,88 +102,77 @@ const Profile = () => {
   }
   return (
     <div className="max-w-6xl mx-auto p-6">
-      <CommonHeading title={"My Orders"} />
-      
-      {  !userId ? (
-        <div className="flex flex-col items-center ">
-        
+  <CommonHeading title={"My Orders"} />
 
-        <p className=" text-lg font-semibold ">Please login to see your orders</p>
-        <button onClick={() => window.location.href = "/login"} className="btn btn-error mt-5">Login First </button>
-        </div>
-      ) : 
-      Array.isArray(orders) && orders.length === 0 ? (
-        <div className="flex flex-col items-center ">
-        <p className=" text-lg font-semibold ">No orders found.</p>
-        <button onClick={() => window.location.href = "/"} className="btn btn-primary mt-5">Explore Products</button>
-        </div>
-      ) : (
-        <div className="space-y-6">
-          {orders.map((order) => (
-            <div
-              key={order._id}
-              className="border p-6 rounded-lg shadow-sm bg-white"
-            >
-              <h3 className="text-lg font-semibold text-gray-700">
-                Order ID: {order._id}
-              </h3>
-              <p className="text-gray-600">
-                <p>Date: {new Date(order.createdAt).toLocaleDateString()}</p>
-              </p>
-              <p className="text-gray-600">Total: PKR {order.totalPrice}</p>
-
-              <ul className="steps my-4 flex gap-x-2">
-                <li className={getStepClass(order.status, "Pending")}>
-                  Pending
-                </li>
-                <li className={getStepClass(order.status, "Processing")}>
-                  Processing
-                </li>
-                <li className={getStepClass(order.status, "Shipped")}>
-                  Shipped
-                </li>
-                <li className={getStepClass(order.status, "Delivered")}>
-                  Delivered
-                </li>
-                <li className={getStepClass(order.status, "Completed")}>
-                  Completed
-                </li>
-                <li className={getStepClass(order.status, "Cancelled")}>
-                  Cancelled
-                </li>
-              </ul>
-
-              {order.status !== "Completed" &&
-                order.status !== "Delivered" &&
-                order.status !== "Cancelled" && 
-                 (
-                  <button
-                    className="btn btn-error text-white mt-3"
-                    onClick={() => handleCancelOrder(order._id)}
-                  >
-                    Cancel Order
-                  </button>
-                )}
-
-              <ul className="mt-2 text-gray-600">
-                {order.cartItems.map((item, index) => (
-                  <li key={item.id}>
-                    {console.log(item)}
-                    {item.productId.title} (x{item.quantity} {item.size||"N/A"})
-                  </li>
-                ))} 
-              </ul>
-
-              {order.status === "Cancelled" && (
-                <p className="text-red-500 font-semibold mt-2">
-                  Order Cancelled
-                </p>
-              )}
-            </div>
-          ))}
-        </div>
-      )}
+  {!userId ? (
+    <div className="flex flex-col items-center ">
+      <p className=" text-lg font-semibold ">Please login to see your orders</p>
+      <button onClick={() => window.location.href = "/login"} className="btn btn-error mt-5">Login First </button>
     </div>
+  ) : Array.isArray(orders) && orders.length === 0 ? (
+    <div className="flex flex-col items-center ">
+      <p className=" text-lg font-semibold ">No orders found.</p>
+      <button onClick={() => window.location.href = "/"} className="btn btn-primary mt-5">Explore Products</button>
+    </div>
+  ) : (
+    <div className="space-y-6">
+    
+      {/* ✅ SORTING orders by latest date first */}
+      {[...orders]
+        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+        .map((order) => (
+        <div
+          key={order._id}
+          className="border p-6 rounded-lg shadow-sm bg-white"
+        >
+          <h3 className="text-lg font-semibold text-gray-700">
+            Order ID: {order._id}
+          </h3>
+          <p className="text-gray-600">
+            <p>Date: {new Date(order.createdAt).toLocaleDateString()}</p>
+          </p>
+          <p className="text-gray-600">Total: PKR {order.totalPrice}</p>
+
+          <ul className="steps my-4 flex gap-x-2">
+            <li className={getStepClass(order.status, "Pending")}>Pending</li>
+            <li className={getStepClass(order.status, "Processing")}>Processing</li>
+            <li className={getStepClass(order.status, "Shipped")}>Shipped</li>
+            <li className={getStepClass(order.status, "Delivered")}>Delivered</li>
+            <li className={getStepClass(order.status, "Completed")}>Completed</li>
+            <li className={getStepClass(order.status, "Cancelled")}>Cancelled</li>
+          </ul>
+
+          {order.status !== "Completed" &&
+            order.status !== "Delivered" &&
+            order.status !== "Cancelled" && (
+              <button
+                className="btn btn-error text-white mt-3"
+                onClick={() => handleCancelOrder(order._id)}
+              >
+                Cancel Order
+              </button>
+          )}
+
+          <ul className="mt-2 text-gray-600">
+            {order.cartItems.map((item, index) => (
+              <li key={item.id}>
+                {item.productId.title} (x{item.quantity} {item.size || "N/A"})
+              </li>
+            ))}
+          </ul>
+
+          {order.status === "Cancelled" && (
+            <p className="text-red-500 font-semibold mt-2">
+              Order Cancelled
+            </p>
+          )}
+        </div>
+      ))}
+    </div>
+  )}
+</div>
+
+
   );
 };
 

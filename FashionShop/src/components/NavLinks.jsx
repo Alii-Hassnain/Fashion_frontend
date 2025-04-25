@@ -5,21 +5,19 @@ import { Links } from "./Links";
 
 const NavLinks = () => {
   return (
-    <nav>  
-      <ul className='flex flex-row justify-center gap-8'>
-        {
-          Links.map((navStuff)=>{
-            const {id,navLink,toLink} = navStuff;
-            return(
-              <li key={id}>
-                <NavLink to = {toLink}>{navLink}</NavLink>
-              </li>
-            )
-          })
-        }
-      </ul>
-      
-    </nav>
+    <nav>
+    <ul className='flex flex-col lg:flex-row justify-center gap-2 lg:gap-8'>
+      {Links.map((navStuff) => {
+        const { id, navLink, toLink } = navStuff;
+        return (
+          <li key={id}>
+            <NavLink to={toLink}>{navLink}</NavLink>
+          </li>
+        );
+      })}
+    </ul>
+  </nav>
+  
   )
 }
 
